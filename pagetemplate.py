@@ -15,7 +15,7 @@
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 
-$Id: pagetemplate.py,v 1.10 2004/03/19 23:35:03 srichter Exp $
+$Id$
 """
 __metaclass__ = type # All classes are new style when run with Python 2.2+
 

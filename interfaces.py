@@ -13,7 +13,7 @@
 ##############################################################################
 """Interface that describes the 'macros' attribute of a PageTemplate.
 
-$Id: interfaces.py,v 1.2 2002/12/25 14:15:13 jim Exp $
+$Id$
 """
 from zope.interface import Interface, Attribute
 
