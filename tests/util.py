@@ -55,7 +55,7 @@ class argv:
 
     def values(self): return self.args
 
-    def getPhysicalRoot(self):
+    def getRoot(self):
         return self
 
     context = property(lambda self: self)
