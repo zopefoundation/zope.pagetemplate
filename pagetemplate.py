@@ -15,7 +15,7 @@
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 
-$Id: pagetemplate.py,v 1.7 2003/04/15 21:19:20 bwarsaw Exp $
+$Id: pagetemplate.py,v 1.8 2003/06/03 22:46:26 jim Exp $
 """
 __metaclass__ = type # All classes are new style when run with Python 2.2+
 
@@ -25,7 +25,6 @@ from zope.tal.htmltalparser import HTMLTALParser
 from zope.tal.talgenerator import TALGenerator
 from zope.tal.talinterpreter import TALInterpreter
 from zope.tales.engine import Engine
-from zope.pagetemplate.interfaces import IMacrosAttribute
 # Don't use cStringIO here!  It's not unicode aware.
 from StringIO import StringIO
 
