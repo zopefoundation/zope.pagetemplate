@@ -95,7 +95,8 @@ class BasicTemplateTests(unittest.TestCase):
         aa = util.argv(('one', 'two', 'three', 'four', 'five',
                         'six', 'seven', 'eight', 'nine', 'ten',
                         'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-                        'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
+                        'sixteen', 'seventeen', 'eighteen', 'nineteen',
+                        'twenty',
                         ))
         from zope.pagetemplate.tests import batch
         o = self.t(content=aa, batch=batch.batch(aa.args, 5))
