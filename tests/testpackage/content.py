@@ -11,11 +11,12 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
+"""Content
+
 $Id$
 """
 
-class Content:
+class Content(object):
     def getSomething(self):
         return 42
 

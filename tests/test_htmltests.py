@@ -11,13 +11,17 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Page Template HTML Tests
+
+$Id$
+"""
 import unittest
 
 from zope.pagetemplate.tests import util
 from zope.pagetemplate.pagetemplate import PageTemplate
 
 
-class Folder:
+class Folder(object):
     context = property(lambda self: self)
 
 class HTMLTests(unittest.TestCase):

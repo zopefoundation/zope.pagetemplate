@@ -11,11 +11,12 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-##__allow_access_to_unprotected_subobjects__={'batch': 1}
-##__roles__=None
+"""Batching support tests
 
+$Id$
+"""
 
-class batch:
+class batch(object):
     """Create a sequence batch"""
 
     def __init__(self, sequence, size, start=0, end=0,

@@ -11,12 +11,16 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Utilities
+
+$Id$
+"""
 import os
 import re
 import sys
 
 
-class Bruce:
+class Bruce(object):
     __allow_access_to_unprotected_subobjects__=1
     def __str__(self): return 'bruce'
     def __int__(self): return 42
@@ -37,12 +41,12 @@ class Bruce:
 
 bruce = Bruce()
 
-class arg:
+class arg(object):
     __allow_access_to_unprotected_subobjects__ = 1
     def __init__(self,nn,aa): self.num, self.arg = nn, aa
     def __str__(self): return str(self.arg)
 
-class argv:
+class argv(object):
     __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, argv=sys.argv[1:]):
