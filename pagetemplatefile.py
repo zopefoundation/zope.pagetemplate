@@ -16,7 +16,7 @@
 Zope object encapsulating a Page Template from the filesystem.
 """
 
-__version__ = '$Revision: 1.6 $'[11:-2]
+__version__ = '$Revision: 1.7 $'[11:-2]
 
 __metaclass__ = type
 
@@ -38,6 +38,8 @@ class PageTemplateFile(PageTemplate):
     def __init__(self, filename, _prefix=None):
         path = self.get_path_from_prefix(_prefix)
         self.filename = os.path.join(path, filename)
+        if not os.path.isfile(self.filename):
+            raise ValueError("No such file", self.filename)
 
     def get_path_from_prefix(self, _prefix):
         if isinstance(_prefix, str):
