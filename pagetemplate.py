@@ -17,8 +17,6 @@ HTML- and XML-based template objects using TAL, TALES, and METAL.
 
 $Id$
 """
-__metaclass__ = type # All classes are new style when run with Python 2.2+
-
 import sys
 from zope.tal.talparser import TALParser
 from zope.tal.htmltalparser import HTMLTALParser
@@ -32,7 +30,7 @@ import zope.pagetemplate.interfaces
 import zope.interface
 
 
-class MacroCollection:
+class MacroCollection(object):
     def __get__(self, parent, type=None):
         parent._cook_check()
         return parent._v_macros
@@ -41,7 +39,7 @@ class MacroCollection:
 _default_options = {}
 _error_start = '<!-- Page Template Diagnostics'
 
-class PageTemplate:
+class PageTemplate(object):
     """Page Templates using TAL, TALES, and METAL.
 
     Subclassing
@@ -210,7 +208,7 @@ class PageTemplate:
         self._v_cooked = 1
 
 
-class TemplateUsage:
+class TemplateUsage(object):
     def __init__(self, value):
         if not isinstance(value, unicode):
             raise TypeError('TemplateUsage should be initialized with a '
@@ -237,7 +235,7 @@ class PTRuntimeError(RuntimeError):
     pass
 
 
-class PageTemplateTracebackSupplement:
+class PageTemplateTracebackSupplement(object):
     #implements(ITracebackSupplement)
 
     def __init__(self, pt, namespace):
