@@ -16,7 +16,7 @@
 Zope object encapsulating a Page Template from the filesystem.
 """
 
-__version__ = '$Revision: 1.4 $'[11:-2]
+__version__ = '$Revision: 1.5 $'[11:-2]
 
 __metaclass__ = type
 
@@ -63,7 +63,13 @@ class PageTemplateFile(PageTemplate):
             text = f.read()
         finally:
             f.close()
-        self.pt_edit(text, sniff_type(text))
+        t = sniff_type(text)
+        if t != "text/xml" and "\r" in text:
+            # For HTML, we really want the file read in text mode:
+            f = open(self.filename)
+            text = f.read()
+            f.close()
+        self.pt_edit(text, t)
         self._cook()
         if self._v_errors:
             logging.error('PageTemplateFile: Error in template: %s',
