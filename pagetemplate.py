@@ -15,7 +15,7 @@
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 
-$Id: pagetemplate.py,v 1.4 2003/04/02 18:22:39 fdrake Exp $
+$Id: pagetemplate.py,v 1.5 2003/04/03 16:18:37 jim Exp $
 """
 __metaclass__ = type # All classes are new style when run with Python 2.2+
 
@@ -204,9 +204,9 @@ class PageTemplate:
 class TemplateUsage:
     def __init__(self, value):
         if not isinstance(value, unicode):
-            raise TypeError(
-                'TemplateUsage should be initialized with a Unicode string: %s'
-                % repr(value))
+            raise TypeError('TemplateUsage should be initialized with a '
+                            'Unicode string',
+                            repr(value))
         self.stringValue = value
 
     def __str__(self):
