@@ -15,7 +15,7 @@
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 
-$Id: pagetemplate.py,v 1.6 2003/04/14 12:15:50 matth Exp $
+$Id: pagetemplate.py,v 1.7 2003/04/15 21:19:20 bwarsaw Exp $
 """
 __metaclass__ = type # All classes are new style when run with Python 2.2+
 
@@ -105,15 +105,15 @@ class PageTemplate:
     def pt_getEngine(self):
         return Engine
 
-    def pt_render(self, namespace, source=0):
+    def pt_render(self, namespace, source=False):
         """Render this Page Template"""
         self._cook_check()
         __traceback_supplement__ = (PageTemplateTracebackSupplement,
                                     self, namespace)
         if self._v_errors:
             raise PTRuntimeError(str(self._v_errors))
-        output = StringIO(u'')
 
+        output = StringIO(u'')
         context = self.pt_getEngineContext(namespace)
         TALInterpreter(self._v_program, self._v_macros,
                        context, output, tal=not source, strictinsert=0)()
@@ -216,11 +216,11 @@ class TemplateUsage:
         if key == self.stringValue:
             return self.stringValue
         else:
-            return None 
+            return None
 
     def __nonzero__(self):
         return self.stringValue <> u''
-        
+
 
 
 class PTRuntimeError(RuntimeError):
