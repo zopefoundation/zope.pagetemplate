@@ -12,5 +12,3 @@
 #
 ##############################################################################
 """Page Templates"""
-
-from zope.pagetemplate.iterator import Iterator
