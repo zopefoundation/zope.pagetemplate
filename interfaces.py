@@ -35,6 +35,26 @@ class IPageTemplate(Interface):
         """Set the source and content type
         """
 
+    def pt_errors(namespace):
+        """Return a sequence of strings that describe errors in the template.
+
+        The errors may occur when the template is compiled or
+        rendered.
+
+        `namespace` is the set of names passed to the TALES expression
+        evaluator, similar to what's returned by pt_getContext().
+
+        This can be used to let a template author know what went wrong
+        when an attempt was made to render the template.
+        """
+
+    def pt_warnings():
+        """Return a sequence of warnings from the parser.
+
+        This can be useful to present to the template author to
+        indication forward compatibility problems with the template.
+        """
+
     def read():
         """Get the template source
         """
@@ -56,7 +76,7 @@ class IPageTemplateSubclassing(IPageTemplate):
         """
 
     def pt_getEngine():
-        """Returns the TALES expression
+        """Returns the TALES expression evaluator.
         """
 
     def pt_getEngineContext(namespace):
