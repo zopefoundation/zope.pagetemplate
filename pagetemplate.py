@@ -26,14 +26,8 @@ from zope.tales.engine import Engine
 # Don't use cStringIO here!  It's not unicode aware.
 from StringIO import StringIO
 
-import zope.pagetemplate.interfaces
-import zope.interface
-
-
-class MacroCollection(object):
-    def __get__(self, parent, type=None):
-        parent._cook_check()
-        return parent._v_macros
+from zope.pagetemplate.interfaces import IPageTemplateSubclassing
+from zope.interface import implements
 
 
 _default_options = {}
@@ -64,8 +58,7 @@ class PageTemplate(object):
         to perform the rendering.
     """
 
-    zope.interface.implements(
-        zope.pagetemplate.interfaces.IPageTemplateSubclassing)
+    implements(IPageTemplateSubclassing)
 
     content_type = 'text/html'
     expand = 1
@@ -76,7 +69,11 @@ class PageTemplate(object):
     _v_cooked = 0
     _text = ''
 
-    macros = MacroCollection()
+    def macros(self):
+        self._cook_check()
+        return self._v_macros
+
+    macros = property(macros)
 
     def pt_edit(self, text, content_type):
         if content_type:
