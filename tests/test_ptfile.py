@@ -111,7 +111,7 @@ class TypeSniffingTestCase(unittest.TestCase):
             "<html><head><title>sample document</title></head></html>",
             "text/html")
 
-    # XXX This reflects a case that simply isn't handled by the
+    # TODO: This reflects a case that simply isn't handled by the
     # sniffer; there are many, but it gets it right more often than
     # before.
     def donttest_sniffer_xml_simple(self):
