@@ -76,17 +76,6 @@ class PageTemplateFile(PageTemplate):
             return
         self._v_last_read = mtime
 
-    def document_src(self, REQUEST=None):
-        """Return expanded document source."""
-
-        if REQUEST is not None:
-            # Since _cook_check() can cause self.content_type to change,
-            # we have to make sure we call it before setting the
-            # Content-Type header.
-            self._cook_check()
-            REQUEST.response.setHeader('Content-Type', self.content_type)
-        return self.read()
-
     def pt_source_file(self):
         return self.filename
 
