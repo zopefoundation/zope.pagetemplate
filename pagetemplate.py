@@ -144,8 +144,6 @@ class PageTemplate(object):
             errend = text.find('-->')
             if errend >= 0:
                 text = text[errend + 3:]
-                if text[:1] == "\r":
-                    text = text[1:]
                 if text[:1] == "\n":
                     text = text[1:]
         if self._text != text:
