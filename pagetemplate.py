@@ -164,8 +164,9 @@ class PageTemplate:
             if not self.expand:
                 return self._text
             try:
-                # XXX not clear how this ever gets called, but the
-                # first arg to pt_render() needs to change if it ever does.
+                # This gets called, if macro expansion is turned on.
+                # Note that an empty dictionary is fine for the context at
+                # this point, since we are not evaluating the template. 
                 return self.pt_render({}, source=1)
             except:
                 return ('%s\n Macro expansion failed\n %s\n-->\n%s' %
