@@ -15,12 +15,6 @@
 
 Zope object encapsulating a Page Template from the filesystem.
 """
-
-__version__ = '$Revision: 1.7 $'[11:-2]
-
-__metaclass__ = type
-
-
 import os, sys
 import logging
 
