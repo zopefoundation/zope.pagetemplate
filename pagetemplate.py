@@ -28,6 +28,9 @@ from zope.tales.engine import Engine
 # Don't use cStringIO here!  It's not unicode aware.
 from StringIO import StringIO
 
+import zope.pagetemplate.interfaces
+import zope.interface
+
 
 class MacroCollection:
     def __get__(self, parent, type=None):
@@ -36,6 +39,7 @@ class MacroCollection:
 
 
 _default_options = {}
+_error_start = '<!-- Page Template Diagnostics'
 
 class PageTemplate:
     """Page Templates using TAL, TALES, and METAL.
@@ -61,6 +65,10 @@ class PageTemplate:
         passed to the TALES expression engine, then calls pt_render()
         to perform the rendering.
     """
+
+    zope.interface.implements(
+        zope.pagetemplate.interfaces.IPageTemplateSubclassing)
+
     content_type = 'text/html'
     expand = 1
     _v_errors = ()
@@ -69,8 +77,6 @@ class PageTemplate:
     _v_macros = None
     _v_cooked = 0
     _text = ''
-    _engine_name = 'default'
-    _error_start = '<!-- Page Template Diagnostics'
 
     macros = MacroCollection()
 
@@ -94,7 +100,8 @@ class PageTemplate:
     def __call__(self, *args, **kwargs):
         return self.pt_render(self.pt_getContext(args, kwargs))
 
-    pt_getEngineContext = Engine.getContext
+    def pt_getEngineContext(self, namespace):
+        return self.pt_getEngine().getContext(namespace)
 
     def pt_getEngine(self):
         return Engine
@@ -135,13 +142,15 @@ class PageTemplate:
         # which case we have already unicode. 
         assert isinstance(text, (str, unicode))
 
-        if text.startswith(self._error_start):
+        if text.startswith(_error_start):
             errend = text.find('-->')
             if errend >= 0:
                 text = text[errend + 4:]
         if self._text != text:
             self._text = text
-        # XXX can this be done only if we changed self._text?
+
+        # we always want to cook on an update, even if the source
+        # is the same.  Possibly because the content-type might have changed.
         self._cook()
 
     def read(self):
@@ -156,10 +165,10 @@ class PageTemplate:
                 return self.pt_render({}, source=1)
             except:
                 return ('%s\n Macro expansion failed\n %s\n-->\n%s' %
-                        (self._error_start, "%s: %s" % sys.exc_info()[:2],
+                        (_error_start, "%s: %s" % sys.exc_info()[:2],
                          self._text) )
 
-        return ('%s\n %s\n-->\n%s' % (self._error_start,
+        return ('%s\n %s\n-->\n%s' % (_error_start,
                                       '\n'.join(self._v_errors),
                                       self._text))
 
@@ -178,7 +187,7 @@ class PageTemplate:
         """
         engine = self.pt_getEngine()
         source_file = self.pt_source_file()
-        if self.html():
+        if self.content_type == 'text/html':
             gen = TALGenerator(engine, xml=0, source_file=source_file)
             parser = HTMLTALParser(gen)
         else:
@@ -194,11 +203,6 @@ class PageTemplate:
                               "%s: %s" % sys.exc_info()[:2]]
         self._v_warnings = parser.getWarnings()
         self._v_cooked = 1
-
-    def html(self):
-        if not hasattr(self, 'is_html'):
-            return self.content_type == 'text/html'
-        return self.is_html
 
 
 class TemplateUsage:
