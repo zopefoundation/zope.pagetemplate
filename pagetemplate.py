@@ -15,7 +15,7 @@
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 
-$Id: pagetemplate.py,v 1.8 2003/06/03 22:46:26 jim Exp $
+$Id: pagetemplate.py,v 1.9 2003/06/04 09:09:45 stevea Exp $
 """
 __metaclass__ = type # All classes are new style when run with Python 2.2+
 
@@ -61,11 +61,6 @@ class PageTemplate:
         passed to the TALES expression engine, then calls pt_render()
         to perform the rendering.
     """
-
-    # XXX this breaks something in the Zope3 views registries.
-    # Temporarily removed. SteveA 2002-10-22
-    #__implements__ = IMacrosAttribute
-
     content_type = 'text/html'
     expand = 1
     _v_errors = ()
@@ -228,7 +223,7 @@ class PTRuntimeError(RuntimeError):
 
 
 class PageTemplateTracebackSupplement:
-    #__implements__ = ITracebackSupplement
+    #implements(ITracebackSupplement)
 
     def __init__(self, pt, namespace):
         self.manageable_object = pt
