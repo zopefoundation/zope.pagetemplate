@@ -11,9 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import os
-
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+"""
+$Id: content.py,v 1.3 2003/08/17 06:09:12 philikon Exp $
+"""
 
 class Content:
     def getSomething(self):
