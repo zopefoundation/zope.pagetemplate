@@ -14,6 +14,8 @@
 """Filesystem Page Template module
 
 Zope object encapsulating a Page Template from the filesystem.
+
+$Id$
 """
 import os, sys
 import logging

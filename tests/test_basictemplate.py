@@ -11,6 +11,10 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Basic Page Template tests
+
+$Id$
+"""
 import unittest
 
 from zope.pagetemplate.tests import util
