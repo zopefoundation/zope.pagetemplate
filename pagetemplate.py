@@ -143,7 +143,9 @@ class PageTemplate:
         if text.startswith(_error_start):
             errend = text.find('-->')
             if errend >= 0:
-                text = text[errend + 4:]
+                text = text[errend + 3:]
+                if text[:1] == "\n":
+                    text = text[1:]
         if self._text != text:
             self._text = text
 
