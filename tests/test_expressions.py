@@ -13,7 +13,7 @@
 ##############################################################################
 import os, sys, unittest
 
-from zope.pagetemplate.engine import Engine
+from zope.tales.engine import Engine
 
 class Data:
 
