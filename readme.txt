@@ -4,6 +4,9 @@ Page Templates
 
 :Author:  Kapil Thangavelu <hazmat at objectrealms.net>
 
+.. contents::
+
+
 Introduction
 ------------
 
@@ -61,4 +64,4 @@ following::
   pt.write(template)
   pt(das_object=foo())
 
-See interfaces.py.
+See `interfaces.py`.

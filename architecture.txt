@@ -1,5 +1,6 @@
-ZPT Architecture
-================
+=====================================
+ZPT (Zope Page-Template) Architecture
+=====================================
 
 There are a number of major components that make up the page-template
 architecture: 
