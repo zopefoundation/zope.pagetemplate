@@ -145,12 +145,16 @@ class PageTemplate:
         if text.startswith(_error_start):
             errend = text.find('-->')
             if errend >= 0:
-                text = text[errend + 4:]
+                text = text[errend + 3:]
+                if text[:1] == "\r":
+                    text = text[1:]
+                if text[:1] == "\n":
+                    text = text[1:]
         if self._text != text:
             self._text = text
 
-        # we always want to cook on an update, even if the source
-        # is the same.  Possibly because the content-type might have changed.
+        # Always cook on an update, even if the source is the same;
+        # the content-type might have changed.
         self._cook()
 
     def read(self):
