@@ -11,6 +11,6 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Zope 3 compatible ZTUtils."""
+"""Page Templates"""
 
 from zope.pagetemplate.iterator import Iterator
