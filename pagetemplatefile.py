@@ -16,9 +16,10 @@
 Zope object encapsulating a Page Template from the filesystem.
 """
 
+__version__ = '$Revision: 1.4 $'[11:-2]
+
 __metaclass__ = type
 
-__version__ = '$Revision: 1.3 $'[11:-2]
 
 import os, sys
 import logging
@@ -35,12 +36,17 @@ class PageTemplateFile(PageTemplate):
     _v_last_read = 0
 
     def __init__(self, filename, _prefix=None):
-        if not isinstance(_prefix, str):
-            if _prefix is None:
-                _prefix = sys._getframe(1).f_globals
-            _prefix = package_home(_prefix)
+        path = self.get_path_from_prefix(_prefix)
+        self.filename = os.path.join(path, filename)
 
-        self.filename = os.path.join(_prefix, filename)
+    def get_path_from_prefix(self, _prefix):
+        if isinstance(_prefix, str):
+            path = _prefix
+        else:
+            if _prefix is None:
+                _prefix = sys._getframe(2).f_globals
+            path = package_home(_prefix)
+        return path
 
     def _cook_check(self):
         if self._v_last_read and not __debug__:
