@@ -46,7 +46,7 @@ Page Templates
         engine.  This method is free to use the keyword arguments it
         receives.
 
-    pt_render(namespace, source=False, sourceAnnotations=False)
+    pt_render(namespace, source=0)
         Responsible the TAL interpreter to perform the rendering.  The
         namespace argument is a mapping which defines the top-level
         namespaces passed to the TALES expression engine.
