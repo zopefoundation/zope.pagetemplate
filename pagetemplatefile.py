@@ -18,7 +18,7 @@ Zope object encapsulating a Page Template from the filesystem.
 
 __metaclass__ = type
 
-__version__ = '$Revision: 1.2 $'[11:-2]
+__version__ = '$Revision: 1.3 $'[11:-2]
 
 import os, sys
 import logging
@@ -52,7 +52,12 @@ class PageTemplateFile(PageTemplate):
             mtime = 0
         if self._v_program is not None and mtime == self._v_last_read:
             return
-        self.pt_edit(open(self.filename), None)
+        f = open(self.filename, "rb")
+        try:
+            text = f.read()
+        finally:
+            f.close()
+        self.pt_edit(text, sniff_type(text))
         self._cook()
         if self._v_errors:
             logging.error('PageTemplateFile: Error in template: %s',
@@ -64,6 +69,10 @@ class PageTemplateFile(PageTemplate):
         """Return expanded document source."""
 
         if REQUEST is not None:
+            # Since _cook_check() can cause self.content_type to change,
+            # we have to make sure we call it before setting the
+            # Content-Type header.
+            self._cook_check()
             REQUEST.response.setHeader('Content-Type', self.content_type)
         return self.read()
 
@@ -72,3 +81,20 @@ class PageTemplateFile(PageTemplate):
 
     def __getstate__(self):
         raise TypeError("non-picklable object")
+
+
+XML_PREFIXES = [
+    "<?xml",                      # ascii, utf-8
+    "\xef\xbb\xbf<?xml",          # utf-8 w/ byte order mark
+    "\0<\0?\0x\0m\0l",            # utf-16 big endian
+    "<\0?\0x\0m\0l\0",            # utf-16 little endian
+    "\xfe\xff\0<\0?\0x\0m\0l",    # utf-16 big endian w/ byte order mark
+    "\xff\xfe<\0?\0x\0m\0l\0",    # utf-16 little endian w/ byte order mark
+    ]
+
+def sniff_type(text):
+    """Return 'text/xml' if text appears to be XML, otherwise return None."""
+    for prefix in XML_PREFIXES:
+        if text.startswith(prefix):
+            return "text/xml"
+    return None
