@@ -1,62 +1,64 @@
+==============
 Page Templates
+==============
 
-  Introduction
+:Author:  Kapil Thangavelu <hazmat at objectrealms.net>
 
-     Page Templates provide an elegant templating mechanism that
-     achieves a clean separation of presentation and application
-     logic while allowing for designers to work with templates
-     in their visual editing tools (FrontPage, Dreamweaver, GoLive,
-     etc.).
+Introduction
+------------
 
-     This document focuses on usage of Page Templates outside of
-     a Zope context, it does *not* explain how to write page templates
-     as there are several resources on the web which do so.
+Page Templates provide an elegant templating mechanism that achieves a
+clean separation of presentation and application logic while allowing
+for designers to work with templates in their visual editing tools
+(FrontPage, Dreamweaver, GoLive, etc.).
 
-  Simple Usage
+This document focuses on usage of Page Templates outside of a Zope
+context, it does *not* explain how to write page templates as there
+are several resources on the web which do so.
 
-    Using PageTemplates outside of Zope3 is very easy and straight
-    forward. a quick example::
+Simple Usage
+------------
 
-      >>> from zope.pagetemplate.pagetemplatefile import PageTemplateFile
-      >>> my_pt = PageTemplateFile('hello_world.pt')
-      >>> my_pt()
-      u'<html><body>Hello World</body></html>'
+Using Page Templates outside of Zope3 is very easy and straight
+forward.  A quick example::
 
-  Narrative (Subclassing PageTemplates)
+  >>> from zope.pagetemplate.pagetemplatefile import PageTemplateFile
+  >>> my_pt = PageTemplateFile('hello_world.pt')
+  >>> my_pt()
+  u'<html><body>Hello World</body></html>'
 
-    Lets say we want to alter page templates such that keyword
-    arguments appear as top level items in the namespace. we can
-    subclass page template and alter the default behavior of
-    pt_getContext to add them in::
+Subclassing PageTemplates
+-------------------------
 
-      from zope.pagetemplate.pagetemplate import PageTemplate
+Lets say we want to alter page templates such that keyword arguments
+appear as top level items in the namespace.  We can subclass
+`PageTemplate` and alter the default behavior of `pt_getContext()` to
+add them in::
 
-      class mypt(PageTemplate):
-          def pt_getContext(self, args=(), options={}, **kw):
-             rval = PageTemplate.pt_getContext(self, args=args)
-             options.update(rval)
-             return options
+  from zope.pagetemplate.pagetemplate import PageTemplate
 
-      class foo:
-          def getContents(self): return 'hi'
+  class mypt(PageTemplate):
+      def pt_getContext(self, args=(), options={}, **kw):
+         rval = PageTemplate.pt_getContext(self, args=args)
+         options.update(rval)
+         return options
 
-    So now we can bind objects in a more arbitrary fashion, like
-    the following::
+  class foo:
+      def getContents(self): return 'hi'
 
-      template = """
-      <html>
-      <body>
-      <b tal:replace="das_object/getContents">Good Stuff Here</b>
-      </body>
-      </html>
-      """
+So now we can bind objects in a more arbitrary fashion, like the
+following::
 
-      pt = mypt()
-      pt.write(template)
-      pt(das_object=foo())
+  template = """
+  <html>
+  <body>
+  <b tal:replace="das_object/getContents">Good Stuff Here</b>
+  </body>
+  </html>
+  """
 
-    See interfaces.py.
+  pt = mypt()
+  pt.write(template)
+  pt(das_object=foo())
 
-  Author
-
-    Kapil Thangavelu <hazmat at objectrealms.net>
+See interfaces.py.
