@@ -12,18 +12,6 @@ Page Templates
      a Zope context, it does *not* explain how to write page templates
      as there are several resources on the web which do so.
 
-  Dependencies
-
-    Zope3 Package Dependencies
-
-      - zope.tal (Template Attribute Language)
-
-      - zope.talInterface
-
-      - ZTUtils (batching utilities for zpt)
-
-      - The standard logging package ("logging") from Python 2.3.
-
   Simple Usage
 
     Using PageTemplates outside of Zope3 is very easy and straight
@@ -33,23 +21,6 @@ Page Templates
       >>> my_pt = PageTemplateFile('hello_world.pt')
       >>> my_pt()
       u'<html><body>Hello World</body></html>'
-
-  Setting Up Contexts
-
-    Rendering a page template without binding data to is not very
-    interesting. By default keyword arguments you pass in page
-    templates appear in the options namespace.
-
-    pt_getContext(**keywords)
-        Should ignore keyword arguments that it doesn't care about,
-        and construct the namespace passed to the TALES expression
-        engine.  This method is free to use the keyword arguments it
-        receives.
-
-    pt_render(namespace, source=False, sourceAnnotations=False, showtal=False)
-        Responsible the TAL interpreter to perform the rendering.  The
-        namespace argument is a mapping which defines the top-level
-        namespaces passed to the TALES expression engine.
 
   Narrative (Subclassing PageTemplates)
 
@@ -83,6 +54,8 @@ Page Templates
       pt = mypt()
       pt.write(template)
       pt(das_object=foo())
+
+    See interfaces.py.
 
   Author
 
