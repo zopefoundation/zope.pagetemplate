@@ -16,7 +16,7 @@
 Zope object encapsulating a Page Template from the filesystem.
 """
 
-__version__ = '$Revision: 1.5 $'[11:-2]
+__version__ = '$Revision: 1.6 $'[11:-2]
 
 __metaclass__ = type
 
@@ -60,15 +60,18 @@ class PageTemplateFile(PageTemplate):
             return
         f = open(self.filename, "rb")
         try:
-            text = f.read()
-        finally:
+            text = f.read(XML_PREFIX_MAX_LENGTH)
+        except:
             f.close()
+            raise
         t = sniff_type(text)
-        if t != "text/xml" and "\r" in text:
+        if t != "text/xml":
             # For HTML, we really want the file read in text mode:
-            f = open(self.filename)
-            text = f.read()
             f.close()
+            f = open(self.filename)
+            text = ''
+        text += f.read()
+        f.close()
         self.pt_edit(text, t)
         self._cook()
         if self._v_errors:
@@ -103,6 +106,8 @@ XML_PREFIXES = [
     "\xfe\xff\0<\0?\0x\0m\0l",    # utf-16 big endian w/ byte order mark
     "\xff\xfe<\0?\0x\0m\0l\0",    # utf-16 little endian w/ byte order mark
     ]
+
+XML_PREFIX_MAX_LENGTH = max(map(len, XML_PREFIXES))
 
 def sniff_type(text):
     """Return 'text/xml' if text appears to be XML, otherwise return None."""
