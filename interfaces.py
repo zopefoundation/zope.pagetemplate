@@ -76,7 +76,7 @@ class IPageTemplateSubclassing(IPageTemplate):
         """
 
     def pt_getEngine():
-        """Returns the TALES expression
+        """Returns the TALES expression evaluator.
         """
 
     def pt_getEngineContext(namespace):
