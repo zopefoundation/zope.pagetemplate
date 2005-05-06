@@ -82,7 +82,7 @@ def check_html(s1, s2):
 def check_xml(s1, s2):
     s1 = normalize_xml(s1)
     s2 = normalize_xml(s2)
-    assert s1==s2, ("XML Output Changed:\n%s\n\n%s" % (s1, s2))
+    assert s1==s2, ("XML Output Changed:\n%r\n\n%r" % (s1, s2))
 
 def normalize_html(s):
     s = re.sub(r"[ \t]+", " ", s)
