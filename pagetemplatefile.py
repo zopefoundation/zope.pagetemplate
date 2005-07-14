@@ -22,6 +22,9 @@ import logging
 
 from zope.pagetemplate.pagetemplate import PageTemplate
 
+
+DEFAULT_ENCODING = "utf-8"
+
 def package_home(gdict):
     filename = gdict["__file__"]
     return os.path.dirname(filename)
@@ -31,11 +34,12 @@ class PageTemplateFile(PageTemplate):
 
     _v_last_read = 0
 
-    def __init__(self, filename, _prefix=None):
+    def __init__(self, filename, _prefix=None, encoding=DEFAULT_ENCODING):
         path = self.get_path_from_prefix(_prefix)
         self.filename = os.path.join(path, filename)
         if not os.path.isfile(self.filename):
             raise ValueError("No such file", self.filename)
+        self.encoding = encoding
 
     def get_path_from_prefix(self, _prefix):
         if isinstance(_prefix, str):
@@ -63,12 +67,14 @@ class PageTemplateFile(PageTemplate):
             f.close()
             raise
         t = sniff_type(text)
-        if t != "text/xml":
+        if t == "text/xml":
+            text += f.read()
+        else:
             # For HTML, we really want the file read in text mode:
             f.close()
             f = open(self.filename)
-            text = ''
-        text += f.read()
+            text = f.read()
+            text = unicode(text, self.encoding)
         f.close()
         self.pt_edit(text, t)
         self._cook()
