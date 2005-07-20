@@ -50,6 +50,26 @@ class PageTemplateFile(PageTemplate):
             path = package_home(_prefix)
         return path
 
+    def _read_file(self):
+        __traceback_info__ = self.filename
+        f = open(self.filename, "rb")
+        try:
+            text = f.read(XML_PREFIX_MAX_LENGTH)
+        except:
+            f.close()
+            raise
+        type = sniff_type(text)
+        if type == "text/xml":
+            text += f.read()
+        else:
+            # For HTML, we really want the file read in text mode:
+            f.close()
+            f = open(self.filename)
+            text = f.read()
+            text = unicode(text, self.encoding)
+        f.close()
+        return text, type
+
     def _cook_check(self):
         if self._v_last_read and not __debug__:
             return
@@ -60,23 +80,8 @@ class PageTemplateFile(PageTemplate):
             mtime = 0
         if self._v_program is not None and mtime == self._v_last_read:
             return
-        f = open(self.filename, "rb")
-        try:
-            text = f.read(XML_PREFIX_MAX_LENGTH)
-        except:
-            f.close()
-            raise
-        t = sniff_type(text)
-        if t == "text/xml":
-            text += f.read()
-        else:
-            # For HTML, we really want the file read in text mode:
-            f.close()
-            f = open(self.filename)
-            text = f.read()
-            text = unicode(text, self.encoding)
-        f.close()
-        self.pt_edit(text, t)
+        text, type = self._read_file()
+        self.pt_edit(text, type)
         self._cook()
         if self._v_errors:
             logging.error('PageTemplateFile: Error in template: %s',
