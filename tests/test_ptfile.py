@@ -30,12 +30,16 @@ class TypeSniffingTestCase(unittest.TestCase):
         if os.path.exists(self.TEMPFILENAME):
             os.unlink(self.TEMPFILENAME)
 
-    def check_content_type(self, text, expected_type):
+    def get_pt(self, text):
         f = open(self.TEMPFILENAME, "wb")
         f.write(text)
         f.close()
         pt = PageTemplateFile(self.TEMPFILENAME)
         pt.read()
+        return pt
+
+    def check_content_type(self, text, expected_type):
+        pt = self.get_pt(text)
         self.assertEqual(pt.content_type, expected_type)
 
     def test_sniffer_xml_ascii(self):
@@ -132,6 +136,19 @@ class TypeSniffingTestCase(unittest.TestCase):
     def donttest_sniffer_xml_simple(self):
         self.check_content_type("<doc><element/></doc>",
                                 "text/xml")
+
+    def test_html_default_encoding(self):
+        pt = self.get_pt(
+            "<html><head><title>"
+            # 'Test' in russian
+            "\xd0\xa2\xd0\xb5\xd1\x81\xd1\x82"
+            "</title></head></html>")
+        rendered = pt()
+        self.failUnless(isinstance(rendered, unicode))
+        self.failUnlessEqual(rendered,
+            u"<html><head><title>"
+            u"\u0422\u0435\u0441\u0442"
+            u"</title></head></html>\n")
 
 
 def test_suite():
