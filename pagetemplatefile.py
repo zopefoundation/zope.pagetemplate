@@ -17,13 +17,23 @@ Zope object encapsulating a Page Template from the filesystem.
 
 $Id$
 """
-import os, sys
+
+__all__ = ("PageTemplateFile",)
+
+import os
+import sys
+import re
 import logging
 
 from zope.pagetemplate.pagetemplate import PageTemplate
 
 
 DEFAULT_ENCODING = "utf-8"
+
+meta_pattern = re.compile(
+    r'\s*<meta\s+http-equiv=["\']?Content-Type["\']?'
+    r'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*>\s*',
+    re.IGNORECASE)
 
 def package_home(gdict):
     filename = gdict["__file__"]
@@ -34,12 +44,11 @@ class PageTemplateFile(PageTemplate):
 
     _v_last_read = 0
 
-    def __init__(self, filename, _prefix=None, encoding=DEFAULT_ENCODING):
+    def __init__(self, filename, _prefix=None):
         path = self.get_path_from_prefix(_prefix)
         self.filename = os.path.join(path, filename)
         if not os.path.isfile(self.filename):
             raise ValueError("No such file", self.filename)
-        self.encoding = encoding
 
     def get_path_from_prefix(self, _prefix):
         if isinstance(_prefix, str):
@@ -49,6 +58,18 @@ class PageTemplateFile(PageTemplate):
                 _prefix = sys._getframe(2).f_globals
             path = package_home(_prefix)
         return path
+
+    def _prepare_html(self, text):
+        match = meta_pattern.search(text)
+        if match is not None:
+            type, encoding = match.groups()
+            # TODO: Shouldn't <meta>/<?xml?> stripping
+            # be in PageTemplate.__call__()?
+            text = meta_pattern.sub("", text)
+        else:
+            type = None
+            encoding = DEFAULT_ENCODING
+        return unicode(text, encoding), type
 
     def _read_file(self):
         __traceback_info__ = self.filename
@@ -66,7 +87,7 @@ class PageTemplateFile(PageTemplate):
             f.close()
             f = open(self.filename)
             text = f.read()
-            text = unicode(text, self.encoding)
+            text, type = self._prepare_html(text)
         f.close()
         return text, type
 

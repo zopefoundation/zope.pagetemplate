@@ -140,9 +140,24 @@ class TypeSniffingTestCase(unittest.TestCase):
     def test_html_default_encoding(self):
         pt = self.get_pt(
             "<html><head><title>"
-            # 'Test' in russian
+            # 'Test' in russian (utf-8)
             "\xd0\xa2\xd0\xb5\xd1\x81\xd1\x82"
             "</title></head></html>")
+        rendered = pt()
+        self.failUnless(isinstance(rendered, unicode))
+        self.failUnlessEqual(rendered,
+            u"<html><head><title>"
+            u"\u0422\u0435\u0441\u0442"
+            u"</title></head></html>\n")
+
+    def test_html_encoding_by_meta(self):
+        pt = self.get_pt(
+            "<html><head><title>"
+            # 'Test' in russian (windows-1251)
+            "\xd2\xe5\xf1\xf2"
+            '</title><meta http-equiv="Content-Type"'
+            ' content="text/html; charset=windows-1251">'
+            "</head></html>")
         rendered = pt()
         self.failUnless(isinstance(rendered, unicode))
         self.failUnlessEqual(rendered,
