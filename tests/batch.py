@@ -85,7 +85,7 @@ class batch(object):
         else: return 1
 
     def __getitem__(self, index):
-        if index > self._last: raise IndexError, index
+        if index > self._last: raise IndexError(index)
         return self._sequence[index+self._first]
 
 def opt(start,end,size,orphan,sequence):
