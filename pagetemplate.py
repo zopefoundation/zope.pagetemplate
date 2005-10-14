@@ -185,6 +185,7 @@ class PageTemplate(object):
         """
         engine = self.pt_getEngine()
         source_file = self.pt_source_file()
+        gen = TALGenerator(engine, source_file=source_file)
         if self.content_type == 'text/html':
             # Deprecation warnings that should have sense until Zope 3.4
             from warnings import warn
@@ -194,10 +195,8 @@ class PageTemplate(object):
                  "located there %s." % self.pt_source_file(),
                  DeprecationWarning)
             # EOF deprecation
-            gen = TALGenerator(engine, xml=0, source_file=source_file)
             parser = HTMLTALParser(gen)
         else:
-            gen = TALGenerator(engine, source_file=source_file)
             parser = TALParser(gen)
 
         self._v_errors = ()
