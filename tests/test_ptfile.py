@@ -177,25 +177,40 @@ class TypeSniffingTestCase(unittest.TestCase):
     ##    self.assertEqual(type_, 'text/xml')
 
     def test_type_sniffing_based_on_xmlns(self):
-        from zope.pagetemplate.typesniffer import sniff_type
+
         self.assertEqual(
-            sniff_type("<doc><element/></doc>"), None)
+            sniff_type("<doc><element/></doc>", ''), None)
         self.assertEqual(
-            sniff_type("<doc xmlns=''><element/></doc>"), 'text/xml')
+            sniff_type("<doc xmlns=''><element/></doc>", ''), 'text/xml')
         self.assertEqual(
-            sniff_type("<doc><element xmlns=''/></doc>"), 'text/xml')
+            sniff_type("<doc><element xmlns=''/></doc>", ''), 'text/xml')
         self.assertEqual(
-            sniff_type("<doc xmlns='http://foo/bar'><element/></doc>"),
+            sniff_type("<doc xmlns='http://foo/bar'><element/></doc>", ''),
             'text/xml')
         self.assertEqual(
-            sniff_type("<doc ><element xmlns='http://foo/bar'/></doc>"),
+            sniff_type("<doc ><element xmlns='http://foo/bar'/></doc>", ''),
             'text/xml')
         self.assertEqual(
-            sniff_type("<doc xmlns:foo='http://foo/'><element/></doc>"),
+            sniff_type("<doc xmlns:foo='http://foo/'><element/></doc>", ''),
             'text/xml')
         self.assertEqual(
-            sniff_type("<doc ><element xmlns:foo='http://foo/'/></doc>"),
+            sniff_type("<doc ><element xmlns:foo='http://foo/'/></doc>", ''),
             'text/xml')
+
+    def test_type_sniffing_based_on_xpt_extension(self):
+        
+        this_directory = os.path.split(__file__)[0]
+        filepath = os.path.join(this_directory, 'input/test.xpt')
+
+        pt = PageTemplateFile(filepath)
+        text_, type_ = pt._read_file()
+
+        self.assertEqual('text/xml', type_)
+        self.assertEqual(sniff_type(text_, filepath), 'text/xml')
+
+        # After interpretation
+        pt._cook_check()
+        self.assertEqual('text/xml', pt.content_type)
 
 def test_suite():
     return unittest.makeSuite(TypeSniffingTestCase)
