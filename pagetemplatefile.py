@@ -27,7 +27,6 @@ import logging
 
 from zope.pagetemplate.pagetemplate import PageTemplate
 
-
 DEFAULT_ENCODING = "utf-8"
 
 meta_pattern = re.compile(
@@ -62,14 +61,14 @@ class PageTemplateFile(PageTemplate):
     def _prepare_html(self, text):
         match = meta_pattern.search(text)
         if match is not None:
-            type, encoding = match.groups()
+            type_, encoding = match.groups()
             # TODO: Shouldn't <meta>/<?xml?> stripping
             # be in PageTemplate.__call__()?
             text = meta_pattern.sub("", text)
         else:
-            type = None
+            type_ = None
             encoding = DEFAULT_ENCODING
-        return unicode(text, encoding), type
+        return unicode(text, encoding), type_
 
     def _read_file(self):
         __traceback_info__ = self.filename
@@ -79,17 +78,17 @@ class PageTemplateFile(PageTemplate):
         except:
             f.close()
             raise
-        type = sniff_type(text)
-        if type == "text/xml":
+        type_ = sniff_type(text)
+        if type_ == "text/xml":
             text += f.read()
         else:
             # For HTML, we really want the file read in text mode:
             f.close()
             f = open(self.filename)
             text = f.read()
-            text, type = self._prepare_html(text)
+            text, type_ = self._prepare_html(text)
         f.close()
-        return text, type
+        return text, type_
 
     def _cook_check(self):
         if self._v_last_read and not __debug__:
@@ -101,8 +100,8 @@ class PageTemplateFile(PageTemplate):
             mtime = 0
         if self._v_program is not None and mtime == self._v_last_read:
             return
-        text, type = self._read_file()
-        self.pt_edit(text, type)
+        text, type_ = self._read_file()
+        self.pt_edit(text, type_)
         self._cook()
         if self._v_errors:
             logging.error('PageTemplateFile: Error in template: %s',
@@ -115,7 +114,6 @@ class PageTemplateFile(PageTemplate):
 
     def __getstate__(self):
         raise TypeError("non-picklable object")
-
 
 XML_PREFIXES = [
     "<?xml",                      # ascii, utf-8
