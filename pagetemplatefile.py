@@ -47,7 +47,7 @@ class PageTemplateFile(PageTemplate):
     def __init__(self, filename, _prefix=None):
         path = self.get_path_from_prefix(_prefix)
         self.filename = os.path.join(path, filename)
-        if not os.path.isfile(self.filename):
+        if not filereference.isfile(self.filename):
             raise ValueError("No such file", self.filename)
 
     def get_path_from_prefix(self, _prefix):
@@ -96,7 +96,7 @@ class PageTemplateFile(PageTemplate):
             return
         __traceback_info__ = self.filename
         try:
-            mtime = os.path.getmtime(self.filename)
+            mtime = filereference.getmtime(self.filename)
         except OSError:
             mtime = 0
         if self._v_program is not None and mtime == self._v_last_read:
