@@ -104,8 +104,8 @@ class PageTemplateFile(PageTemplate):
         self.pt_edit(text, type_)
         self._cook()
         if self._v_errors:
-            logging.error('PageTemplateFile: Error in template: %s',
-                '\n'.join(self._v_errors))
+            logging.error('PageTemplateFile: Error in template %s: %s',
+                    self.filename, '\n'.join(self._v_errors))
             return
         self._v_last_read = mtime
 
