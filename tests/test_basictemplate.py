@@ -126,6 +126,44 @@ class BasicTemplateTests(unittest.TestCase):
         expect = util.read_output('dtml3.html')
         util.check_xml(expect, o)
 
+    def _test_on_error_in_slot_filler(self):
+        # The here/xxx isn't defined, so the macro definition is
+        # expected to catch the error that gets raised.
+        text = '''\
+            <div metal:define-macro="foo">
+               <div tal:on-error="string:eek">
+                  <div metal:define-slot="slot" />
+                  cool
+               </div>
+            </div>
+
+            <div metal:use-macro="template/macros/foo">
+               <div metal:fill-slot="slot">
+                  <p tal:content="here/xxx" />
+               </div>
+            </div>
+            '''
+        self.t.write(text)
+        self.t()
+
+    def test_on_error_in_slot_default(self):
+        # The here/xxx isn't defined, so the macro definition is
+        # expected to catch the error that gets raised.
+        text = '''\
+            <div metal:define-macro="foo">
+               <div tal:on-error="string:eek">
+                  <div metal:define-slot="slot">
+                    <div tal:content="here/xxx" />
+                  </div>
+               </div>
+            </div>
+
+            <div metal:use-macro="template/macros/foo">
+            </div>
+            '''
+        self.t.write(text)
+        self.t()
+
 
 def test_suite():
     return unittest.makeSuite(BasicTemplateTests)
