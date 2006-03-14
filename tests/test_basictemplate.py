@@ -126,8 +126,8 @@ class BasicTemplateTests(unittest.TestCase):
         expect = util.read_output('dtml3.html')
         util.check_xml(expect, o)
 
-    def _test_on_error_in_slot_filler(self):
-        # The here/xxx isn't defined, so the macro definition is
+    def test_on_error_in_slot_filler(self):
+        # The `here` isn't defined, so the macro definition is
         # expected to catch the error that gets raised.
         text = '''\
             <div metal:define-macro="foo">
@@ -147,7 +147,7 @@ class BasicTemplateTests(unittest.TestCase):
         self.t()
 
     def test_on_error_in_slot_default(self):
-        # The here/xxx isn't defined, so the macro definition is
+        # The `here` isn't defined, so the macro definition is
         # expected to catch the error that gets raised.
         text = '''\
             <div metal:define-macro="foo">
