@@ -24,8 +24,8 @@ except ImportError, e:
     from distutils.core import setup, Extension
 
 setup(name='zope.pagetemplate',
-      version='1.0',
-      url='http://svn.zope.org/zope.pagetemplate',
+      version='3.2.0',
+      url='http://svn.zope.org/zope.pagetemplate/tags/3.2.0',
       license='ZPL 2.1',
       description='Zope Page Templates',
       author='Zope Corporation and Contributors',
