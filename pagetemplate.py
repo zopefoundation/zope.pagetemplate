@@ -133,8 +133,8 @@ class PageTemplate(object):
 
     def write(self, text):
         # We accept both, since the text can either come from a file (and the
-        # parser will take are of the encoding or from a TTW template, in
-        # which case we have already unicode. 
+        # parser will take care of the encoding) or from a TTW template, in
+        # which case we already have unicode.
         assert isinstance(text, (str, unicode))
 
         if text.startswith(_error_start):
