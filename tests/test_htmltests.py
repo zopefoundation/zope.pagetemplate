@@ -124,6 +124,16 @@ class HTMLTests(unittest.TestCase):
         out = t()
         util.check_html(expect, out)
 
+    def test_translation(self):
+        from zope.i18nmessageid import MessageFactory
+        _ = MessageFactory('pttest')
+        msg = _("Translate this!")
+
+        t = self.folder.t
+        t.write(util.read_input('translation.html'))
+        expect = util.read_output('translation.html')
+        out = t(msg=msg)
+        util.check_html(expect, out)
 
 def test_suite():
     return unittest.makeSuite(HTMLTests)
