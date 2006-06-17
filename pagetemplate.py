@@ -150,7 +150,7 @@ class PageTemplate(object):
         # the content-type might have changed.
         self._cook()
 
-    def read(self):
+    def read(self, request=None):
         """Gets the source, sometimes with macros expanded."""
         self._cook_check()
         if not self._v_errors:
@@ -160,7 +160,7 @@ class PageTemplate(object):
                 # This gets called, if macro expansion is turned on.
                 # Note that an empty dictionary is fine for the context at
                 # this point, since we are not evaluating the template. 
-                return self.pt_render(self.pt_getContext(self, None), source=1)
+                return self.pt_render(self.pt_getContext(self, request), source=1)
             except:
                 return ('%s\n Macro expansion failed\n %s\n-->\n%s' %
                         (_error_start, "%s: %s" % sys.exc_info()[:2],
