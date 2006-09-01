@@ -63,7 +63,6 @@ class PageTemplate(object):
     content_type = 'text/html'
     expand = 1
     _v_errors = ()
-    _v_warnings = ()
     _v_program = None
     _v_macros = None
     _v_cooked = 0
@@ -126,10 +125,6 @@ class PageTemplate(object):
             self.pt_render(namespace, source=1)
         except:
             return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
-
-    def pt_warnings(self):
-        self._cook_check()
-        return self._v_warnings
 
     def write(self, text):
         # We accept both, since the text can either come from a file (and the
@@ -199,7 +194,6 @@ class PageTemplate(object):
         except:
             self._v_errors = ["Compilation failed",
                               "%s: %s" % sys.exc_info()[:2]]
-        self._v_warnings = parser.getWarnings()
         self._v_cooked = 1
 
 
@@ -235,11 +229,7 @@ class PageTemplateTracebackSupplement(object):
 
     def __init__(self, pt, namespace):
         self.manageable_object = pt
-        try:
-            w = pt.pt_warnings()
-        except: # We're already trying to report an error, don't make another.
-            w = ()
+        self.warnings = []
         e = pt.pt_errors(namespace)
         if e:
-            w = list(w) + list(e)
-        self.warnings = w
+            self.warnings.extend(e)
