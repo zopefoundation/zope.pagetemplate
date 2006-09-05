@@ -61,26 +61,6 @@ class BasicTemplateTests(unittest.TestCase):
         expect = util.read_output('dtml1b.html')
         util.check_xml(expect, o)
 
-    def test_template_usage(self):
-        tal = util.read_input('template_usage.html')
-        self.t.write(tal)
-
-        o = self.t(template_usage=u"test")
-        expect = util.read_output('template_usage1.html')
-        util.check_xml(expect, o)
-
-        o = self.t(template_usage=u"retest")
-        expect = util.read_output('template_usage2.html')
-        util.check_xml(expect, o)
-
-        o = self.t(template_usage=u"other")
-        expect = util.read_output('template_usage3.html')
-        util.check_xml(expect, o)
-
-        o = self.t(template_usage=u"")
-        expect = util.read_output('template_usage4.html')
-        util.check_xml(expect, o)
-
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:
         pass # for unittest

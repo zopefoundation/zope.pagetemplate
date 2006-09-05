@@ -86,7 +86,6 @@ class PageTemplate(object):
                 'options': options,
                 'args': args,
                 'nothing': None,
-                'usage': TemplateUsage(options.get("template_usage", u'')),
                 }
         rval.update(self.pt_getEngine().getBaseNames())
         return rval
@@ -195,28 +194,6 @@ class PageTemplate(object):
             self._v_errors = ["Compilation failed",
                               "%s: %s" % sys.exc_info()[:2]]
         self._v_cooked = 1
-
-
-class TemplateUsage(object):
-    def __init__(self, value):
-        if not isinstance(value, unicode):
-            raise TypeError('TemplateUsage should be initialized with a '
-                            'Unicode string',
-                            repr(value))
-        self.stringValue = value
-
-    def __str__(self):
-        return self.stringValue
-
-    def __getitem__(self, key):
-        if key == self.stringValue:
-            return self.stringValue
-        else:
-            return None
-
-    def __nonzero__(self):
-        return self.stringValue <> u''
-
 
 
 class PTRuntimeError(RuntimeError):
