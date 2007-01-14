@@ -144,6 +144,16 @@ class BasicTemplateTests(unittest.TestCase):
         self.t.write(text)
         self.t()
 
+    def test_unicode_html(self):
+        text = u'<p>\xe4\xf6\xfc\xdf</p>'
+
+        # test with HTML parser
+        self.t.pt_edit(text, 'text/html')
+        self.assertEquals(self.t().strip(), text)
+
+        # test with XML parser
+        self.t.pt_edit(text, 'text/xml')
+        self.assertEquals(self.t().strip(), text)
 
 def test_suite():
     return unittest.makeSuite(BasicTemplateTests)
