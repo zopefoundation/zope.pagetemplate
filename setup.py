@@ -18,20 +18,17 @@ $Id$
 
 import os
 
-try:
-    from setuptools import setup, Extension
-except ImportError, e:
-    from distutils.core import setup, Extension
+from setuptools import setup, find_packages
 
 setup(name='zope.pagetemplate',
-      version='3.3-dev',
+      version='3.3dev',
       url='http://svn.zope.org/zope.pagetemplate',
       license='ZPL 2.1',
       description='Zope Page Templates',
       author='Zope Corporation and Contributors',
       author_email='zope3-dev@zope.org',
       
-      packages=['zope', 'zope.pagetemplate'],
+      packages=find_packages('src'),
       package_dir = {'': 'src'},
 
       namespace_packages=['zope',],
