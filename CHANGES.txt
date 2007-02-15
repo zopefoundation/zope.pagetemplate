@@ -1,0 +1,34 @@
+zope.pagetemplate Package Changelog
+===================================
+
+
+zope.pagetemplate version 3.2.0 (2006/01/05)
+--------------------------------------------
+
+Corresponds to the verison of the zope.pagetemplate package shipped
+as part of the Zope 3.2.0 release.
+
+ZPTPage macro expansion:  changed label text to match the corresponding
+label in Zope 2 and activated the name spaces for macro expansion
+in 'read'.  See http://www.zope.org/Collectors/Zope3-dev/199
+
+Coding style cleanups.
+
+
+zope.pagetemplate version 3.1.0 (2005/10/03)
+--------------------------------------------
+
+Corresponds to the verison of the zope.pagetemplate package shipped
+as part of the Zope 3.1.0 release.
+
+Fixed apidoc and Cookie, which were using wrong descriptor class
+(changed to 'property').  See http://www.zope.org/Collectors/Zope3-dev/387
+
+Documentation / style / testing cleanups.
+
+
+zope.pagetemplate version 3.0.0 (2004/11/07)
+--------------------------------------------
+
+Corresponds to the verison of the zope.pagetemplate package shipped
+as part of the Zope X3.0.0 release.
