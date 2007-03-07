@@ -31,7 +31,7 @@ DEFAULT_ENCODING = "utf-8"
 
 meta_pattern = re.compile(
     r'\s*<meta\s+http-equiv=["\']?Content-Type["\']?'
-    r'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*>\s*',
+    r'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*/?\s*>\s*',
     re.IGNORECASE)
 
 def package_home(gdict):

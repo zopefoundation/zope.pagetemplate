@@ -135,6 +135,7 @@ class HTMLTests(unittest.TestCase):
         out = t(msg=msg)
         util.check_html(expect, out)
 
+
 def test_suite():
     return unittest.makeSuite(HTMLTests)
 
