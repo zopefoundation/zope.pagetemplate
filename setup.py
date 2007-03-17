@@ -21,7 +21,7 @@ import os
 from setuptools import setup, find_packages
 
 setup(name='zope.pagetemplate',
-      version='3.3dev',
+      version='3.4dev',
       url='http://svn.zope.org/zope.pagetemplate',
       license='ZPL 2.1',
       description='Zope Page Templates',
