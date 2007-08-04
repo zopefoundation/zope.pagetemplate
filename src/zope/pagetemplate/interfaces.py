@@ -48,13 +48,6 @@ class IPageTemplate(Interface):
         when an attempt was made to render the template.
         """
 
-    def pt_warnings():
-        """Return a sequence of warnings from the parser.
-
-        This can be useful to present to the template author to
-        indication forward compatibility problems with the template.
-        """
-
     def read():
         """Get the template source
         """
