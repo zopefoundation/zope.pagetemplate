@@ -29,7 +29,7 @@ setup(name='zope.pagetemplate',
       long_description=(
           read('README.txt')
           + '\n\n' +
-          'Detailed Documentation' +
+          'Detailed Documentation\n' +
           '----------------------'
           + '\n\n' +
           read('src', 'zope', 'pagetemplate', 'architecture.txt')

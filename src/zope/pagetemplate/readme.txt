@@ -2,11 +2,6 @@
 Page Templates
 ==============
 
-:Author:  Kapil Thangavelu <hazmat at objectrealms.net>
-
-.. contents::
-
-
 Introduction
 ------------
 
