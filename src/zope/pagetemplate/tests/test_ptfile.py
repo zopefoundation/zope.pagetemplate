@@ -145,10 +145,10 @@ class TypeSniffingTestCase(unittest.TestCase):
             "</title></head></html>")
         rendered = pt()
         self.failUnless(isinstance(rendered, unicode))
-        self.failUnlessEqual(rendered,
+        self.failUnlessEqual(rendered.strip(),
             u"<html><head><title>"
             u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>\n")
+            u"</title></head></html>")
 
     def test_html_encoding_by_meta(self):
         pt = self.get_pt(
@@ -160,10 +160,10 @@ class TypeSniffingTestCase(unittest.TestCase):
             "</head></html>")
         rendered = pt()
         self.failUnless(isinstance(rendered, unicode))
-        self.failUnlessEqual(rendered,
+        self.failUnlessEqual(rendered.strip(),
             u"<html><head><title>"
             u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>\n")
+            u"</title></head></html>")
 
     def test_xhtml(self):
         pt = self.get_pt(
@@ -175,10 +175,10 @@ class TypeSniffingTestCase(unittest.TestCase):
             "</head></html>")
         rendered = pt()
         self.failUnless(isinstance(rendered, unicode))
-        self.failUnlessEqual(rendered,
+        self.failUnlessEqual(rendered.strip(),
             u"<html><head><title>"
             u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>\n")
+            u"</title></head></html>")
 
 
 
