@@ -22,9 +22,9 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zope.pagetemplate',
-      version = '3.4.2dev',
+      version = '3.4.2',
       author='Zope Corporation and Contributors',
-      author_email='zope3-dev@zope.org',
+      author_email='zope-dev@zope.org',
       description='Zope Page Templates',
       long_description=(
           read('README.txt')
@@ -49,7 +49,7 @@ setup(name='zope.pagetemplate',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3'],
-      url='http://cheeseshop.python.org/pypi/zope.pagetemplate',
+      url='http://pypi.python.org/pypi/zope.pagetemplate',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
