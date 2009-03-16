@@ -5,7 +5,12 @@ CHANGES
 3.4.2 (unreleased)
 ------------------
 
-- ...
+- Remove old zpkg-related DEPENDENCIES.cfg file.
+
+- Change package's mailing list address to zope-dev at zope.org, as
+  zope3-dev at zope.org is now retired.
+
+- Change `cheeseshop` to `pypi` in the packages' homepage url.
 
 3.4.1 (2009-01-27)
 ------------------
