@@ -2,7 +2,12 @@
 CHANGES
 =======
 
-3.4.2 (unreleased)
+3.4.3 (unreleased)
+------------------
+
+- ...
+
+3.4.2 (2009-03-17)
 ------------------
 
 - Remove old zpkg-related DEPENDENCIES.cfg file.
