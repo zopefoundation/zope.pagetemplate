@@ -5,6 +5,8 @@ CHANGES
 3.5.0 (unreleased)
 ------------------
 
+- Added test coverage reporting support.
+
 - Moved 'engine' module and related test scaffolding here from
   ``zope.app.pagetemplate`` package.
 
