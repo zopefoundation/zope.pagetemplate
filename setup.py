@@ -22,7 +22,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zope.pagetemplate',
-      version = '3.4.3dev',
+      version = '3.5.0dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Page Templates',
@@ -56,6 +56,11 @@ setup(name='zope.pagetemplate',
       namespace_packages=['zope'],
       extras_require = dict(
           test=['zope.testing',
+                'zope.component',
+                'zope.proxy',
+                'zope.traversing',
+                'zope.security',
+                'RestrictedPython',
                 ]),
       install_requires=['setuptools',
                         'zope.interface',

@@ -2,10 +2,11 @@
 CHANGES
 =======
 
-3.4.3 (unreleased)
+3.5.0 (unreleased)
 ------------------
 
-- ...
+- Moved 'engine' module and related test scaffolding here from
+  ``zope.app.pagetemplate`` package.
 
 3.4.2 (2009-03-17)
 ------------------
