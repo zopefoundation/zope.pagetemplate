@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.5.0 (unreleased)
+3.5.0 (2009-05-25)
 ------------------
 
 - Added test coverage reporting support.
