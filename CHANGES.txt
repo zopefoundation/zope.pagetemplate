@@ -5,7 +5,8 @@ CHANGES
 3.5.1 (unreleased)
 ------------------
 
-- TBD
+- Added dependency on "zope.security [untrustedpython]" because the 'engine'
+  module uses it.
 
 3.5.0 (2009-05-25)
 ------------------
