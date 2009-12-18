@@ -23,11 +23,13 @@ $Id$
 import os
 from setuptools import setup, find_packages
 
+
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+
 setup(name='zope.pagetemplate',
-      version = '3.5.1dev',
+      version='3.5.1dev',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Page Templates',
@@ -41,10 +43,9 @@ setup(name='zope.pagetemplate',
           + '\n\n' +
           read('src', 'zope', 'pagetemplate', 'readme.txt')
           + '\n\n' +
-          read('CHANGES.txt')
-          ),
-      keywords = "zope3 page template",
-      classifiers = [
+          read('CHANGES.txt')),
+      keywords="zope3 page template",
+      classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
           'Intended Audience :: Developers',
@@ -57,9 +58,9 @@ setup(name='zope.pagetemplate',
       url='http://pypi.python.org/pypi/zope.pagetemplate',
       license='ZPL 2.1',
       packages=find_packages('src'),
-      package_dir = {'': 'src'},
+      package_dir={'': 'src'},
       namespace_packages=['zope'],
-      extras_require = dict(
+      extras_require=dict(
           test=['zope.testing',
                 'zope.component',
                 'zope.proxy',
@@ -73,6 +74,6 @@ setup(name='zope.pagetemplate',
                         'zope.tales',
                         'zope.tal',
                        ],
-      include_package_data = True,
-      zip_safe = False,
+      include_package_data=True,
+      zip_safe=False,
       )
