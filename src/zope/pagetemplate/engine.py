@@ -37,7 +37,7 @@ from zope.tales.expressions import SimpleModuleImporter
 from zope.tales.pythonexpr import PythonExpr
 from zope.tales.tales import ExpressionEngine, Context
 
-from i18n import ZopeMessageFactory as _
+from zope.pagetemplate.i18n import ZopeMessageFactory as _
 
 class InlineCodeError(Exception):
     pass
@@ -59,8 +59,8 @@ class ZopeTraverser(object):
 
         while path_items:
             name = path_items.pop()
-            
-            # special-case dicts for performance reasons        
+
+            # special-case dicts for performance reasons
             if getattr(object, '__class__', None) == dict:
                 object = object[name]
             else:
@@ -143,10 +143,10 @@ class ZopeContext(ZopeContextBase):
         """evaluateMacro gets security-proxied macro programs when this
         is run with the zopeTraverser, and in other untrusted
         situations. This will cause evaluation to fail in
-        zope.tal.talinterpreter, which knows nothing of security proxies. 
+        zope.tal.talinterpreter, which knows nothing of security proxies.
         Therefore, this method removes any proxy from the evaluated
         expression.
-        
+
         >>> output = [('version', 'xxx'), ('mode', 'html'), ('other', 'things')]
         >>> def expression(context):
         ...     return ProxyFactory(output)
