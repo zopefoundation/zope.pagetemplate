@@ -82,7 +82,7 @@ class ZopePythonExprTests(unittest.TestCase):
 
 
 def test_suite():
-    from zope.testing.doctestunit import DocTestSuite
+    from doctest import DocTestSuite
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite('zope.pagetemplate.engine'))
     suite.addTest(unittest.makeSuite(EngineTests))

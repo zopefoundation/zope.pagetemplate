@@ -5,6 +5,8 @@ CHANGES
 3.5.1 (unreleased)
 ------------------
 
+- Removed use of 'zope.testing.doctestunit' in favor of stdlib's doctest.
+
 - Added dependency on "zope.security [untrustedpython]" because the 'engine'
   module uses it.
 
