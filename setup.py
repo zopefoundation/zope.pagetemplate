@@ -29,7 +29,7 @@ def read(*rnames):
 
 
 setup(name='zope.pagetemplate',
-      version='3.5.1dev',
+      version='3.5.1',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Page Templates',
