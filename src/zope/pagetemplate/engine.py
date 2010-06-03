@@ -14,8 +14,6 @@
 """Expression engine configuration and registration.
 
 Each expression engine can have its own expression types and base names.
-
-$Id$
 """
 __docformat__ = 'restructuredtext'
 

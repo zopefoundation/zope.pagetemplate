@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Doc tests for the pagetemplate's 'engine' module
-
-$Id$
 """
 import unittest
 

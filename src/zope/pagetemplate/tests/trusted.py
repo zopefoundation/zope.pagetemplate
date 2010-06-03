@@ -15,8 +15,6 @@
 
 This module won't be imported by an untrusted template using a
 path:modules/... expression.
-
-$Id$
 """
 
 x = 42

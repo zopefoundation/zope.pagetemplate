@@ -12,8 +12,6 @@
 #
 ##############################################################################
 """Tests of PageTemplateFile.
-
-$Id$
 """
 import os
 import tempfile

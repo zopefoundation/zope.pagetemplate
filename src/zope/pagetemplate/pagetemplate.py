@@ -14,8 +14,6 @@
 """Page Template module
 
 HTML- and XML-based template objects using TAL, TALES, and METAL.
-
-$Id$
 """
 import sys
 from zope.tal.talparser import TALParser

@@ -14,8 +14,6 @@
 """Filesystem Page Template module
 
 Zope object encapsulating a Page Template from the filesystem.
-
-$Id$
 """
 
 __all__ = ("PageTemplateFile",)
