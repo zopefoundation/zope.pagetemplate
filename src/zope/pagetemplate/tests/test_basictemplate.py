@@ -16,12 +16,13 @@
 import unittest
 
 from zope.pagetemplate.tests import util
-from zope.pagetemplate.pagetemplate import PageTemplate
+import zope.pagetemplate.pagetemplate
+
 
 class BasicTemplateTests(unittest.TestCase):
 
     def setUp(self):
-        self.t = PageTemplate()
+        self.t = zope.pagetemplate.pagetemplate.PageTemplate()
 
     def test_if_in_var(self):
         # DTML test 1: if, in, and var:
@@ -58,6 +59,19 @@ class BasicTemplateTests(unittest.TestCase):
         o = self.t(content=aa)
         expect = util.read_output('dtml1b.html')
         util.check_xml(expect, o)
+
+    def test_pt_runtime_error(self):
+        self.t.write("<tal:block define='a string:foo'>xyz")
+        try:
+            self.t.pt_render({})
+        except zope.pagetemplate.pagetemplate.PTRuntimeError, e:
+            self.assertEquals(
+                str(e),
+                "['Compilation failed', 'zope.tal.taldefs.TALError:"
+                " TAL attributes on <tal:block> require explicit"
+                " </tal:block>, at line 1, column 1']")
+        else:
+            self.fail("expected PTRuntimeError")
 
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:

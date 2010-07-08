@@ -189,8 +189,9 @@ class PageTemplate(object):
             parser.parseString(self._text)
             self._v_program, self._v_macros = parser.getCode()
         except:
+            etype, e = sys.exc_info()[:2]
             self._v_errors = ["Compilation failed",
-                              "%s: %s" % sys.exc_info()[:2]]
+                              "%s.%s: %s" % (etype.__module__, etype.__name__, e)]
         self._v_cooked = 1
 
 

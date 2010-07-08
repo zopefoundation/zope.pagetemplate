@@ -2,9 +2,12 @@
 CHANGES
 =======
 
-3.5.2 (unreleased)
+3.5.2 (2010-07-08)
 ------------------
 
+- Fixed PTRuntimeError exception messages to be consistent across Python
+  versions, and compatibile with the output under Python 2.4.  (More
+  readable than the previous output under Python 2.6 as well.)
 
 3.5.1 (2010-04-30)
 ------------------
