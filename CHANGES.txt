@@ -2,6 +2,12 @@
 CHANGES
 =======
 
+3.6.0 (unreleased)
+
+- Refactor of the cook- and render implementation such that an
+  alternative implementation may be configured via utility component
+  registration.
+
 3.5.3 (unreleased)
 ------------------
 

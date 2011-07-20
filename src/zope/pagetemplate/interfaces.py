@@ -98,8 +98,21 @@ class IPageTemplateSubclassing(IPageTemplate):
         Subclasses might override this to influence the decision about
         whether compilation is necessary.
         """
-        
+
     content_type = Attribute("The content-type of the generated output")
 
     expand = Attribute(
         "Flag indicating whether the read method should expand macros")
+
+
+class IPageTemplateEngine(Interface):
+    def cook(source_file, text, engine, content_type):
+        """Parse text and return template program."""
+
+
+class IPageTemplateProgram(Interface):
+    macros = Attribute(
+        "Template macros.")
+
+    def __call__(context, tal=1, showtal=-1, sourceAnnotations=0):
+        """Render template in the provided context."""

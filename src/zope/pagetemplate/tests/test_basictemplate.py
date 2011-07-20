@@ -17,12 +17,16 @@ import unittest
 
 from zope.pagetemplate.tests import util
 import zope.pagetemplate.pagetemplate
-
+import zope.component.testing
 
 class BasicTemplateTests(unittest.TestCase):
 
     def setUp(self):
+        zope.component.testing.setUp(self)
         self.t = zope.pagetemplate.pagetemplate.PageTemplate()
+
+    def tearDown(self):
+        zope.component.testing.tearDown(self)
 
     def test_if_in_var(self):
         # DTML test 1: if, in, and var:
@@ -72,6 +76,43 @@ class BasicTemplateTests(unittest.TestCase):
                 " </tal:block>, at line 1, column 1']")
         else:
             self.fail("expected PTRuntimeError")
+
+    def test_engine_utility_registration(self):
+        self.t.write("foo")
+        output = self.t.pt_render({})
+        self.assertEqual(output, 'foo')
+
+        from zope.pagetemplate.interfaces import IPageTemplateEngine
+        from zope.component import provideUtility
+
+        class DummyProgram(object):
+            def __init__(*args):
+                self.args = args
+
+            def __call__(*args, **kwargs):
+                return self.args, args, kwargs
+
+        class DummyEngine(object):
+            cook = DummyProgram
+
+        provideUtility(DummyEngine, IPageTemplateEngine)
+        self.t._cook()
+
+        # "Render" and unpack arguments passed for verification
+        ((cls, source_file, text, engine, content_type),
+         (program, context),
+         options) = \
+         self.t.pt_render({})
+
+        self.assertEqual(source_file, None)
+        self.assertEqual(text, 'foo')
+        self.assertEqual(content_type, 'text/html')
+        self.assertTrue(isinstance(program, DummyProgram))
+        self.assertEqual(options, {
+            'tal': True,
+            'showtal': False,
+            'sourceAnnotations': False
+            })
 
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:
