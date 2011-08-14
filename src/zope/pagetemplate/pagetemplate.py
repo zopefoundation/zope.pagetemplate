@@ -21,15 +21,19 @@ from zope.tal.htmltalparser import HTMLTALParser
 from zope.tal.talgenerator import TALGenerator
 from zope.tal.talinterpreter import TALInterpreter
 from zope.tales.engine import Engine
+from zope.component import queryUtility
 # Don't use cStringIO here!  It's not unicode aware.
 from StringIO import StringIO
 
 from zope.pagetemplate.interfaces import IPageTemplateSubclassing
+from zope.pagetemplate.interfaces import IPageTemplateEngine
+from zope.pagetemplate.interfaces import IPageTemplateProgram
 from zope.interface import implements
-
+from zope.interface import classProvides
 
 _default_options = {}
 _error_start = '<!-- Page Template Diagnostics'
+
 
 class PageTemplate(object):
     """Page Templates using TAL, TALES, and METAL.
@@ -61,14 +65,13 @@ class PageTemplate(object):
     content_type = 'text/html'
     expand = 1
     _v_errors = ()
-    _v_program = None
-    _v_macros = None
     _v_cooked = 0
+    _v_program = None
     _text = ''
 
     def macros(self):
         self._cook_check()
-        return self._v_macros
+        return self._v_program.macros
 
     macros = property(macros)
 
@@ -101,17 +104,20 @@ class PageTemplate(object):
                   showtal=False):
         """Render this Page Template"""
         self._cook_check()
-        __traceback_supplement__ = (PageTemplateTracebackSupplement,
-                                    self, namespace)
+
+        __traceback_supplement__ = (
+            PageTemplateTracebackSupplement, self, namespace
+            )
+
         if self._v_errors:
             raise PTRuntimeError(str(self._v_errors))
 
-        output = StringIO(u'')
         context = self.pt_getEngineContext(namespace)
-        TALInterpreter(self._v_program, self._v_macros,
-                       context, output, tal=not source, showtal=showtal,
-                       strictinsert=0, sourceAnnotations=sourceAnnotations)()
-        return output.getvalue()
+
+        return self._v_program(
+            context, tal=not source, showtal=showtal,
+            sourceAnnotations=sourceAnnotations
+            )
 
     def pt_errors(self, namespace):
         self._cook_check()
@@ -151,8 +157,9 @@ class PageTemplate(object):
             try:
                 # This gets called, if macro expansion is turned on.
                 # Note that an empty dictionary is fine for the context at
-                # this point, since we are not evaluating the template. 
-                return self.pt_render(self.pt_getContext(self, request), source=1)
+                # this point, since we are not evaluating the template.
+                context = self.pt_getContext(self, request)
+                return self.pt_render(context, source=1)
             except:
                 return ('%s\n Macro expansion failed\n %s\n-->\n%s' %
                         (_error_start, "%s: %s" % sys.exc_info()[:2],
@@ -175,29 +182,65 @@ class PageTemplate(object):
 
         Cooking must not fail due to compilation errors in templates.
         """
-        engine = self.pt_getEngine()
+
+        pt_engine = self.pt_getEngine()
         source_file = self.pt_source_file()
-        if self.content_type == 'text/html':
-            gen = TALGenerator(engine, xml=0, source_file=source_file)
-            parser = HTMLTALParser(gen)
-        else:
-            gen = TALGenerator(engine, source_file=source_file)
-            parser = TALParser(gen)
 
         self._v_errors = ()
+
         try:
-            parser.parseString(self._text)
-            self._v_program, self._v_macros = parser.getCode()
+            engine = queryUtility(
+                IPageTemplateEngine, default=PageTemplateEngine
+                )
+            self._v_program = engine.cook(
+                source_file, self._text, pt_engine, self.content_type)
         except:
             etype, e = sys.exc_info()[:2]
-            self._v_errors = ["Compilation failed",
-                              "%s.%s: %s" % (etype.__module__, etype.__name__, e)]
+            self._v_errors = [
+                "Compilation failed",
+                "%s.%s: %s" % (etype.__module__, etype.__name__, e)
+                ]
+
         self._v_cooked = 1
 
 
 class PTRuntimeError(RuntimeError):
     '''The Page Template has template errors that prevent it from rendering.'''
     pass
+
+
+class PageTemplateEngine(object):
+    """Page template engine that uses the TAL interpreter to render."""
+
+    implements(IPageTemplateProgram)
+    classProvides(IPageTemplateEngine)
+
+    def __init__(self, program, macros):
+        self.macros = macros
+        self._program = program
+
+    def __call__(self, context, **options):
+        output = StringIO(u'')
+        interpreter = TALInterpreter(
+            self._program, self.macros, context,
+            stream=output, **options
+            )
+        interpreter()
+        return output.getvalue()
+
+    @classmethod
+    def cook(cls, source_file, text, engine, content_type):
+        if content_type == 'text/html':
+            gen = TALGenerator(engine, xml=0, source_file=source_file)
+            parser = HTMLTALParser(gen)
+        else:
+            gen = TALGenerator(engine, source_file=source_file)
+            parser = TALParser(gen)
+
+        parser.parseString(text)
+        program, macros = parser.getCode()
+
+        return cls(program, macros)
 
 
 class PageTemplateTracebackSupplement(object):

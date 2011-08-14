@@ -98,8 +98,67 @@ class IPageTemplateSubclassing(IPageTemplate):
         Subclasses might override this to influence the decision about
         whether compilation is necessary.
         """
-        
+
     content_type = Attribute("The content-type of the generated output")
 
     expand = Attribute(
         "Flag indicating whether the read method should expand macros")
+
+
+class IPageTemplateEngine(Interface):
+    """Template engine implementation.
+
+    The engine must provide a ``cook`` method to return a cooked
+    template program from a source input.
+    """
+
+    def cook(source_file, text, engine, content_type):
+        """Parse text and return prepared template program.
+
+        Note that while ``source_file`` is provided to name the source
+        of the input ``text``, it should not be relied on to be an
+        actual filename (it may be an application-specific, virtual
+        path).
+        """
+
+
+class IPageTemplateProgram(Interface):
+    """Cooked template program."""
+
+    macros = Attribute(
+        "Template macros.")
+
+    def __call__(
+        context, debug=0, wrap=60, metal=1, tal=1, showtal=-1,
+        strictinsert=1, stackLimit=100, i18nInterpolate=1,
+        sourceAnnotations=0):
+        """Render template in the provided template ``context``.
+
+        Optional arguments:
+
+            debug -- enable debugging output to sys.stderr (off by default).
+
+            wrap -- try to wrap attributes on opening tags to this number of
+            column (default: 60).
+
+            metal -- enable METAL macro processing (on by default).
+
+            tal -- enable TAL processing (on by default).
+
+            showtal -- do not strip away TAL directives.  A special value of
+            -1 (which is the default setting) enables showtal when TAL
+            processing is disabled, and disables showtal when TAL processing is
+            enabled.  Note that you must use 0, 1, or -1; true boolean values
+            are not supported (for historical reasons).
+
+            strictinsert -- enable TAL processing and stricter HTML/XML
+            checking on text produced by structure inserts (on by default).
+            Note that Zope turns this value off by default.
+
+            stackLimit -- set macro nesting limit (default: 100).
+
+            i18nInterpolate -- enable i18n translations (default: on).
+
+            sourceAnnotations -- enable source annotations with HTML comments
+            (default: off).
+        """
