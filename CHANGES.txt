@@ -2,16 +2,13 @@
 CHANGES
 =======
 
-3.6.0 (unreleased)
+3.6.0 (2011-08-20)
 ------------------
 
 - Replaced StringIO stream class with a faster list-based implementation.
 
 - Abstract out the template engine and program interfaces and allow
   implementation replacement via a utility registration.
-
-3.5.3 (unreleased)
-------------------
 
 - Removed ancient copyright from test files (LP: #607228)
 
