@@ -22,8 +22,6 @@ from zope.tal.talgenerator import TALGenerator
 from zope.tal.talinterpreter import TALInterpreter
 from zope.tales.engine import Engine
 from zope.component import queryUtility
-# Don't use cStringIO here!  It's not unicode aware.
-from StringIO import StringIO
 
 from zope.pagetemplate.interfaces import IPageTemplateSubclassing
 from zope.pagetemplate.interfaces import IPageTemplateEngine
@@ -33,6 +31,20 @@ from zope.interface import classProvides
 
 _default_options = {}
 _error_start = '<!-- Page Template Diagnostics'
+
+
+class StringIO(list):
+    """Unicode aware append-only version of StringIO.
+    """
+    write = list.append
+
+    def __init__(self, value=None):
+        list.__init__(self)
+        if value is not None:
+            self.append(value)
+
+    def getvalue(self):
+        return u''.join(self)
 
 
 class PageTemplate(object):
