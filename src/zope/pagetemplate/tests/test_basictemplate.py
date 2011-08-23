@@ -111,7 +111,8 @@ class BasicTemplateTests(unittest.TestCase):
         self.assertEqual(options, {
             'tal': True,
             'showtal': False,
-            'sourceAnnotations': False
+            'sourceAnnotations': False,
+            'strictinsert': 0,
             })
 
     def test_batches_and_formatting(self):

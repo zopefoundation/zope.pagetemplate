@@ -128,7 +128,7 @@ class PageTemplate(object):
 
         return self._v_program(
             context, tal=not source, showtal=showtal,
-            sourceAnnotations=sourceAnnotations
+            strictinsert=0, sourceAnnotations=sourceAnnotations
             )
 
     def pt_errors(self, namespace):
