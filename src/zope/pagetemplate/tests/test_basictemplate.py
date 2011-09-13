@@ -93,14 +93,19 @@ class BasicTemplateTests(unittest.TestCase):
                 return self.args, args, kwargs
 
         class DummyEngine(object):
-            cook = DummyProgram
+            @staticmethod
+            def cook(*args):
+                return DummyProgram(*args), "macros"
 
         provideUtility(DummyEngine, IPageTemplateEngine)
         self.t._cook()
 
+        self.assertTrue(isinstance(self.t._v_program, DummyProgram))
+        self.assertEqual(self.t._v_macros, "macros")
+
         # "Render" and unpack arguments passed for verification
         ((cls, source_file, text, engine, content_type),
-         (program, context),
+         (program, context, macros),
          options) = \
          self.t.pt_render({})
 

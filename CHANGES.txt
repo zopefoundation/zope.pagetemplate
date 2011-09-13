@@ -5,6 +5,12 @@ CHANGES
 3.6.2 (unreleased)
 ------------------
 
+- Change interface for engine and program such that the return type of
+  the ``cook`` method is a tuple ``(program, macros)``. This follows
+  the interface for the TAL parser's ``getCode`` method.
+
+  This fixes a legacy compatibility issue where code would expect an
+  ``_v_macros`` volatile attribute which was missing.
 
 3.6.1 (2011-08-23)
 ------------------

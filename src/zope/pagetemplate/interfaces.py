@@ -113,23 +113,22 @@ class IPageTemplateEngine(Interface):
     """
 
     def cook(source_file, text, engine, content_type):
-        """Parse text and return prepared template program.
+        """Parse text and return prepared template program and macros.
 
         Note that while ``source_file`` is provided to name the source
         of the input ``text``, it should not be relied on to be an
         actual filename (it may be an application-specific, virtual
         path).
+
+        The return type is a tuple ``(program, macros)``.
         """
 
 
 class IPageTemplateProgram(Interface):
     """Cooked template program."""
 
-    macros = Attribute(
-        "Template macros.")
-
     def __call__(
-        context, debug=0, wrap=60, metal=1, tal=1, showtal=-1,
+        context, macros, debug=0, wrap=60, metal=1, tal=1, showtal=-1,
         strictinsert=1, stackLimit=100, i18nInterpolate=1,
         sourceAnnotations=0):
         """Render template in the provided template ``context``.

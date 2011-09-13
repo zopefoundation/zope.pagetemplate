@@ -78,12 +78,13 @@ class PageTemplate(object):
     expand = 1
     _v_errors = ()
     _v_cooked = 0
+    _v_macros = None
     _v_program = None
     _text = ''
 
     def macros(self):
         self._cook_check()
-        return self._v_program.macros
+        return self._v_macros
 
     macros = property(macros)
 
@@ -127,7 +128,7 @@ class PageTemplate(object):
         context = self.pt_getEngineContext(namespace)
 
         return self._v_program(
-            context, tal=not source, showtal=showtal,
+            context, self._v_macros, tal=not source, showtal=showtal,
             strictinsert=0, sourceAnnotations=sourceAnnotations
             )
 
@@ -204,7 +205,7 @@ class PageTemplate(object):
             engine = queryUtility(
                 IPageTemplateEngine, default=PageTemplateEngine
                 )
-            self._v_program = engine.cook(
+            self._v_program, self._v_macros = engine.cook(
                 source_file, self._text, pt_engine, self.content_type)
         except:
             etype, e = sys.exc_info()[:2]
@@ -227,14 +228,13 @@ class PageTemplateEngine(object):
     implements(IPageTemplateProgram)
     classProvides(IPageTemplateEngine)
 
-    def __init__(self, program, macros):
-        self.macros = macros
-        self._program = program
+    def __init__(self, program):
+        self.program = program
 
-    def __call__(self, context, **options):
+    def __call__(self, context, macros, **options):
         output = StringIO(u'')
         interpreter = TALInterpreter(
-            self._program, self.macros, context,
+            self.program, macros, context,
             stream=output, **options
             )
         interpreter()
@@ -252,7 +252,7 @@ class PageTemplateEngine(object):
         parser.parseString(text)
         program, macros = parser.getCode()
 
-        return cls(program, macros)
+        return cls(program), macros
 
 
 class PageTemplateTracebackSupplement(object):
