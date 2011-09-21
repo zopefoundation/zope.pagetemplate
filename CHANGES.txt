@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-3.6.3 (unreleased)
+3.6.3 (2011-09-21)
 ------------------
 
 - Fixed test assertions to be compatible with zope.tal 3.6.
