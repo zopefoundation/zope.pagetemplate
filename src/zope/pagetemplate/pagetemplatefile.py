@@ -100,7 +100,7 @@ class PageTemplateFile(PageTemplate):
             return
         text, type_ = self._read_file()
         self.pt_edit(text, type_)
-        self._cook()
+        assert self._v_cooked
         if self._v_errors:
             logging.error('PageTemplateFile: Error in template %s: %s',
                     self.filename, '\n'.join(self._v_errors))
