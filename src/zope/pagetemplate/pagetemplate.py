@@ -205,6 +205,9 @@ class PageTemplate(object):
             engine = queryUtility(
                 IPageTemplateEngine, default=PageTemplateEngine
                 )
+            if engine is None:
+                # We gave a default so this should not happen, but it does.
+                engine = PageTemplateEngine
             self._v_program, self._v_macros = engine.cook(
                 source_file, self._text, pt_engine, self.content_type)
         except:
