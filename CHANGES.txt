@@ -5,8 +5,6 @@ CHANGES
 3.6.4 (unreleased)
 ------------------
 
-- If no IPageTemplateEngine utility can be found, make doubly sure to
-  use the default PageTemplateEngine.
 
 3.6.3 (2011-09-21)
 ------------------
