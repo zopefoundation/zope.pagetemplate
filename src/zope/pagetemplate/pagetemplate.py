@@ -26,8 +26,8 @@ from zope.component import queryUtility
 from zope.pagetemplate.interfaces import IPageTemplateSubclassing
 from zope.pagetemplate.interfaces import IPageTemplateEngine
 from zope.pagetemplate.interfaces import IPageTemplateProgram
-from zope.interface import implements
-from zope.interface import classProvides
+from zope.interface import implementer
+from zope.interface import provider
 
 _default_options = {}
 _error_start = '<!-- Page Template Diagnostics'
@@ -47,6 +47,7 @@ class StringIO(list):
         return u''.join(self)
 
 
+@implementer(IPageTemplateSubclassing)
 class PageTemplate(object):
     """Page Templates using TAL, TALES, and METAL.
 
@@ -72,7 +73,6 @@ class PageTemplate(object):
         to perform the rendering.
     """
 
-    implements(IPageTemplateSubclassing)
 
     content_type = 'text/html'
     expand = 1
@@ -222,11 +222,11 @@ class PTRuntimeError(RuntimeError):
     pass
 
 
+@implementer(IPageTemplateProgram)
+@provider(IPageTemplateEngine)
 class PageTemplateEngine(object):
     """Page template engine that uses the TAL interpreter to render."""
 
-    implements(IPageTemplateProgram)
-    classProvides(IPageTemplateEngine)
 
     def __init__(self, program):
         self.program = program
@@ -255,8 +255,8 @@ class PageTemplateEngine(object):
         return cls(program), macros
 
 
+#@implementer(ITracebackSupplement)
 class PageTemplateTracebackSupplement(object):
-    #implements(ITracebackSupplement)
 
     def __init__(self, pt, namespace):
         self.manageable_object = pt

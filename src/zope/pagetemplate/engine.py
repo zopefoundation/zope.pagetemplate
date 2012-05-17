@@ -20,7 +20,7 @@ __docformat__ = 'restructuredtext'
 import sys
 
 from zope import component
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component.interfaces import ComponentLookupError
 from zope.traversing.interfaces import IPathAdapter, ITraversable
 from zope.traversing.interfaces import TraversalError
@@ -322,8 +322,8 @@ class ZopeEngine(ZopeBaseEngine):
       >>> from zope.component.testing import setUp, tearDown
       >>> from zope.security.checker import NamesChecker, defineChecker
 
-      >>> class Container(dict):
-      ...     implements(ITraversable)
+      >>> @implementer(ITraversable)
+      ... class Container(dict):
       ...     def traverse(self, name, further_path):
       ...         return self[name]
 
@@ -418,9 +418,8 @@ class TrustedZopeEngine(ZopeBaseEngine):
     _create_context = TrustedZopeContext
 
 
+@implementer(ITraversable)
 class TraversableModuleImporter(SimpleModuleImporter):
-
-    implements(ITraversable)
 
     def traverse(self, name, further_path):
         try:
