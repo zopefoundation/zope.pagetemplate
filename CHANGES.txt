@@ -13,6 +13,12 @@ CHANGES
 
 - Dropped support for Python 2.4 and 2.5.
 
+- PageTemplate.pt_render() has a new argument, check_macro_expansion,
+  defaulting to True.
+
+- PageTemplateTracebackSupplement passes check_macro_expansion=False, to
+  avoid LP#732972.
+
 
 3.6.3 (2011-09-21)
 ------------------

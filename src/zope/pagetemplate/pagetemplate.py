@@ -132,15 +132,16 @@ class PageTemplate(object):
             strictinsert=0, sourceAnnotations=sourceAnnotations
             )
 
-    def pt_errors(self, namespace):
+    def pt_errors(self, namespace, check_macro_expansion=True):
         self._cook_check()
         err = self._v_errors
         if err:
             return err
-        try:
-            self.pt_render(namespace, source=1)
-        except:
-            return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
+        if check_macro_expansion:
+            try:
+                self.pt_render(namespace, source=1)
+            except:
+                return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
 
     def write(self, text):
         # We accept both, since the text can either come from a file (and the
@@ -261,6 +262,6 @@ class PageTemplateTracebackSupplement(object):
     def __init__(self, pt, namespace):
         self.manageable_object = pt
         self.warnings = []
-        e = pt.pt_errors(namespace)
+        e = pt.pt_errors(namespace, check_macro_expansion=False)
         if e:
             self.warnings.extend(e)

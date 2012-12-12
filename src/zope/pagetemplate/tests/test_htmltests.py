@@ -133,6 +133,20 @@ class HTMLTests(unittest.TestCase):
         out = t(msg=msg)
         util.check_html(expect, out)
 
+    def test_recursion(self):
+        t = self.folder.t
+        t.write(util.read_input('recursive.html'))
+        expect = util.read_output('recursive.html')
+        context = dict(name='root',
+                       children=[dict(name='first', children=[]),
+                                 dict(name='second', children=[])])
+        namespace = dict(template=t, options={}, args=(),
+                         nothing=None, context=context)
+        out = t.pt_render(namespace)
+        util.check_html(expect, out)
+        # https://bugs.launchpad.net/zope.pagetemplate/+bug/732972
+        errors = t.pt_errors(namespace, check_macro_expansion=False)
+        self.assertFalse(errors)
 
 def test_suite():
     return unittest.makeSuite(HTMLTests)
