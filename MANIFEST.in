@@ -1,0 +1,4 @@
+include *.txt
+include bootstrap.py
+include buildout.cfg
+recursive-include src *.txt *.html *.pt
