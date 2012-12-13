@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-4.0.0 (unreleased)
+4.0.0 (2012-12-13)
 ------------------
 
 - Replaced deprecated ``zope.interface.classProvides`` usage with equivalent
