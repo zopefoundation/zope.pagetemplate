@@ -262,6 +262,10 @@ class PageTemplateTracebackSupplement(object):
     def __init__(self, pt, namespace):
         self.manageable_object = pt
         self.warnings = []
-        e = pt.pt_errors(namespace, check_macro_expansion=False)
+        try:
+            e = pt.pt_errors(namespace, check_macro_expansion=False)
+        except TypeError:
+            # Old page template.
+            e = pt.pt_errors(namespace)
         if e:
             self.warnings.extend(e)

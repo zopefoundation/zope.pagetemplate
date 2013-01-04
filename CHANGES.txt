@@ -5,7 +5,11 @@ CHANGES
 4.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PageTemplateTracebackSupplement does not pass
+  check_macro_expansion=False in case of an old template that does not
+  accept this argument.
+  Refs LP#732972
+  [maurits]
 
 
 4.0.0 (2012-12-13)
