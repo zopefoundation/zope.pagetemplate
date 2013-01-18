@@ -143,6 +143,9 @@ class HTMLTests(unittest.TestCase):
         namespace = dict(template=t, options={}, args=(),
                          nothing=None, context=context)
         out = t.pt_render(namespace)
+        # crude way of normalizing whitespace
+        expect = expect.replace(' ', '').replace('\n\n', '\n')
+        out = out.replace(' ', '').replace('\n\n', '\n')
         util.check_html(expect, out)
         # https://bugs.launchpad.net/zope.pagetemplate/+bug/732972
         errors = t.pt_errors(namespace, check_macro_expansion=False)
