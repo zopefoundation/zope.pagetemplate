@@ -5,12 +5,9 @@ CHANGES
 4.0.1 (unreleased)
 ------------------
 
-- PageTemplateTracebackSupplement does not pass
-  check_macro_expansion=False in case of an old template that does not
+- LP#732972:  PageTemplateTracebackSupplement no longer passes
+  ``check_macro_expansion=False`` to old templates which do not
   accept this argument.
-  Refs LP#732972
-  [maurits]
-
 
 4.0.0 (2012-12-13)
 ------------------
@@ -28,7 +25,6 @@ CHANGES
 
 - PageTemplateTracebackSupplement passes check_macro_expansion=False, to
   avoid LP#732972.
-
 
 3.6.3 (2011-09-21)
 ------------------
