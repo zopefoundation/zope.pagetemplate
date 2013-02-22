@@ -5,7 +5,13 @@ CHANGES
 4.0.2 (unreleased)
 ------------------
 
-- TBD
+- Migrated from zope.security.untrustedpython to zope.untrustedpython.
+
+- Made zope.untrustedpython an extra dependency.  Without it, python
+  expressions are not protected, even though path expressions are still
+  security wrapped.
+
+- Added support for Python 3.3.
 
 4.0.1 (2012-01-23)
 ------------------
