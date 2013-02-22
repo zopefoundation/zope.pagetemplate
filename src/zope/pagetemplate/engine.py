@@ -314,14 +314,17 @@ class ZopeEngine(ZopeBaseEngine):
       ForbiddenAttribute: ('_getframe', <module 'sys' (built-in)>)
 
     The results of Python expressions evaluated by this engine are
-    wrapped in security proxies::
+    wrapped in security proxies if the 'untrusted' extra is installed::
 
       >>> r = context.evaluate('python: {12: object()}.values')
-      >>> type(r)
-      <type 'zope.security._proxy._Proxy'>
-      >>> r = context.evaluate('python: {12: object()}.values()[0].__class__')
-      >>> type(r)
-      <type 'zope.security._proxy._Proxy'>
+      >>> str(type(r).__name__) == (
+      ...   '_Proxy' if HAVE_UNTRUSTED else
+      ...   'builtin_function_or_method')
+      True
+
+      >>> r = context.evaluate('python: {12: object()}[12].__class__')
+      >>> str(type(r).__name__) == '_Proxy' or not HAVE_UNTRUSTED
+      True
 
     General path expressions provide objects that are wrapped in
     security proxies as well::
