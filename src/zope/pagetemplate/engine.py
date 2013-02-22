@@ -25,10 +25,15 @@ from zope.component.interfaces import ComponentLookupError
 from zope.traversing.interfaces import IPathAdapter, ITraversable
 from zope.traversing.interfaces import TraversalError
 from zope.traversing.adapters import traversePathElement
-from zope.security.untrustedpython import rcompile
 from zope.security.proxy import ProxyFactory, removeSecurityProxy
-from zope.security.untrustedpython.builtins import SafeBuiltins
 from zope.i18n import translate
+
+try:
+    from zope.untrustedpython import rcompile
+    from zope.untrustedpython.builtins import SafeBuiltins
+    HAVE_UNTRUSTED = True
+except ImportError:
+    HAVE_UNTRUSTED = False
 
 from zope.tales.expressions import PathExpr, StringExpr, NotExpr, DeferExpr
 from zope.tales.expressions import SimpleModuleImporter
@@ -98,6 +103,8 @@ class ZopePythonExpr(PythonExpr):
     def _compile(self, text, filename):
         return rcompile.compile(text, filename, 'eval')
 
+if not HAVE_UNTRUSTED:
+    ZopePythonExpr = PythonExpr
 
 class ZopeContextBase(Context):
     """Base class for both trusted and untrusted evaluation contexts."""

@@ -14,6 +14,7 @@
 """Doc tests for the pagetemplate's 'engine' module
 """
 import unittest
+import zope.pagetemplate.engine
 
 class DummyNamespace(object):
 
@@ -84,7 +85,8 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(DocTestSuite('zope.pagetemplate.engine'))
     suite.addTest(unittest.makeSuite(EngineTests))
-    suite.addTest(unittest.makeSuite(ZopePythonExprTests))
+    if zope.pagetemplate.engine.HAVE_UNTRUSTED:
+        suite.addTest(unittest.makeSuite(ZopePythonExprTests))
     return suite
 
 
