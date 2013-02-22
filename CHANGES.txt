@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-4.0.2 (unreleased)
+4.0.2 (2013-02-22)
 ------------------
 
 - Migrated from zope.security.untrustedpython to zope.untrustedpython.
