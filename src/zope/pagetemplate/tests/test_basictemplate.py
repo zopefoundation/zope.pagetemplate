@@ -68,8 +68,8 @@ class BasicTemplateTests(unittest.TestCase):
         self.t.write("<tal:block define='a string:foo'>xyz")
         try:
             self.t.pt_render({})
-        except zope.pagetemplate.pagetemplate.PTRuntimeError, e:
-            self.assertEquals(
+        except zope.pagetemplate.pagetemplate.PTRuntimeError as e:
+            self.assertEqual(
                 str(e),
                 "['Compilation failed', 'zope.tal.taldefs.TALError:"
                 " TAL attributes on <tal:block> require explicit"
@@ -208,11 +208,11 @@ class BasicTemplateTests(unittest.TestCase):
 
         # test with HTML parser
         self.t.pt_edit(text, 'text/html')
-        self.assertEquals(self.t().strip(), text)
+        self.assertEqual(self.t().strip(), text)
 
         # test with XML parser
         self.t.pt_edit(text, 'text/xml')
-        self.assertEquals(self.t().strip(), text)
+        self.assertEqual(self.t().strip(), text)
 
 def test_suite():
     return unittest.makeSuite(BasicTemplateTests)

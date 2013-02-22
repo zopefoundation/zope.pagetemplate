@@ -23,13 +23,14 @@ import sys
 import re
 import logging
 
+import six
 from zope.pagetemplate.pagetemplate import PageTemplate
 
 DEFAULT_ENCODING = "utf-8"
 
 meta_pattern = re.compile(
-    r'\s*<meta\s+http-equiv=["\']?Content-Type["\']?'
-    r'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*/?\s*>\s*',
+    br'\s*<meta\s+http-equiv=["\']?Content-Type["\']?'
+    br'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*/?\s*>\s*',
     re.IGNORECASE)
 
 def package_home(gdict):
@@ -40,6 +41,10 @@ class PageTemplateFile(PageTemplate):
     "Zope wrapper for filesystem Page Template using TAL, TALES, and METAL"
 
     _v_last_read = 0
+
+    #_error_start = b'<!-- Page Template Diagnostics'
+    #_error_end = b'-->'
+    #_newline = b'\n'
 
     def __init__(self, filename, _prefix=None):
         path = self.get_path_from_prefix(_prefix)
@@ -59,14 +64,15 @@ class PageTemplateFile(PageTemplate):
     def _prepare_html(self, text):
         match = meta_pattern.search(text)
         if match is not None:
-            type_, encoding = match.groups()
+            type_, encoding = (x.decode('utf-8') for x in match.groups())
             # TODO: Shouldn't <meta>/<?xml?> stripping
             # be in PageTemplate.__call__()?
-            text = meta_pattern.sub("", text)
+            text = meta_pattern.sub(b"", text)
         else:
             type_ = None
             encoding = DEFAULT_ENCODING
-        return unicode(text, encoding), type_
+        text = text.decode(encoding)
+        return text, type_
 
     def _read_file(self):
         __traceback_info__ = self.filename
@@ -77,13 +83,8 @@ class PageTemplateFile(PageTemplate):
             f.close()
             raise
         type_ = sniff_type(text)
-        if type_ == "text/xml":
-            text += f.read()
-        else:
-            # For HTML, we really want the file read in text mode:
-            f.close()
-            f = open(self.filename)
-            text = f.read()
+        text += f.read()
+        if type_ != "text/xml":
             text, type_ = self._prepare_html(text)
         f.close()
         return text, type_
@@ -114,12 +115,12 @@ class PageTemplateFile(PageTemplate):
         raise TypeError("non-picklable object")
 
 XML_PREFIXES = [
-    "<?xml",                      # ascii, utf-8
-    "\xef\xbb\xbf<?xml",          # utf-8 w/ byte order mark
-    "\0<\0?\0x\0m\0l",            # utf-16 big endian
-    "<\0?\0x\0m\0l\0",            # utf-16 little endian
-    "\xfe\xff\0<\0?\0x\0m\0l",    # utf-16 big endian w/ byte order mark
-    "\xff\xfe<\0?\0x\0m\0l\0",    # utf-16 little endian w/ byte order mark
+    b"<?xml",                      # ascii, utf-8
+    b"\xef\xbb\xbf<?xml",          # utf-8 w/ byte order mark
+    b"\0<\0?\0x\0m\0l",            # utf-16 big endian
+    b"<\0?\0x\0m\0l\0",            # utf-16 little endian
+    b"\xfe\xff\0<\0?\0x\0m\0l",    # utf-16 big endian w/ byte order mark
+    b"\xff\xfe<\0?\0x\0m\0l\0",    # utf-16 little endian w/ byte order mark
     ]
 
 XML_PREFIX_MAX_LENGTH = max(map(len, XML_PREFIXES))

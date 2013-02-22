@@ -13,8 +13,12 @@
 ##############################################################################
 """Doc tests for the pagetemplate's 'engine' module
 """
+import doctest
+import re
 import unittest
 import zope.pagetemplate.engine
+from zope.testing.renormalizing import RENormalizing
+
 
 class DummyNamespace(object):
 
@@ -80,10 +84,21 @@ class ZopePythonExprTests(unittest.TestCase):
         self.assertRaises(NameError, expr, DummyContext())
 
 
+
 def test_suite():
-    from doctest import DocTestSuite
+
+    checker = RENormalizing([
+        # Python 3 includes module name in exceptions
+        (re.compile(r"zope.security.interfaces.ForbiddenAttribute"),
+         "ForbiddenAttribute"),
+        (re.compile(r"<class 'zope.security._proxy._Proxy'>"),
+         "<type 'zope.security._proxy._Proxy'>"),
+        (re.compile(r"<class 'list'>"), "<type 'list'>"),
+    ])
+
     suite = unittest.TestSuite()
-    suite.addTest(DocTestSuite('zope.pagetemplate.engine'))
+    suite.addTest(doctest.DocTestSuite('zope.pagetemplate.engine',
+                                       checker=checker))
     suite.addTest(unittest.makeSuite(EngineTests))
     if zope.pagetemplate.engine.HAVE_UNTRUSTED:
         suite.addTest(unittest.makeSuite(ZopePythonExprTests))

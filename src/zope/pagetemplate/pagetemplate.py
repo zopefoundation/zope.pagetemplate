@@ -16,6 +16,7 @@
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 """
 import sys
+import six
 from zope.tal.talparser import TALParser
 from zope.tal.htmltalparser import HTMLTALParser
 from zope.tal.talgenerator import TALGenerator
@@ -30,7 +31,6 @@ from zope.interface import implementer
 from zope.interface import provider
 
 _default_options = {}
-_error_start = '<!-- Page Template Diagnostics'
 
 
 class StringIO(list):
@@ -73,6 +73,9 @@ class PageTemplate(object):
         to perform the rendering.
     """
 
+    _error_start = '<!-- Page Template Diagnostics'
+    _error_end = '-->'
+    _newline = '\n'
 
     content_type = 'text/html'
     expand = 1
@@ -143,17 +146,28 @@ class PageTemplate(object):
             except:
                 return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
 
+    def _convert(self, string, text):
+        """Adjust the string type to the type of text"""
+        if isinstance(text, six.binary_type):
+            return string.encode('utf-8')
+        else:
+            return string
+
     def write(self, text):
         # We accept both, since the text can either come from a file (and the
         # parser will take care of the encoding) or from a TTW template, in
         # which case we already have unicode.
-        assert isinstance(text, (str, unicode))
+        assert isinstance(text, (six.string_types, six.binary_type))
 
-        if text.startswith(_error_start):
-            errend = text.find('-->')
+        def bs(s):
+            """Bytes or str"""
+            return self._convert(s, text)
+
+        if text.startswith(bs(self._error_start)):
+            errend = text.find(bs(self._error_end))
             if errend >= 0:
                 text = text[errend + 3:]
-                if text[:1] == "\n":
+                if text[:1] == bs(self._newline):
                     text = text[1:]
         if self._text != text:
             self._text = text
@@ -165,6 +179,9 @@ class PageTemplate(object):
     def read(self, request=None):
         """Gets the source, sometimes with macros expanded."""
         self._cook_check()
+        def bs(s):
+            """Bytes or str"""
+            return self._convert(s, self._text)
         if not self._v_errors:
             if not self.expand:
                 return self._text
@@ -175,13 +192,13 @@ class PageTemplate(object):
                 context = self.pt_getContext(self, request)
                 return self.pt_render(context, source=1)
             except:
-                return ('%s\n Macro expansion failed\n %s\n-->\n%s' %
-                        (_error_start, "%s: %s" % sys.exc_info()[:2],
-                         self._text) )
+                return (bs('%s\n Macro expansion failed\n %s\n-->\n' %
+                           (_error_start, "%s: %s" % sys.exc_info()[:2])) +
+                        self._text)
 
-        return ('%s\n %s\n-->\n%s' % (_error_start,
-                                      '\n'.join(self._v_errors),
-                                      self._text))
+        return bs('%s\n %s\n-->\n' % (self._error_start,
+                                      '\n'.join(self._v_errors))) + \
+               self._text
 
     def pt_source_file(self):
         """To be overridden."""

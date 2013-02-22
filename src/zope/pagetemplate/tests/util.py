@@ -13,6 +13,7 @@
 ##############################################################################
 """Utilities
 """
+from __future__ import print_function
 import os
 import re
 import sys
@@ -70,7 +71,7 @@ def nicerange(lo, hi):
 
 def dump(tag, x, lo, hi):
     for i in xrange(lo, hi):
-        print '%s %s' % (tag, x[i]),
+        print('%s %s' % (tag, x[i]), end=' ')
 
 def check_html(s1, s2):
     s1 = normalize_html(s1)
