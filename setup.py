@@ -19,7 +19,10 @@
 """Setup for zope.pagetemplate package
 """
 import os
+import sys
 from setuptools import setup, find_packages
+
+PY3 = sys.version_info[0] >= 3
 
 
 def read(*rnames):
@@ -62,7 +65,8 @@ TESTS_REQUIRE = [
     'zope.testing',
     'zope.proxy',
     'zope.security',
-]
+] + (['zope.untrustedpython'] if not PY3 else [])
+
 
 setup(name='zope.pagetemplate',
       version='4.0.3.dev0',
@@ -103,7 +107,7 @@ setup(name='zope.pagetemplate',
       namespace_packages=['zope'],
       extras_require=dict(
           test=TESTS_REQUIRE,
-          untrusted=['zope.untrustedpython'],
+          untrusted=['zope.untrustedpython'] if not PY3 else [],
       ),
       install_requires=['setuptools',
                         'six',

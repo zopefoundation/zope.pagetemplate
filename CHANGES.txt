@@ -5,15 +5,16 @@ CHANGES
 4.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Only allow ``zope.untrustedpython`` to be a dependency in Python 2.
 
+- Fix buildout to work properly.
 
 4.0.2 (2013-02-22)
 ------------------
 
-- Migrated from zope.security.untrustedpython to zope.untrustedpython.
+- Migrated from ``zope.security.untrustedpython`` to ``zope.untrustedpython``.
 
-- Made zope.untrustedpython an extra dependency.  Without it, python
+- Made ``zope.untrustedpython`` an extra dependency.  Without it, python
   expressions are not protected, even though path expressions are still
   security wrapped.
 
