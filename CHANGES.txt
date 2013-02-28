@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-4.0.3 (unreleased)
+4.0.3 (2013-02-28)
 ------------------
 
 - Only allow ``zope.untrustedpython`` to be a dependency in Python 2.
