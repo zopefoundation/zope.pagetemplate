@@ -5,8 +5,9 @@ CHANGES
 4.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Make sure ``ZopePythonExpr`` and ``PythonExpr`` are separate classes even
+  when ``zope.untrustedpython`` is not available.  Fixes a ZCML conflict error
+  in ``zope.app.pagetemplate``.
 
 4.0.3 (2013-02-28)
 ------------------

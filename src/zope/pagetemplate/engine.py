@@ -95,16 +95,16 @@ class TrustedZopePathExpr(PathExpr):
 
 class ZopePythonExpr(PythonExpr):
 
-    def __call__(self, econtext):
-        __traceback_info__ = self.text
-        vars = self._bind_used_names(econtext, SafeBuiltins)
-        return eval(self._code, vars)
+    if HAVE_UNTRUSTED:
 
-    def _compile(self, text, filename):
-        return rcompile.compile(text, filename, 'eval')
+        def __call__(self, econtext):
+            __traceback_info__ = self.text
+            vars = self._bind_used_names(econtext, SafeBuiltins)
+            return eval(self._code, vars)
 
-if not HAVE_UNTRUSTED:
-    ZopePythonExpr = PythonExpr
+        def _compile(self, text, filename):
+            return rcompile.compile(text, filename, 'eval')
+
 
 class ZopeContextBase(Context):
     """Base class for both trusted and untrusted evaluation contexts."""
