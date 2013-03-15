@@ -44,7 +44,7 @@ class EngineTests(unittest.TestCase):
         provideAdapter(DummyNamespace, (None,), IPathAdapter, name='test')
         engine = _Engine()
         namespace = engine.getFunctionNamespace('test')
-        self.failUnless(isProxy(namespace))
+        self.assertTrue(isProxy(namespace))
 
 class DummyEngine(object):
 
