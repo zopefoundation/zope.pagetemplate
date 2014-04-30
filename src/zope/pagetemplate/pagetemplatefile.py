@@ -23,7 +23,6 @@ import sys
 import re
 import logging
 
-import six
 from zope.pagetemplate.pagetemplate import PageTemplate
 
 DEFAULT_ENCODING = "utf-8"
