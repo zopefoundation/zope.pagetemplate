@@ -193,7 +193,7 @@ class PageTemplate(object):
                 return self.pt_render(context, source=1)
             except:
                 return (bs('%s\n Macro expansion failed\n %s\n-->\n' %
-                           (_error_start, "%s: %s" % sys.exc_info()[:2])) +
+                           (self._error_start, "%s: %s" % sys.exc_info()[:2])) +
                         self._text)
 
         return bs('%s\n %s\n-->\n' % (self._error_start,
