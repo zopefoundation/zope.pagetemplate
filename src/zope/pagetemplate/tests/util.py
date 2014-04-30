@@ -29,7 +29,7 @@ class Bruce(object):
     def items(self): return [('bruce',self)]*7
     def __len__(self): return 7
     def __getitem__(self,index):
-        if ininstance(index, int) and (index < 0 or index > 6):
+        if isinstance(index, int) and (index < 0 or index > 6):
             raise IndexError(index)
         return self
     isDocTemp = 0
