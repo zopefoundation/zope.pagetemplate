@@ -1,14 +1,5 @@
-==============
-Page Templates
-==============
-
-Introduction
-------------
-
-Page Templates provide an elegant templating mechanism that achieves a
-clean separation of presentation and application logic while allowing
-for designers to work with templates in their visual editing tools
-(FrontPage, Dreamweaver, GoLive, etc.).
+ZPT Usage
+=========
 
 This document focuses on usage of Page Templates outside of a Zope
 context, it does *not* explain how to write page templates as there

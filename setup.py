@@ -26,7 +26,8 @@ PY3 = sys.version_info[0] >= 3
 
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
 
 def _modname(path, base, name=''):
     if path == base:
@@ -74,7 +75,7 @@ setup(name='zope.pagetemplate',
       author_email='zope-dev@zope.org',
       description='Zope Page Templates',
       long_description=(
-          read('README.txt')
+          read('README.rst')
           + '\n\n' +
           'Detailed Documentation\n' +
           '----------------------'
@@ -83,7 +84,7 @@ setup(name='zope.pagetemplate',
           + '\n\n' +
           read('src', 'zope', 'pagetemplate', 'readme.txt')
           + '\n\n' +
-          read('CHANGES.txt')),
+          read('CHANGES.rst')),
       keywords="zope3 page template",
       classifiers=[
           'Development Status :: 5 - Production/Stable',

@@ -1,17 +1,16 @@
-=======
-CHANGES
+Changes
 =======
 
 4.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TBD
 
 
 4.0.4 (2013-03-15)
 ------------------
 
-- Make sure ``ZopePythonExpr`` and ``PythonExpr`` are separate classes even
+- Ensure that ``ZopePythonExpr`` and ``PythonExpr`` are separate classes even
   when ``zope.untrustedpython`` is not available.  Fixes a ZCML conflict error
   in ``zope.app.pagetemplate``.
 
@@ -25,13 +24,13 @@ CHANGES
 4.0.2 (2013-02-22)
 ------------------
 
-- Migrated from ``zope.security.untrustedpython`` to ``zope.untrustedpython``.
+- Migrate from ``zope.security.untrustedpython`` to ``zope.untrustedpython``.
 
-- Made ``zope.untrustedpython`` an extra dependency.  Without it, python
+- Make ``zope.untrustedpython`` an extra dependency.  Without it, python
   expressions are not protected, even though path expressions are still
   security wrapped.
 
-- Added support for Python 3.3.
+- Add support for Python 3.3.
 
 4.0.1 (2012-01-23)
 ------------------
@@ -43,24 +42,24 @@ CHANGES
 4.0.0 (2012-12-13)
 ------------------
 
-- Replaced deprecated ``zope.interface.classProvides`` usage with equivalent
+- Replace deprecated ``zope.interface.classProvides`` usage with equivalent
   ``zope.interface.provider`` decorator.
 
-- Replaced deprecated ``zope.interface.implements`` usage with equivalent
+- Replace deprecated ``zope.interface.implements`` usage with equivalent
   ``zope.interface.implementer`` decorator.
 
-- Dropped support for Python 2.4 and 2.5.
+- Drop support for Python 2.4 and 2.5.
 
-- PageTemplate.pt_render() has a new argument, check_macro_expansion,
+- PageTemplate.pt_render() has a new argument, ``check_macro_expansion``,
   defaulting to True.
 
-- PageTemplateTracebackSupplement passes check_macro_expansion=False, to
+- PageTemplateTracebackSupplement passes ``check_macro_expansion=False``, to
   avoid LP#732972.
 
 3.6.3 (2011-09-21)
 ------------------
 
-- Fixed test assertions to be compatible with zope.tal 3.6.
+- Fix test assertions to be compatible with ``zope.tal`` 3.6.
 
 3.6.2 (2011-09-21)
 ------------------
@@ -69,45 +68,45 @@ CHANGES
   the ``cook`` method is a tuple ``(program, macros)``. This follows
   the interface for the TAL parser's ``getCode`` method.
 
-  This fixes a legacy compatibility issue where code would expect an
+  Fixes a legacy compatibility issue where code would expect an
   ``_v_macros`` volatile attribute which was missing.
 
 3.6.1 (2011-08-23)
 ------------------
 
-- Fixed issue with missing default value for ``strictinsert``.
+- Fix issue with missing default value for ``strictinsert``.
 
 3.6.0 (2011-08-20)
 ------------------
 
-- Replaced StringIO stream class with a faster list-based implementation.
+- Replace StringIO stream class with a faster list-based implementation.
 
 - Abstract out the template engine and program interfaces and allow
   implementation replacement via a utility registration.
 
-- Removed ancient copyright from test files (LP: #607228)
+- Remove ancient copyright from test files (LP: #607228)
 
 3.5.2 (2010-07-08)
 ------------------
 
-- Fixed PTRuntimeError exception messages to be consistent across Python
+- Fix ``PTRuntimeError`` exception messages to be consistent across Python
   versions, and compatibile with the output under Python 2.4.  (More
   readable than the previous output under Python 2.6 as well.)
 
 3.5.1 (2010-04-30)
 ------------------
 
-- Removed use of 'zope.testing.doctestunit' in favor of stdlib's doctest.
+- Remove use of ``zope.testing.doctestunit`` in favor of stdlib's doctest.
 
-- Added dependency on "zope.security [untrustedpython]" because the 'engine'
+- Add dependency on "zope.security [untrustedpython]" because the ``engine``
   module uses it.
 
 3.5.0 (2009-05-25)
 ------------------
 
-- Added test coverage reporting support.
+- Add test coverage reporting support.
 
-- Moved 'engine' module and related test scaffolding here from
+- Move 'engine' module and related test scaffolding here from
   ``zope.app.pagetemplate`` package.
 
 3.4.2 (2009-03-17)
