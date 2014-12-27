@@ -5,6 +5,11 @@ env:
     - TOXENV=py27
     - TOXENV=py33
     - TOXENV=py34
+#   PyPy support needs cleanup of doctests, plus some help from zope.security.
+#   - TOXENV=pypy
+#   PyPy3 support needs release of a fix for:
+#   https://bitbucket.org/pypy/pypy/issue/1946)
+#   - TOXENV=pypy3
 install:
     - travis_retry pip install tox
 script:

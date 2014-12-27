@@ -99,6 +99,9 @@ setup(name='zope.pagetemplate',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: Implementation :: CPython',
+#          PyPy support needs cleanup of doctests, plus some help from
+#          zope.security.
+#         'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
