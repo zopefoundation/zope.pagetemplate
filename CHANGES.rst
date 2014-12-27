@@ -4,7 +4,9 @@ Changes
 4.0.5 (unreleased)
 ------------------
 
-- TBD
+- Add support for Python 3.4.
+
+- Add support for testing on Travis.
 
 
 4.0.4 (2013-03-15)
