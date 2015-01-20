@@ -22,6 +22,7 @@ import sys
 from zope import component
 from zope.interface import implementer
 from zope.component.interfaces import ComponentLookupError
+from zope.proxy import isProxy
 from zope.traversing.interfaces import IPathAdapter, ITraversable
 from zope.traversing.interfaces import TraversalError
 from zope.traversing.adapters import traversePathElement
@@ -65,6 +66,8 @@ class ZopeTraverser(object):
 
             # special-case dicts for performance reasons
             if getattr(object, '__class__', None) == dict:
+                object = object[name]
+            elif isinstance(object, dict) and not isProxy(object):
                 object = object[name]
             else:
                 object = traversePathElement(object, name, path_items,
@@ -385,6 +388,25 @@ class ZopeEngine(ZopeBaseEngine):
       Traceback (most recent call last):
         ...
       KeyError: 'keys'
+
+    This special-casing also applies to non-proxied dict subclasses:
+
+      >>> class TraverserDict(dict):
+      ...     def __init__(self):
+      ...         self.item_requested = None
+      ...     def __getitem__(self, item):
+      ...         self.item_requested = item
+      ...         return dict.__getitem__(self, item)
+
+      >>> d = engine.getBaseNames()
+      >>> foo = TraverserDict()
+      >>> d['foo'] = foo
+      >>> foo['bar'] = 'baz'
+      >>> context = engine.getContext(d)
+      >>> context.evaluate('foo/bar')
+      'baz'
+      >>> foo.item_requested
+      'bar'
 
       >>> tearDown()
 
