@@ -94,6 +94,9 @@ def test_suite():
         (re.compile(r"<class 'zope.security._proxy._Proxy'>"),
          "<type 'zope.security._proxy._Proxy'>"),
         (re.compile(r"<class 'list'>"), "<type 'list'>"),
+        # PyPy/pure-Python implementation
+        (re.compile(r"<class 'zope.security.proxy.ProxyPy'>"),
+        "<type 'zope.security._proxy._Proxy'>"),
     ])
 
     suite = unittest.TestSuite()

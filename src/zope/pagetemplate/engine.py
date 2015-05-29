@@ -36,6 +36,16 @@ try:
 except ImportError:
     HAVE_UNTRUSTED = False
 
+# PyPy doesn't support assigning to '__builtins__', even when
+# using eval() (http://pypy.readthedocs.org/en/latest/cpython_differences.html),
+# so don't try to use it. It won't work.
+if HAVE_UNTRUSTED:
+    import platform
+    if platform.python_implementation() == 'PyPy':
+        HAVE_UNTRUSTED = False
+        del rcompile
+        del SafeBuiltins
+
 from zope.tales.expressions import PathExpr, StringExpr, NotExpr, DeferExpr
 from zope.tales.expressions import SimpleModuleImporter
 from zope.tales.pythonexpr import PythonExpr
@@ -161,7 +171,7 @@ class ZopeContext(ZopeContextBase):
         ...
         >>> zc = ZopeContext(ExpressionEngine, {})
         >>> out = zc.evaluateMacro(expression)
-        >>> type(out)
+        >>> out.__class__
         <type 'list'>
 
         The method does some trivial checking to make sure we are getting
@@ -320,9 +330,9 @@ class ZopeEngine(ZopeBaseEngine):
     wrapped in security proxies if the 'untrusted' extra is installed::
 
       >>> r = context.evaluate('python: {12: object()}.values')
-      >>> str(type(r).__name__) == (
-      ...   '_Proxy' if HAVE_UNTRUSTED else
-      ...   'builtin_function_or_method')
+      >>> str(type(r).__name__) in (
+      ...   ('_Proxy',) if HAVE_UNTRUSTED else
+      ...   ('builtin_function_or_method', 'method'))
       True
 
       >>> r = context.evaluate('python: {12: object()}[12].__class__')
