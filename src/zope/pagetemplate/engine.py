@@ -171,7 +171,7 @@ class ZopeContext(ZopeContextBase):
         ...
         >>> zc = ZopeContext(ExpressionEngine, {})
         >>> out = zc.evaluateMacro(expression)
-        >>> out.__class__
+        >>> type(out)
         <type 'list'>
 
         The method does some trivial checking to make sure we are getting
