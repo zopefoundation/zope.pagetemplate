@@ -1,13 +1,13 @@
 Changes
 =======
 
-4.1.1 (unreleased)
+4.2.0 (unreleased)
 ------------------
 
 - Allow short-circuit traversal for non-proxied dict subclasses.  See:
   https://github.com/zopefoundation/zope.pagetemplate/pull/3 .
 
-- Add support for PyPy.
+- Add support for PyPy / PyPy3.
 
 4.1.0 (2014-12-27)
 ------------------
@@ -15,7 +15,6 @@ Changes
 - Add support for Python 3.4.
 
 - Add support for testing on Travis.
-
 
 4.0.4 (2013-03-15)
 ------------------
