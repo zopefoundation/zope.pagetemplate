@@ -1,7 +1,7 @@
 Changes
 =======
 
-4.2.0 (unreleased)
+4.2.0 (2015-06-02)
 ------------------
 
 - Allow short-circuit traversal for non-proxied dict subclasses.  See:
