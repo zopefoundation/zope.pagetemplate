@@ -7,6 +7,7 @@ Changes
 - Allow short-circuit traversal for non-proxied dict subclasses.  See:
   https://github.com/zopefoundation/zope.pagetemplate/pull/3 .
 
+- Add support for PyPy.
 
 4.1.0 (2014-12-27)
 ------------------

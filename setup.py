@@ -70,7 +70,7 @@ TESTS_REQUIRE = [
 
 
 setup(name='zope.pagetemplate',
-      version='4.1.1.dev0',
+      version='4.1.2.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Zope Page Templates',
@@ -99,9 +99,7 @@ setup(name='zope.pagetemplate',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: Implementation :: CPython',
-#          PyPy support needs cleanup of doctests, plus some help from
-#          zope.security.
-#         'Programming Language :: Python :: Implementation :: PyPy',
+          'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
