@@ -15,6 +15,8 @@
 """
 import unittest
 
+from six import u as _u
+
 from zope.pagetemplate.tests import util
 import zope.pagetemplate.pagetemplate
 import zope.component.testing
@@ -204,7 +206,7 @@ class BasicTemplateTests(unittest.TestCase):
         self.t()
 
     def test_unicode_html(self):
-        text = u'<p>\xe4\xf6\xfc\xdf</p>'
+        text = _u('<p>\xe4\xf6\xfc\xdf</p>')
 
         # test with HTML parser
         self.t.pt_edit(text, 'text/html')

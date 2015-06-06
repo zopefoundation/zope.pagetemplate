@@ -145,9 +145,9 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            u"<html><head><title>"
-            u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>")
+            six.u("<html><head><title>"
+                  "\u0422\u0435\u0441\u0442"
+                  "</title></head></html>"))
 
     def test_html_encoding_by_meta(self):
         pt = self.get_pt(
@@ -160,9 +160,9 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            u"<html><head><title>"
-            u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>")
+            six.u("<html><head><title>"
+                  "\u0422\u0435\u0441\u0442"
+                  "</title></head></html>"))
 
     def test_xhtml(self):
         pt = self.get_pt(
@@ -175,9 +175,9 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            u"<html><head><title>"
-            u"\u0422\u0435\u0441\u0442"
-            u"</title></head></html>")
+            six.u("<html><head><title>"
+                  "\u0422\u0435\u0441\u0442"
+                  "</title></head></html>"))
 
 
 

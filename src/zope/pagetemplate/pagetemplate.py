@@ -30,6 +30,8 @@ from zope.pagetemplate.interfaces import IPageTemplateProgram
 from zope.interface import implementer
 from zope.interface import provider
 
+from six import u as _u
+
 _default_options = {}
 
 
@@ -44,7 +46,7 @@ class StringIO(list):
             self.append(value)
 
     def getvalue(self):
-        return u''.join(self)
+        return _u('').join(self)
 
 
 @implementer(IPageTemplateSubclassing)
@@ -250,7 +252,7 @@ class PageTemplateEngine(object):
         self.program = program
 
     def __call__(self, context, macros, **options):
-        output = StringIO(u'')
+        output = StringIO(_u(''))
         interpreter = TALInterpreter(
             self.program, macros, context,
             stream=output, **options
