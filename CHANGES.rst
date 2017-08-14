@@ -1,20 +1,21 @@
-Changes
-=======
+=========
+ Changes
+=========
 
 4.3.0 (unreleased)
-------------------
+==================
 
-- Add support for Python 3.5.
+- Add support for Python 3.5 and 3.6.
 
-- Drop support for Python 2.6 and 3.2.
+- Drop support for Python 2.6, 3.2 and 3.3.
 
 4.2.1 (2015-06-06)
-------------------
+==================
 
 - Add support for Python 3.2.
 
 4.2.0 (2015-06-02)
-------------------
+==================
 
 - Allow short-circuit traversal for non-proxied dict subclasses.  See:
   https://github.com/zopefoundation/zope.pagetemplate/pull/3 .
@@ -22,28 +23,28 @@ Changes
 - Add support for PyPy / PyPy3.
 
 4.1.0 (2014-12-27)
-------------------
+==================
 
 - Add support for Python 3.4.
 
 - Add support for testing on Travis.
 
 4.0.4 (2013-03-15)
-------------------
+==================
 
 - Ensure that ``ZopePythonExpr`` and ``PythonExpr`` are separate classes even
   when ``zope.untrustedpython`` is not available.  Fixes a ZCML conflict error
   in ``zope.app.pagetemplate``.
 
 4.0.3 (2013-02-28)
-------------------
+==================
 
 - Only allow ``zope.untrustedpython`` to be a dependency in Python 2.
 
 - Fix buildout to work properly.
 
 4.0.2 (2013-02-22)
-------------------
+==================
 
 - Migrate from ``zope.security.untrustedpython`` to ``zope.untrustedpython``.
 
@@ -54,14 +55,14 @@ Changes
 - Add support for Python 3.3.
 
 4.0.1 (2012-01-23)
-------------------
+==================
 
 - LP#732972:  PageTemplateTracebackSupplement no longer passes
   ``check_macro_expansion=False`` to old templates which do not
   accept this argument.
 
 4.0.0 (2012-12-13)
-------------------
+==================
 
 - Replace deprecated ``zope.interface.classProvides`` usage with equivalent
   ``zope.interface.provider`` decorator.
@@ -78,12 +79,12 @@ Changes
   avoid LP#732972.
 
 3.6.3 (2011-09-21)
-------------------
+==================
 
 - Fix test assertions to be compatible with ``zope.tal`` 3.6.
 
 3.6.2 (2011-09-21)
-------------------
+==================
 
 - Change interface for engine and program such that the return type of
   the ``cook`` method is a tuple ``(program, macros)``. This follows
@@ -93,12 +94,12 @@ Changes
   ``_v_macros`` volatile attribute which was missing.
 
 3.6.1 (2011-08-23)
-------------------
+==================
 
 - Fix issue with missing default value for ``strictinsert``.
 
 3.6.0 (2011-08-20)
-------------------
+==================
 
 - Replace StringIO stream class with a faster list-based implementation.
 
@@ -108,14 +109,14 @@ Changes
 - Remove ancient copyright from test files (LP: #607228)
 
 3.5.2 (2010-07-08)
-------------------
+==================
 
 - Fix ``PTRuntimeError`` exception messages to be consistent across Python
   versions, and compatibile with the output under Python 2.4.  (More
   readable than the previous output under Python 2.6 as well.)
 
 3.5.1 (2010-04-30)
-------------------
+==================
 
 - Remove use of ``zope.testing.doctestunit`` in favor of stdlib's doctest.
 
@@ -123,7 +124,7 @@ Changes
   module uses it.
 
 3.5.0 (2009-05-25)
-------------------
+==================
 
 - Add test coverage reporting support.
 
@@ -131,7 +132,7 @@ Changes
   ``zope.app.pagetemplate`` package.
 
 3.4.2 (2009-03-17)
-------------------
+==================
 
 - Remove old zpkg-related DEPENDENCIES.cfg file.
 
@@ -141,19 +142,19 @@ Changes
 - Change `cheeseshop` to `pypi` in the packages' homepage url.
 
 3.4.1 (2009-01-27)
-------------------
+==================
 
 - Fix test due to recent changes in zope.tal.
 
 
 3.4.0 (2007-10-02)
-------------------
+==================
 
 - Initial release independent of the Zope 3 tree.
 
 
 3.2.0 (2006-01-05)
-------------------
+==================
 
 - Corresponds to the version of the zope.pagetemplate package shipped
   as part of the Zope 3.2.0 release.
@@ -166,7 +167,7 @@ Changes
 
 
 3.1.0 (2005-10-03)
-------------------
+==================
 
 - Corresponds to the version of the zope.pagetemplate package shipped
   as part of the Zope 3.1.0 release.
@@ -178,7 +179,7 @@ Changes
 
 
 3.0.0 (2004-11-07)
-------------------
+==================
 
 - Corresponds to the version of the zope.pagetemplate package shipped
   as part of the Zope X3.0.0 release.
