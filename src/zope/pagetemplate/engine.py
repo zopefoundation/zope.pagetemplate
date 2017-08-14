@@ -33,7 +33,7 @@ try:
     from zope.untrustedpython import rcompile
     from zope.untrustedpython.builtins import SafeBuiltins
     HAVE_UNTRUSTED = True
-except ImportError:
+except ImportError: # pragma: no cover
     HAVE_UNTRUSTED = False
 
 # PyPy doesn't support assigning to '__builtins__', even when
@@ -41,7 +41,7 @@ except ImportError:
 # so don't try to use it. It won't work.
 if HAVE_UNTRUSTED:
     import platform
-    if platform.python_implementation() == 'PyPy':
+    if platform.python_implementation() == 'PyPy': # pragma: no cover
         HAVE_UNTRUSTED = False
         del rcompile
         del SafeBuiltins
@@ -118,9 +118,14 @@ class ZopePythonExpr(PythonExpr):
         def _compile(self, text, filename):
             return rcompile.compile(text, filename, 'eval')
 
+def _get_iinterpreter():
+    from zope.app.interpreter.interfaces import IInterpreter
+    return IInterpreter # pragma: no cover
 
 class ZopeContextBase(Context):
     """Base class for both trusted and untrusted evaluation contexts."""
+
+    request = None
 
     def translate(self, msgid, domain=None, mapping=None, default=None):
         return translate(msgid, domain, mapping,
@@ -131,24 +136,24 @@ class ZopeContextBase(Context):
     def evaluateCode(self, lang, code):
         if not self.evaluateInlineCode:
             raise InlineCodeError(
-                  _('Inline Code Evaluation is deactivated, which means that '
-                    'you cannot have inline code snippets in your Page '
-                    'Template. Activate Inline Code Evaluation and try again.'))
+                _('Inline Code Evaluation is deactivated, which means that '
+                  'you cannot have inline code snippets in your Page '
+                  'Template. Activate Inline Code Evaluation and try again.'))
 
         # TODO This is only needed when self.evaluateInlineCode is true,
         # so should only be needed for zope.app.pythonpage.
-        from zope.app.interpreter.interfaces import IInterpreter
+        IInterpreter = _get_iinterpreter()
         interpreter = component.queryUtility(IInterpreter, lang)
         if interpreter is None:
             error = _('No interpreter named "${lang_name}" was found.',
                       mapping={'lang_name': lang})
             raise InlineCodeError(error)
 
-        globals = self.vars.copy()
-        result = interpreter.evaluateRawCode(code, globals)
+        globs = self.vars.copy()
+        result = interpreter.evaluateRawCode(code, globs)
         # Add possibly new global variables.
         old_names = self.vars.keys()
-        for name, value in globals.items():
+        for name, value in globs.items():
             if name not in old_names:
                 self.setGlobal(name, value)
         return result
@@ -466,7 +471,7 @@ class TraversableModuleImporter(SimpleModuleImporter):
     def traverse(self, name, further_path):
         try:
             return self[name]
-        except KeyError:
+        except ImportError:
             raise TraversalError(self, name)
 
 

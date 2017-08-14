@@ -20,22 +20,18 @@ import unittest
 import six
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
+class AbstractPTCase(object):
 
-class TypeSniffingTestCase(unittest.TestCase):
-
-    TEMPFILENAME = tempfile.mktemp()
-
-    def tearDown(self):
-        if os.path.exists(self.TEMPFILENAME):
-            os.unlink(self.TEMPFILENAME)
-
-    def get_pt(self, text):
-        f = open(self.TEMPFILENAME, "wb")
-        f.write(text)
-        f.close()
-        pt = PageTemplateFile(self.TEMPFILENAME)
+    def get_pt(self, text=b'<html />'):
+        with tempfile.NamedTemporaryFile(mode='wb', delete=False) as f:
+            f.write(text)
+        self.addCleanup(os.unlink, f.name)
+        pt = PageTemplateFile(f.name)
         pt.read()
         return pt
+
+class TypeSniffingTestCase(AbstractPTCase,
+                           unittest.TestCase):
 
     def check_content_type(self, text, expected_type):
         pt = self.get_pt(text)
@@ -123,17 +119,18 @@ class TypeSniffingTestCase(unittest.TestCase):
     def test_sniffer_html_ascii(self):
         self.check_content_type(
             ("<!DOCTYPE html [ SYSTEM '%s' ]><html></html>"
-            % self.HTML_SYSTEM_ID).encode("utf-8"),
+             % self.HTML_SYSTEM_ID).encode("utf-8"),
             "text/html")
         self.check_content_type(
             b"<html><head><title>sample document</title></head></html>",
             "text/html")
 
-    # TODO: This reflects a case that simply isn't handled by the
-    # sniffer; there are many, but it gets it right more often than
-    # before.
-    def donttest_sniffer_xml_simple(self):
-        self.check_content_type("<doc><element/></doc>",
+    @unittest.expectedFailure
+    def test_sniffer_xml_simple(self):
+        # TODO: This reflects a case that simply isn't handled by the
+        # sniffer; there are many, but it gets it right more often than
+        # before. This case actually returns text/html
+        self.check_content_type(b"<doc><element/></doc>",
                                 "text/xml")
 
     def test_html_default_encoding(self):
@@ -145,9 +142,9 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            six.u("<html><head><title>"
-                  "\u0422\u0435\u0441\u0442"
-                  "</title></head></html>"))
+                         (u"<html><head><title>"
+                          u"\u0422\u0435\u0441\u0442"
+                          u"</title></head></html>"))
 
     def test_html_encoding_by_meta(self):
         pt = self.get_pt(
@@ -160,9 +157,9 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            six.u("<html><head><title>"
-                  "\u0422\u0435\u0441\u0442"
-                  "</title></head></html>"))
+                         (u"<html><head><title>"
+                          u"\u0422\u0435\u0441\u0442"
+                          u"</title></head></html>"))
 
     def test_xhtml(self):
         pt = self.get_pt(
@@ -175,14 +172,51 @@ class TypeSniffingTestCase(unittest.TestCase):
         rendered = pt()
         self.assertTrue(isinstance(rendered, six.text_type))
         self.assertEqual(rendered.strip(),
-            six.u("<html><head><title>"
-                  "\u0422\u0435\u0441\u0442"
-                  "</title></head></html>"))
+                         (u"<html><head><title>"
+                          u"\u0422\u0435\u0441\u0442"
+                          u"</title></head></html>"))
 
 
+class TestPageTemplateFile(AbstractPTCase,
+                           unittest.TestCase):
 
-def test_suite():
-    return unittest.makeSuite(TypeSniffingTestCase)
+    def test_no_such_file(self):
+        with self.assertRaises(ValueError):
+            PageTemplateFile('this file does not exist')
 
-if __name__ == "__main__":
-    unittest.main(defaultTest="test_suite")
+    def test_prefix_str(self):
+        pt = PageTemplateFile(os.path.basename(__file__),
+                              _prefix=os.path.dirname(__file__))
+        self.assertEqual(pt.filename, __file__)
+
+
+    def test_cook_no_debug(self):
+        pt = self.get_pt()
+        pt._v_debug = False
+        pt._cook_check()
+        self.assertTrue(pt._v_last_read)
+        lr = pt._v_last_read
+        pt._cook_check()
+        self.assertEqual(lr, pt._v_last_read)
+
+
+    def test_cook_mtime_fails(self):
+        pt = self.get_pt()
+
+        getmtime = os.path.getmtime
+        def bad(_path):
+            raise OSError()
+        os.path.getmtime = bad
+        try:
+            pt._cook_check()
+        finally:
+            os.path.getmtime = getmtime
+
+        self.assertEqual(0, pt._v_last_read)
+
+    def test_pickle_not_allowed(self):
+        import pickle
+        pt = self.get_pt()
+
+        with self.assertRaises(TypeError):
+            pickle.dumps(pt)

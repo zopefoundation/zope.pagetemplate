@@ -31,15 +31,17 @@ class HTMLTests(unittest.TestCase):
 
     def getProducts(self):
         return [
-           {'description': 'This is the tee for those who LOVE Zope. '
-            'Show your heart on your tee.',
-            'price': 12.99, 'image': 'smlatee.jpg'
+            {
+                'description': ('This is the tee for those who LOVE Zope. '
+                                'Show your heart on your tee.'),
+                'price': 12.99, 'image': 'smlatee.jpg'
             },
-           {'description': 'This is the tee for Jim Fulton. '
-            'He\'s the Zope Pope!',
-            'price': 11.99, 'image': 'smpztee.jpg'
+            {
+                'description': ('This is the tee for Jim Fulton. '
+                                'He\'s the Zope Pope!'),
+                'price': 11.99, 'image': 'smpztee.jpg'
             },
-           ]
+        ]
 
     def test_1(self):
         laf = self.folder.laf
@@ -53,7 +55,7 @@ class HTMLTests(unittest.TestCase):
         t = self.folder.t
         t.write(util.read_input('teeshop2.html'))
         expect = util.read_output('teeshop2.html')
-        out = t(laf = self.folder.laf, getProducts = self.getProducts)
+        out = t(laf=self.folder.laf, getProducts=self.getProducts)
         util.check_html(expect, out)
 
 
@@ -63,7 +65,7 @@ class HTMLTests(unittest.TestCase):
         t = self.folder.t
         t.write(util.read_input('teeshop1.html'))
         expect = util.read_output('teeshop1.html')
-        out = t(laf = self.folder.laf, getProducts = self.getProducts)
+        out = t(laf=self.folder.laf, getProducts=self.getProducts)
         util.check_html(expect, out)
 
     def test_SimpleLoop(self):
@@ -152,7 +154,4 @@ class HTMLTests(unittest.TestCase):
         self.assertFalse(errors)
 
 def test_suite():
-    return unittest.makeSuite(HTMLTests)
-
-if __name__=='__main__':
-    unittest.TextTestRunner().run(test_suite())
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

@@ -30,8 +30,6 @@ from zope.pagetemplate.interfaces import IPageTemplateProgram
 from zope.interface import implementer
 from zope.interface import provider
 
-from six import u as _u
-
 _default_options = {}
 
 
@@ -46,7 +44,7 @@ class StringIO(list):
             self.append(value)
 
     def getvalue(self):
-        return _u('').join(self)
+        return u''.join(self)
 
 
 @implementer(IPageTemplateSubclassing)
@@ -87,11 +85,10 @@ class PageTemplate(object):
     _v_program = None
     _text = ''
 
+    @property
     def macros(self):
         self._cook_check()
         return self._v_macros
-
-    macros = property(macros)
 
     def pt_edit(self, text, content_type):
         if content_type:
@@ -105,7 +102,7 @@ class PageTemplate(object):
                 'options': options,
                 'args': args,
                 'nothing': None,
-                }
+        }
         rval.update(self.pt_getEngine().getBaseNames())
         return rval
 
@@ -145,15 +142,18 @@ class PageTemplate(object):
         if check_macro_expansion:
             try:
                 self.pt_render(namespace, source=1)
-            except:
+            except Exception:
                 return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
 
     def _convert(self, string, text):
         """Adjust the string type to the type of text"""
-        if isinstance(text, six.binary_type):
+        if isinstance(text, six.binary_type) and not isinstance(string, six.binary_type):
             return string.encode('utf-8')
-        else:
-            return string
+
+        if isinstance(text, six.text_type) and not isinstance(string, six.text_type):
+            return string.decode('utf-8')
+
+        return string
 
     def write(self, text):
         # We accept both, since the text can either come from a file (and the
@@ -252,7 +252,7 @@ class PageTemplateEngine(object):
         self.program = program
 
     def __call__(self, context, macros, **options):
-        output = StringIO(_u(''))
+        output = StringIO(u'')
         interpreter = TALInterpreter(
             self.program, macros, context,
             stream=output, **options

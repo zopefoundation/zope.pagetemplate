@@ -9,6 +9,15 @@
 
 - Drop support for Python 2.6, 3.2 and 3.3.
 
+- Certain internal test support objects in the ``tests`` package were
+  removed or modified.
+
+- The ``TraversableModuleImporter`` properly turns ``ImportError``
+  into ``TraversalError``. Previously it was catching ``KeyError``,
+  which cannot be raised.
+
+- Reach 100% code coverage and maintain it through automated testing.
+
 4.2.1 (2015-06-06)
 ==================
 
