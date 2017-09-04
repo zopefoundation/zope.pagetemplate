@@ -25,6 +25,8 @@ import logging
 
 from zope.pagetemplate.pagetemplate import PageTemplate
 
+logger = logging.getLogger(__name__)
+
 DEFAULT_ENCODING = "utf-8"
 
 meta_pattern = re.compile(
@@ -40,10 +42,7 @@ class PageTemplateFile(PageTemplate):
     "Zope wrapper for filesystem Page Template using TAL, TALES, and METAL"
 
     _v_last_read = 0
-
-    #_error_start = b'<!-- Page Template Diagnostics'
-    #_error_end = b'-->'
-    #_newline = b'\n'
+    _v_debug = __debug__
 
     def __init__(self, filename, _prefix=None):
         path = self.get_path_from_prefix(_prefix)
@@ -75,21 +74,18 @@ class PageTemplateFile(PageTemplate):
 
     def _read_file(self):
         __traceback_info__ = self.filename
-        f = open(self.filename, "rb")
-        try:
+        with open(self.filename, "rb") as f:
             text = f.read(XML_PREFIX_MAX_LENGTH)
-        except:
-            f.close()
-            raise
-        type_ = sniff_type(text)
-        text += f.read()
+            type_ = sniff_type(text)
+            text += f.read()
+
         if type_ != "text/xml":
             text, type_ = self._prepare_html(text)
-        f.close()
+
         return text, type_
 
     def _cook_check(self):
-        if self._v_last_read and not __debug__:
+        if self._v_last_read and not self._v_debug:
             return
         __traceback_info__ = self.filename
         try:
@@ -102,8 +98,8 @@ class PageTemplateFile(PageTemplate):
         self.pt_edit(text, type_)
         assert self._v_cooked
         if self._v_errors:
-            logging.error('PageTemplateFile: Error in template %s: %s',
-                    self.filename, '\n'.join(self._v_errors))
+            logger.error('PageTemplateFile: Error in template %s: %s',
+                         self.filename, '\n'.join(self._v_errors))
             return
         self._v_last_read = mtime
 

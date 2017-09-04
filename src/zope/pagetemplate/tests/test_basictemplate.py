@@ -15,8 +15,6 @@
 """
 import unittest
 
-from six import u as _u
-
 from zope.pagetemplate.tests import util
 import zope.pagetemplate.pagetemplate
 import zope.component.testing
@@ -32,26 +30,25 @@ class BasicTemplateTests(unittest.TestCase):
 
     def test_if_in_var(self):
         # DTML test 1: if, in, and var:
-        pass # for unittest
-        """
-        %(comment)[ blah %(comment)]
-        <html><head><title>Test of documentation templates</title></head>
-        <body>
-        %(if args)[
-        <dl><dt>The arguments to this test program were:<p>
-        <dd>
-        <ul>
-        %(in args)[
-          <li>Argument number %(num)d was %(arg)s
-        %(in args)]
-        </ul></dl><p>
-        %(if args)]
-        %(else args)[
-        No arguments were given.<p>
-        %(else args)]
-        And thats da trooth.
-        </body></html>
-        """
+
+        # %(comment)[ blah %(comment)]
+        # <html><head><title>Test of documentation templates</title></head>
+        # <body>
+        # %(if args)[
+        # <dl><dt>The arguments to this test program were:<p>
+        # <dd>
+        # <ul>
+        # %(in args)[
+        #   <li>Argument number %(num)d was %(arg)s
+        # %(in args)]
+        # </ul></dl><p>
+        # %(if args)]
+        # %(else args)[
+        # No arguments were given.<p>
+        # %(else args)]
+        # And thats da trooth.
+        # </body></html>
+
         tal = util.read_input('dtml1.html')
         self.t.write(tal)
 
@@ -88,11 +85,11 @@ class BasicTemplateTests(unittest.TestCase):
         from zope.component import provideUtility
 
         class DummyProgram(object):
-            def __init__(*args):
+            def __init__(self, *args):
                 self.args = args
 
-            def __call__(*args, **kwargs):
-                return self.args, args, kwargs
+            def __call__(self, *args, **kwargs):
+                return self.args, (self,) + args, kwargs
 
         class DummyEngine(object):
             @staticmethod
@@ -102,19 +99,19 @@ class BasicTemplateTests(unittest.TestCase):
         provideUtility(DummyEngine, IPageTemplateEngine)
         self.t._cook()
 
-        self.assertTrue(isinstance(self.t._v_program, DummyProgram))
+        self.assertIsInstance(self.t._v_program, DummyProgram)
         self.assertEqual(self.t._v_macros, "macros")
 
         # "Render" and unpack arguments passed for verification
-        ((cls, source_file, text, engine, content_type),
-         (program, context, macros),
-         options) = \
-         self.t.pt_render({})
+        ((source_file, text, _engine, content_type),
+         (program, _context, macros),
+         options) = self.t.pt_render({})
 
         self.assertEqual(source_file, None)
         self.assertEqual(text, 'foo')
         self.assertEqual(content_type, 'text/html')
-        self.assertTrue(isinstance(program, DummyProgram))
+        self.assertEqual(macros, 'macros')
+        self.assertIsInstance(program, DummyProgram)
         self.assertEqual(options, {
             'tal': True,
             'showtal': False,
@@ -124,43 +121,43 @@ class BasicTemplateTests(unittest.TestCase):
 
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:
-        pass # for unittest
-        """
-          <html><head><title>Test of documentation templates</title></head>
-          <body>
-          <!--#if args-->
-            The arguments were:
-            <!--#in args size=size end=end-->
-                <!--#if previous-sequence-->
-                   (<!--#var previous-sequence-start-arg-->-
-                    <!--#var previous-sequence-end-arg-->)
-                <!--#/if previous-sequence-->
-                <!--#if sequence-start-->
-                   <dl>
-                <!--#/if sequence-start-->
-                <dt><!--#var sequence-arg-->.</dt>
-                <dd>Argument <!--#var num fmt=d--> was <!--#var arg--></dd>
-                <!--#if next-sequence-->
-                   (<!--#var next-sequence-start-arg-->-
-                    <!--#var next-sequence-end-arg-->)
-                <!--#/if next-sequence-->
-            <!--#/in args-->
-            </dl>
-          <!--#else args-->
-            No arguments were given.<p>
-          <!--#/if args-->
-          And I\'m 100% sure!
-          </body></html>
-        """
+
+        #   <html><head><title>Test of documentation templates</title></head>
+        #   <body>
+        #   <!--#if args-->
+        #     The arguments were:
+        #     <!--#in args size=size end=end-->
+        #         <!--#if previous-sequence-->
+        #            (<!--#var previous-sequence-start-arg-->-
+        #             <!--#var previous-sequence-end-arg-->)
+        #         <!--#/if previous-sequence-->
+        #         <!--#if sequence-start-->
+        #            <dl>
+        #         <!--#/if sequence-start-->
+        #         <dt><!--#var sequence-arg-->.</dt>
+        #         <dd>Argument <!--#var num fmt=d--> was <!--#var arg--></dd>
+        #         <!--#if next-sequence-->
+        #            (<!--#var next-sequence-start-arg-->-
+        #             <!--#var next-sequence-end-arg-->)
+        #         <!--#/if next-sequence-->
+        #     <!--#/in args-->
+        #     </dl>
+        #   <!--#else args-->
+        #     No arguments were given.<p>
+        #   <!--#/if args-->
+        #   And I\'m 100% sure!
+        #   </body></html>
+
         tal = util.read_input('dtml3.html')
         self.t.write(tal)
 
-        aa = util.argv(('one', 'two', 'three', 'four', 'five',
-                        'six', 'seven', 'eight', 'nine', 'ten',
-                        'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-                        'sixteen', 'seventeen', 'eighteen', 'nineteen',
-                        'twenty',
-                        ))
+        aa = util.argv((
+            'one', 'two', 'three', 'four', 'five',
+            'six', 'seven', 'eight', 'nine', 'ten',
+            'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
+            'sixteen', 'seventeen', 'eighteen', 'nineteen',
+            'twenty',
+        ))
         from zope.pagetemplate.tests import batch
         o = self.t(content=aa, batch=batch.batch(aa.args, 5))
 
@@ -206,7 +203,7 @@ class BasicTemplateTests(unittest.TestCase):
         self.t()
 
     def test_unicode_html(self):
-        text = _u('<p>\xe4\xf6\xfc\xdf</p>')
+        text = u'<p>\xe4\xf6\xfc\xdf</p>'
 
         # test with HTML parser
         self.t.pt_edit(text, 'text/html')
@@ -216,8 +213,64 @@ class BasicTemplateTests(unittest.TestCase):
         self.t.pt_edit(text, 'text/xml')
         self.assertEqual(self.t().strip(), text)
 
-def test_suite():
-    return unittest.makeSuite(BasicTemplateTests)
+    def test_edit_with_read(self):
+        from io import BytesIO
+        self.t.pt_edit(BytesIO(b"<html/>"), None)
+        self.assertEqual(self.t._text, b'<html/>')
 
-if __name__ == '__main__':
-    unittest.TextTestRunner().run(test_suite())
+    def test_errors(self):
+        self.t._v_cooked = True
+        self.t._v_errors = 1
+        e = self.t.pt_errors(None)
+        self.assertEqual(e, 1)
+
+        self.t._v_errors = ()
+        e = self.t.pt_errors(None)
+        self.assertEqual(e[0], 'Macro expansion failed')
+
+    def test_convert(self):
+        string = u'binary'
+        text = b'binary'
+        self.assertEqual(text, self.t._convert(string, text))
+
+    def test_write_error(self):
+        self.t.write(self.t._error_start + 'stuff' + self.t._error_end + self.t._newline)
+        self.assertEqual(self.t._text, '')
+
+    def test_read_no_expand(self):
+        self.t.expand = False
+        self.t._text = self
+        self.t._v_cooked = True
+
+        self.assertIs(self.t.read(), self)
+
+    def test_read_error_expand(self):
+        self.t.expand = True
+        self.t._text = ''
+        self.t._v_cooked = True
+        text = self.t.read()
+        self.assertIn(self.t._error_start, text)
+        self.assertIn("Macro expansion failed", text)
+
+    def test_macros(self):
+        self.assertEqual(self.t.macros, {})
+
+
+class TestPageTemplateTracebackSupplement(unittest.TestCase):
+
+    def test_errors_old_style(self):
+        class PT(object):
+            def pt_errors(self, ns):
+                return (ns,)
+
+        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(PT(), 'ns')
+
+        self.assertEqual(pts.warnings, ['ns'])
+
+    def test_errors_none(self):
+        class PT(object):
+            def pt_errors(self, ns, check_macro_expansion=False):
+                return None
+
+        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(PT(), 'ns')
+        self.assertEqual(pts.warnings, [])

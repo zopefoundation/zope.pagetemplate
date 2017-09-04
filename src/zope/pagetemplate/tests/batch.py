@@ -20,97 +20,52 @@ class batch(object):
     def __init__(self, sequence, size, start=0, end=0,
                  orphan=3, overlap=0):
 
-        start=start+1
+        start = start + 1
 
-        start,end,sz=opt(start,end,size,orphan,sequence)
+        start, end, sz = opt(start, end, size, orphan, sequence)
 
-        self._last=end-1
-        self._first=start-1
+        self._last = end - 1
+        self._first = start - 1
 
-        self._sequence=sequence
-        self._size=size
-        self._start=start
-        self._end=end
-        self._orphan=orphan
-        self._overlap=overlap
+        self._sequence = sequence
+        self._size = size
+        self._start = start
+        self._end = end
+        self._orphan = orphan
+        self._overlap = overlap
 
-    def previous_sequence(self): return self._first
-
-    def previous_sequence_end_number(self):
-        start,end,spam=opt(0, self._start-1+self._overlap,
-                           self._size, self._orphan, self._sequence)
-        return end
-
-    def previous_sequence_start_number(self):
-        start,end,spam=opt(0, self._start-1+self._overlap,
-                           self._size, self._orphan, self._sequence)
-        return start
-
-    def previous_sequence_end_item(self):
-        start,end,spam=opt(0, self._start-1+self._overlap,
-                           self._size, self._orphan, self._sequence)
-        return self._sequence[end-1]
-
-    def previous_sequence_start_item(self):
-        start,end,spam=opt(0, self._start-1+self._overlap,
-                           self._size, self._orphan, self._sequence)
-        return self._sequence[start-1]
-
-    def next_sequence_end_number(self):
-        start,end,spam=opt(self._end+1-self._overlap, 0,
-                           self._size, self._orphan, self._sequence)
-        return end
-
-    def next_sequence_start_number(self):
-        start,end,spam=opt(self._end+1-self._overlap, 0,
-                           self._size, self._orphan, self._sequence)
-        return start
+    def previous_sequence(self):
+        return self._first
 
     def next_sequence_end_item(self):
-        start,end,spam=opt(self._end+1-self._overlap, 0,
-                           self._size, self._orphan, self._sequence)
+        _start, end, _spam = opt(self._end+1-self._overlap, 0,
+                                 self._size, self._orphan, self._sequence)
         return self._sequence[end-1]
 
     def next_sequence_start_item(self):
-        start,end,spam=opt(self._end+1-self._overlap, 0,
-                           self._size, self._orphan, self._sequence)
+        start, _end, _spam = opt(self._end+1-self._overlap, 0,
+                                 self._size, self._orphan, self._sequence)
         return self._sequence[start-1]
 
-
     def next_sequence(self):
-        try: self._sequence[self._end]
-        except IndexError: return 0
-        else: return 1
+        return self._end < len(self._sequence)
+        # try: self._sequence[self._end]
+        # except IndexError: return 0
+        # else: return 1
 
     def __getitem__(self, index):
-        if index > self._last: raise IndexError(index)
-        return self._sequence[index+self._first]
+        if index > self._last:
+            raise IndexError(index)
+        return self._sequence[index + self._first]
 
-def opt(start,end,size,orphan,sequence):
-    if size < 1:
-        if start > 0 and end > 0 and end >= start:
-            size=end+1-start
-        else: size=7
+def opt(start, end, size, orphan, sequence):
+    assert size >= 1
+    assert start > 0
 
-    if start > 0:
+    start = len(sequence) if start - 1 >= len(sequence) else start
+    assert end <= 0
+    end = start + size - 1
 
-        try: sequence[start-1]
-        except: start=len(sequence)
+    assert end + orphan - 1 < len(sequence)
 
-        if end > 0:
-            if end < start: end=start
-        else:
-            end=start+size-1
-            try: sequence[end+orphan-1]
-            except: end=len(sequence)
-    elif end > 0:
-        try: sequence[end-1]
-        except: end=len(sequence)
-        start=end+1-size
-        if start - 1 < orphan: start=1
-    else:
-        start=1
-        end=start+size-1
-        try: sequence[end+orphan-1]
-        except: end=len(sequence)
-    return start,end,size
+    return start, end, size
