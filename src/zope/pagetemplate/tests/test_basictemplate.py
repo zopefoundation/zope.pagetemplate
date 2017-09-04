@@ -30,7 +30,7 @@ class BasicTemplateTests(unittest.TestCase):
 
     def test_if_in_var(self):
         # DTML test 1: if, in, and var:
-        # """
+
         # %(comment)[ blah %(comment)]
         # <html><head><title>Test of documentation templates</title></head>
         # <body>
@@ -48,7 +48,7 @@ class BasicTemplateTests(unittest.TestCase):
         # %(else args)]
         # And thats da trooth.
         # </body></html>
-        # """
+
         tal = util.read_input('dtml1.html')
         self.t.write(tal)
 
@@ -121,7 +121,7 @@ class BasicTemplateTests(unittest.TestCase):
 
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:
-        # """
+
         #   <html><head><title>Test of documentation templates</title></head>
         #   <body>
         #   <!--#if args-->
@@ -147,7 +147,7 @@ class BasicTemplateTests(unittest.TestCase):
         #   <!--#/if args-->
         #   And I\'m 100% sure!
         #   </body></html>
-        # """
+
         tal = util.read_input('dtml3.html')
         self.t.write(tal)
 
@@ -251,7 +251,6 @@ class BasicTemplateTests(unittest.TestCase):
         text = self.t.read()
         self.assertIn(self.t._error_start, text)
         self.assertIn("Macro expansion failed", text)
-
 
     def test_macros(self):
         self.assertEqual(self.t.macros, {})
