@@ -34,8 +34,7 @@ _default_options = {}
 
 
 class StringIO(list):
-    """Unicode aware append-only version of StringIO.
-    """
+    # Unicode aware append-only version of StringIO.
     write = list.append
 
     def __init__(self, value=None):
@@ -49,25 +48,27 @@ class StringIO(list):
 
 @implementer(IPageTemplateSubclassing)
 class PageTemplate(object):
-    """Page Templates using TAL, TALES, and METAL.
+    """
+    Page Templates using TAL, TALES, and METAL.
 
-    Subclassing
-    -----------
+    **Subclassing**
+
+    This class implements :class:`~zope.pagetemplate.interfaces.IPageTemplateSubclassing`.
 
     The following methods have certain internal responsibilities.
 
-    pt_getContext(**keywords)
+    ``pt_getContext(**keywords)``
         Should ignore keyword arguments that it doesn't care about,
         and construct the namespace passed to the TALES expression
         engine.  This method is free to use the keyword arguments it
         receives.
 
-    pt_render(namespace, source=False, sourceAnnotations=False, showtal=False)
+    ``pt_render(namespace, source=False, sourceAnnotations=False, showtal=False)``
         Responsible the TAL interpreter to perform the rendering.  The
         namespace argument is a mapping which defines the top-level
         namespaces passed to the TALES expression engine.
 
-    __call__(*args, **keywords)
+    ``__call__(*args, **keywords)``
         Calls pt_getContext() to construct the top-level namespace
         passed to the TALES expression engine, then calls pt_render()
         to perform the rendering.
@@ -245,7 +246,11 @@ class PTRuntimeError(RuntimeError):
 @implementer(IPageTemplateProgram)
 @provider(IPageTemplateEngine)
 class PageTemplateEngine(object):
-    """Page template engine that uses the TAL interpreter to render."""
+    """
+    Page template engine that uses the TAL interpreter to render.
+
+    This class implements :class:`zope.pagetemplate.interfaces.IPageTemplateProgram`.
+    """
 
 
     def __init__(self, program):
