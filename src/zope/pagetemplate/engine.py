@@ -179,8 +179,8 @@ class ZopeContext(ZopeContextBase):
         ...
         >>> zc = ZopeContext(ExpressionEngine, {})
         >>> out = zc.evaluateMacro(expression)
-        >>> type(out)
-        <type 'list'>
+        >>> type(out) is list
+        True
 
         The method does some trivial checking to make sure we are getting
         back a macro like we expect: it must be a sequence of sequences, in
