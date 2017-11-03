@@ -271,6 +271,8 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'https://docs.python.org/': None,
+    'https://zopetales.readthedocs.io/en/latest/': None,
+    'https://zopetal.readthedocs.io/en/latest/': None,
 }
 
 autodoc_default_flags = ['members', 'show-inheritance']
