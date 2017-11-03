@@ -170,14 +170,17 @@ class ZopeContext(ZopeContextBase):
         Therefore, this method removes any proxy from the evaluated
         expression.
 
+        >>> from zope.pagetemplate.engine import ZopeContext
+        >>> from zope.tales.tales import ExpressionEngine
+        >>> from zope.security.proxy import ProxyFactory
         >>> output = [('version', 'xxx'), ('mode', 'html'), ('other', 'things')]
         >>> def expression(context):
         ...     return ProxyFactory(output)
         ...
         >>> zc = ZopeContext(ExpressionEngine, {})
         >>> out = zc.evaluateMacro(expression)
-        >>> type(out)
-        <type 'list'>
+        >>> type(out) is list
+        True
 
         The method does some trivial checking to make sure we are getting
         back a macro like we expect: it must be a sequence of sequences, in
@@ -236,11 +239,13 @@ class AdapterNamespaces(object):
       >>> def adapter1(ob):
       ...     return 1
       >>> adapter1.__component_adapts__ = (None,)
+      >>> from zope.traversing.interfaces import IPathAdapter
       >>> provideAdapter(adapter1, None, IPathAdapter, 'a1')
 
     Now, with this adapter in place, we can try out the namespaces:
 
       >>> ob = object()
+      >>> from zope.pagetemplate.engine import AdapterNamespaces
       >>> namespaces = AdapterNamespaces()
       >>> namespace = namespaces['a1']
       >>> namespace(ob)
@@ -301,11 +306,13 @@ class ZopeBaseEngine(ExpressionEngine):
         return context
 
 class ZopeEngine(ZopeBaseEngine):
-    """Untrusted expression engine.
+    """
+    Untrusted expression engine.
 
     This engine does not allow modules to be imported; only modules
     already available may be accessed::
 
+      >>> from zope.pagetemplate.engine import _Engine
       >>> modname = 'zope.pagetemplate.tests.trusted'
       >>> engine = _Engine()
       >>> context = engine.getContext(engine.getBaseNames())
@@ -391,7 +398,7 @@ class ZopeEngine(ZopeBaseEngine):
 
     Note that this engine special-cases dicts during path traversal:
     it traverses only to their items, but not to their attributes
-    (e.g. methods on dicts), because of performance reasons:
+    (e.g. methods on dicts), because of performance reasons::
 
       >>> d = engine.getBaseNames()
       >>> d['adict'] = {'items': 123}
@@ -404,7 +411,7 @@ class ZopeEngine(ZopeBaseEngine):
         ...
       KeyError: 'keys'
 
-    This special-casing also applies to non-proxied dict subclasses:
+    This special-casing also applies to non-proxied dict subclasses::
 
       >>> class TraverserDict(dict):
       ...     def __init__(self):
@@ -433,10 +440,12 @@ class ZopeEngine(ZopeBaseEngine):
             super(ZopeEngine, self).getFunctionNamespace(namespacename))
 
 class TrustedZopeEngine(ZopeBaseEngine):
-    """Trusted expression engine.
+    """
+    Trusted expression engine.
 
     This engine allows modules to be imported::
 
+      >>> from zope.pagetemplate.engine import _TrustedEngine
       >>> modname = 'zope.pagetemplate.tests.trusted'
       >>> engine = _TrustedEngine()
       >>> context = engine.getContext(engine.getBaseNames())
@@ -450,7 +459,7 @@ class TrustedZopeEngine(ZopeBaseEngine):
       True
 
     Since this is trusted code, we can look at whatever is in the
-    module, not just __name__ or what's declared in a security
+    module, not just ``__name__`` or what's declared in a security
     assertion::
 
       >>> m.x

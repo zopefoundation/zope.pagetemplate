@@ -43,14 +43,6 @@ setup(name='zope.pagetemplate',
       long_description=(
           read('README.rst')
           + '\n\n' +
-          '======================\n'
-          'Detailed Documentation\n' +
-          '======================'
-          + '\n\n' +
-          read('src', 'zope', 'pagetemplate', 'architecture.txt')
-          + '\n\n' +
-          read('src', 'zope', 'pagetemplate', 'readme.txt')
-          + '\n\n' +
           read('CHANGES.rst')),
       keywords="zope3 page template",
       classifiers=[
@@ -72,7 +64,7 @@ setup(name='zope.pagetemplate',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope3',
       ],
-      url='http://github.com/zopefoundation/zope.pagetemplate',
+      url='https://github.com/zopefoundation/zope.pagetemplate',
       license='ZPL 2.1',
       packages=find_packages('src'),
       package_dir={'': 'src'},
@@ -86,6 +78,10 @@ setup(name='zope.pagetemplate',
           ],
           'untrusted:python_version == "2.7"': [
               'zope.untrustedpython',
+          ],
+          'docs': [
+              'Sphinx',
+              'repoze.sphinx.autointerface',
           ],
       },
       install_requires=[

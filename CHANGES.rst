@@ -5,7 +5,7 @@
 4.3.1 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Host documentation at https://zopepagetemplate.readthedocs.io/
 
 
 4.3.0 (2017-09-04)

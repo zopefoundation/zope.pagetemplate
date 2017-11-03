@@ -7,3 +7,9 @@ include .travis.yml
 include .coveragerc
 
 recursive-include src *.txt *.html *.pt
+
+recursive-include docs *.rst
+recursive-include docs *.py
+recursive-include docs *.pt
+recursive-include docs Makefile
+recursive-include docs *.bat
