@@ -6,7 +6,7 @@ This document focuses on usage of the Page Templates API.
 
 For information about writing Page Templates documents and using TAL
 and TALES, refer to the `reference documentation
-<https://zope.readthedocs.io/en/latest/zope2book/AppendixC.html>`_ or the
+<https://pagetemplates.readthedocs.io/en/latest/>`_ or the
 `Chameleon documentation
 <https://chameleon.readthedocs.io/en/latest/reference.html>`_ if you
 are using z3c.ptcompat.

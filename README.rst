@@ -30,7 +30,7 @@ Page Templates are based on `a Template Attribute Language
 <https://pypi.python.org/pypi/zope.tal>`_ with expressions provided by
 `TALES <https://pypi.python.org/pypi/zope.tales>`_. For a description
 of their syntax, see `the reference documentation
-<https://zope.readthedocs.io/en/latest/zope2book/AppendixC.html>`_.
+<https://pagetemplates.readthedocs.io/en/latest/>`_.
 
 For detailed documentation on the usage of this package, see
 https://zopepagetemplate.readthedocs.io
