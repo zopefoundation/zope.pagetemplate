@@ -5,8 +5,9 @@
 4.3.1 (unreleased)
 ==================
 
-- Host documentation at https://zopepagetemplate.readthedocs.io/
+- Add support for Python 3.7.
 
+- Host documentation at https://zopepagetemplate.readthedocs.io/
 
 4.3.0 (2017-09-04)
 ==================
