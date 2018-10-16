@@ -21,7 +21,7 @@ import sys
 
 from zope import component
 from zope.interface import implementer
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 from zope.proxy import isProxy
 from zope.traversing.interfaces import IPathAdapter, ITraversable
 from zope.traversing.interfaces import TraversalError

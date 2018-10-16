@@ -86,6 +86,9 @@ class ZopePythonExprTests(unittest.TestCase):
 class TestZopeContext(PlacelessSetup,
                       unittest.TestCase):
 
+    assertRaisesRegex = getattr(unittest.TestCase, 'assertRaisesRegex',
+                                getattr(unittest.TestCase, 'assertRaisesRegexp'))
+
     def _makeOne(self):
         return zope.pagetemplate.engine.ZopeContext(None, {})
 
@@ -95,8 +98,8 @@ class TestZopeContext(PlacelessSetup,
 
     def test_evaluate_error(self):
         ctx = self._makeOne()
-        with self.assertRaisesRegexp(zope.pagetemplate.engine.InlineCodeError,
-                                     "Inline Code Evaluation is deactivated"):
+        with self.assertRaisesRegex(zope.pagetemplate.engine.InlineCodeError,
+                                    "Inline Code Evaluation is deactivated"):
             ctx.evaluateCode('lang', 'code')
 
     def test_evaluate_interpreter_not_importable(self):
@@ -117,8 +120,8 @@ class TestZopeContext(PlacelessSetup,
         ctx.evaluateInlineCode = True
         zope.pagetemplate.engine._get_iinterpreter = mock_get
         try:
-            with self.assertRaisesRegexp(zope.pagetemplate.engine.InlineCodeError,
-                                         "No interpreter named"):
+            with self.assertRaisesRegex(zope.pagetemplate.engine.InlineCodeError,
+                                        "No interpreter named"):
                 ctx.evaluateCode('lang', 'code')
         finally:
             zope.pagetemplate.engine._get_iinterpreter = get

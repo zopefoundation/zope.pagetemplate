@@ -2,11 +2,12 @@
  Changes
 =========
 
-4.5 (unreleased)
-================
+4.5.0 (unreleased)
+==================
 
-- Nothing changed yet.
-
+- Fix DeprecationWarnings for ``ComponentLookupError`` by
+  importing them from ``zope.interface.interfaces``. See `issue 17
+  <https://github.com/zopefoundation/zope.pagetemplate/issues/17>`_.
 
 4.4 (2018-10-05)
 ================
