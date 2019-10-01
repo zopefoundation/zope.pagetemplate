@@ -344,7 +344,7 @@ class ZopeEngine(ZopeBaseEngine):
       >>> r = context.evaluate('python: {12: object()}.values')
       >>> str(type(r).__name__) in (
       ...   ('_Proxy',) if HAVE_UNTRUSTED else
-      ...   ('builtin_function_or_method', 'method'))
+      ...   ('builtin_function_or_method', 'method', 'instancemethod'))
       True
 
       >>> r = context.evaluate('python: {12: object()}[12].__class__')
