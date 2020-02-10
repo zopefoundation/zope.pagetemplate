@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.5.0 (unreleased)
+4.5.0 (2020-02-10)
 ==================
 
 - Add support for Python 3.8.
