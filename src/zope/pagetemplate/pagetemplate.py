@@ -230,10 +230,13 @@ class PageTemplate(object):
                 source_file, self._text, pt_engine, self.content_type)
         except:
             etype, e = sys.exc_info()[:2]
-            self._v_errors = [
-                "Compilation failed",
-                "%s.%s: %s" % (etype.__module__, etype.__name__, e)
-                ]
+            try:
+                self._v_errors = [
+                    "Compilation failed",
+                    "%s.%s: %s" % (etype.__module__, etype.__name__, e)
+                    ]
+            finally:
+                del e
 
         self._v_cooked = 1
 
