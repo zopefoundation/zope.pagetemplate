@@ -5,7 +5,7 @@
 4.6.0 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Avoid traceback reference cycle in ``PageTemplate._cook``.
 
 
 4.5.0 (2020-02-10)
