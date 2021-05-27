@@ -145,10 +145,7 @@ class PageTemplate(object):
                 self.pt_render(namespace, source=1)
             except Exception:
                 return (
-                    'Macro expansion failed',
-                    '%s: %s' %
-                    sys.exc_info()[
-                        :2])
+                    'Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
 
     def _convert(self, string, text):
         """Adjust the string type to the type of text"""
