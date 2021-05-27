@@ -20,6 +20,7 @@ import unittest
 import six
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
+
 class AbstractPTCase(object):
 
     def get_pt(self, text=b'<html />'):
@@ -29,6 +30,7 @@ class AbstractPTCase(object):
         pt = PageTemplateFile(f.name)
         pt.read()
         return pt
+
 
 class TypeSniffingTestCase(AbstractPTCase,
                            unittest.TestCase):
@@ -189,7 +191,6 @@ class TestPageTemplateFile(AbstractPTCase,
                               _prefix=os.path.dirname(__file__))
         self.assertEqual(pt.filename, __file__)
 
-
     def test_cook_no_debug(self):
         pt = self.get_pt()
         pt._v_debug = False
@@ -199,11 +200,11 @@ class TestPageTemplateFile(AbstractPTCase,
         pt._cook_check()
         self.assertEqual(lr, pt._v_last_read)
 
-
     def test_cook_mtime_fails(self):
         pt = self.get_pt()
 
         getmtime = os.path.getmtime
+
         def bad(_path):
             raise OSError()
         os.path.getmtime = bad

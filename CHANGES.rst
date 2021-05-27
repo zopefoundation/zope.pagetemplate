@@ -7,6 +7,8 @@
 
 - Avoid traceback reference cycle in ``PageTemplate._cook``.
 
+- Add support for Python 3.9.
+
 
 4.5.0 (2020-02-10)
 ==================

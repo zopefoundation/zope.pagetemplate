@@ -22,6 +22,7 @@ from zope.pagetemplate.pagetemplate import PageTemplate
 class Folder(object):
     context = property(lambda self: self)
 
+
 class HTMLTests(unittest.TestCase):
 
     def setUp(self):
@@ -57,7 +58,6 @@ class HTMLTests(unittest.TestCase):
         expect = util.read_output('teeshop2.html')
         out = t(laf=self.folder.laf, getProducts=self.getProducts)
         util.check_html(expect, out)
-
 
     def test_3(self):
         self.folder.laf.write(util.read_input('teeshoplaf.html'))
@@ -152,6 +152,7 @@ class HTMLTests(unittest.TestCase):
         # https://bugs.launchpad.net/zope.pagetemplate/+bug/732972
         errors = t.pt_errors(namespace, check_macro_expansion=False)
         self.assertFalse(errors)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

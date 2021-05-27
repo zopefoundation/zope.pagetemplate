@@ -29,19 +29,21 @@ from zope.traversing.adapters import traversePathElement
 from zope.security.proxy import ProxyFactory, removeSecurityProxy
 from zope.i18n import translate
 
-try:
+try:  # pragma: no cover
+    # Until https://github.com/zopefoundation/zope.untrustedpython/issues/2
+    # is fixed Python 3 does not support special handling for untrusted code:
     from zope.untrustedpython import rcompile
     from zope.untrustedpython.builtins import SafeBuiltins
     HAVE_UNTRUSTED = True
-except ImportError: # pragma: no cover
+except ImportError:
     HAVE_UNTRUSTED = False
 
-# PyPy doesn't support assigning to '__builtins__', even when
-# using eval() (http://pypy.readthedocs.org/en/latest/cpython_differences.html),
-# so don't try to use it. It won't work.
-if HAVE_UNTRUSTED:
+# PyPy doesn't support assigning to '__builtins__', even when using eval()
+# (http://pypy.readthedocs.org/en/latest/cpython_differences.html), so don't
+# try to use it. It won't work.
+if HAVE_UNTRUSTED:  # pragma: no cover
     import platform
-    if platform.python_implementation() == 'PyPy': # pragma: no cover
+    if platform.python_implementation() == 'PyPy':
         HAVE_UNTRUSTED = False
         del rcompile
         del SafeBuiltins
@@ -53,8 +55,10 @@ from zope.tales.tales import ExpressionEngine, Context
 
 from zope.pagetemplate.i18n import ZopeMessageFactory as _
 
+
 class InlineCodeError(Exception):
     pass
+
 
 class ZopeTraverser(object):
 
@@ -85,14 +89,18 @@ class ZopeTraverser(object):
             object = self.proxify(object)
         return object
 
+
 zopeTraverser = ZopeTraverser(ProxyFactory)
+
 
 class ZopePathExpr(PathExpr):
 
     def __init__(self, name, expr, engine):
         super(ZopePathExpr, self).__init__(name, expr, engine, zopeTraverser)
 
+
 trustedZopeTraverser = ZopeTraverser()
+
 
 class TrustedZopePathExpr(PathExpr):
 
@@ -118,9 +126,11 @@ class ZopePythonExpr(PythonExpr):
         def _compile(self, text, filename):
             return rcompile.compile(text, filename, 'eval')
 
+
 def _get_iinterpreter():
     from zope.app.interpreter.interfaces import IInterpreter
-    return IInterpreter # pragma: no cover
+    return IInterpreter  # pragma: no cover
+
 
 class ZopeContextBase(Context):
     """Base class for both trusted and untrusted evaluation contexts."""
@@ -173,7 +183,10 @@ class ZopeContext(ZopeContextBase):
         >>> from zope.pagetemplate.engine import ZopeContext
         >>> from zope.tales.tales import ExpressionEngine
         >>> from zope.security.proxy import ProxyFactory
-        >>> output = [('version', 'xxx'), ('mode', 'html'), ('other', 'things')]
+        >>> output = [
+        ...     ('version', 'xxx'),
+        ...     ('mode', 'html'),
+        ...     ('other', 'things')]
         >>> def expression(context):
         ...     return ProxyFactory(output)
         ...
@@ -304,6 +317,7 @@ class ZopeBaseEngine(ExpressionEngine):
             context.context = namespace['context']
 
         return context
+
 
 class ZopeEngine(ZopeBaseEngine):
     """
@@ -439,6 +453,7 @@ class ZopeEngine(ZopeBaseEngine):
         return ProxyFactory(
             super(ZopeEngine, self).getFunctionNamespace(namespacename))
 
+
 class TrustedZopeEngine(ZopeBaseEngine):
     """
     Trusted expression engine.
@@ -498,6 +513,7 @@ def _Engine(engine=None):
 
     return engine
 
+
 def _TrustedEngine(engine=None):
     if engine is None:
         engine = TrustedZopeEngine()
@@ -505,6 +521,7 @@ def _TrustedEngine(engine=None):
     engine.registerType('python', PythonExpr)
     engine.registerBaseName('modules', TraversableModuleImporter())
     return engine
+
 
 def _create_base_engine(engine, pathtype):
     for pt in pathtype._default_type_names:

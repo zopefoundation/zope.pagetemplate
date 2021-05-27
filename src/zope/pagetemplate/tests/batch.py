@@ -14,6 +14,7 @@
 """Batching support tests
 """
 
+
 class batch(object):
     """Create a sequence batch"""
 
@@ -38,14 +39,14 @@ class batch(object):
         return self._first
 
     def next_sequence_end_item(self):
-        _start, end, _spam = opt(self._end+1-self._overlap, 0,
+        _start, end, _spam = opt(self._end + 1 - self._overlap, 0,
                                  self._size, self._orphan, self._sequence)
-        return self._sequence[end-1]
+        return self._sequence[end - 1]
 
     def next_sequence_start_item(self):
-        start, _end, _spam = opt(self._end+1-self._overlap, 0,
+        start, _end, _spam = opt(self._end + 1 - self._overlap, 0,
                                  self._size, self._orphan, self._sequence)
-        return self._sequence[start-1]
+        return self._sequence[start - 1]
 
     def next_sequence(self):
         return self._end < len(self._sequence)
@@ -57,6 +58,7 @@ class batch(object):
         if index > self._last:
             raise IndexError(index)
         return self._sequence[index + self._first]
+
 
 def opt(start, end, size, orphan, sequence):
     assert size >= 1

@@ -34,9 +34,11 @@ meta_pattern = re.compile(
     br'\s+content=["\']?([^;]+);\s*charset=([^"\']+)["\']?\s*/?\s*>\s*',
     re.IGNORECASE)
 
+
 def package_home(gdict):
     filename = gdict["__file__"]
     return os.path.dirname(filename)
+
 
 class PageTemplateFile(PageTemplate):
     "Zope wrapper for filesystem Page Template using TAL, TALES, and METAL"
@@ -109,6 +111,7 @@ class PageTemplateFile(PageTemplate):
     def __getstate__(self):
         raise TypeError("non-picklable object")
 
+
 XML_PREFIXES = [
     b"<?xml",                      # ascii, utf-8
     b"\xef\xbb\xbf<?xml",          # utf-8 w/ byte order mark
@@ -116,9 +119,10 @@ XML_PREFIXES = [
     b"<\0?\0x\0m\0l\0",            # utf-16 little endian
     b"\xfe\xff\0<\0?\0x\0m\0l",    # utf-16 big endian w/ byte order mark
     b"\xff\xfe<\0?\0x\0m\0l\0",    # utf-16 little endian w/ byte order mark
-    ]
+]
 
 XML_PREFIX_MAX_LENGTH = max(map(len, XML_PREFIXES))
+
 
 def sniff_type(text):
     """Return 'text/xml' if text appears to be XML, otherwise return None."""
