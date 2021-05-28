@@ -50,13 +50,14 @@ class IPageTemplate(Interface):
         """Get the template source
         """
 
-    macros = Attribute("An object that implements the ``__getitem__`` "
-                       "protocol (e.g., a :class:`dict`), containing page template macros.")
+    macros = Attribute(
+        "An object that implements the ``__getitem__`` "
+        "protocol (e.g., a :class:`dict`), containing page template macros.")
+
 
 class IPageTemplateSubclassing(IPageTemplate):
     """Behavior that may be overridden or used by subclasses
     """
-
 
     def pt_getContext(**kw):
         """Compute a dictionary of top-level template names
@@ -136,13 +137,14 @@ class IPageTemplateProgram(Interface):
 
         Optional arguments:
 
-        :keyword bool debug: enable debugging output to sys.stderr (off by default).
-        :keyword int wrap: try to wrap attributes on opening tags to this number of
-            column (default: 60).
+        :keyword bool debug: enable debugging output to sys.stderr (off by
+            default).
+        :keyword int wrap: try to wrap attributes on opening tags to this
+            number of column (default: 60).
         :keyword bool metal: enable METAL macro processing (on by default).
         :keyword bool tal: enable TAL processing (on by default).
-        :keyword int showtal: do not strip away TAL directives.  A special value of
-            -1 (which is the default setting) enables showtal when TAL
+        :keyword int showtal: do not strip away TAL directives.  A special
+            value of -1 (which is the default setting) enables showtal when TAL
             processing is disabled, and disables showtal when TAL processing is
             enabled.  Note that you must use 0, 1, or -1; true boolean values
             are not supported (for historical reasons).
@@ -151,6 +153,6 @@ class IPageTemplateProgram(Interface):
             Note that Zope turns this value off by default.
         :keyword int stackLimit: set macro nesting limit (default: 100).
         :keyword bool i18nInterpolate: enable i18n translations (default: on).
-        :keyword bool sourceAnnotations: enable source annotations with HTML comments
-            (default: off).
+        :keyword bool sourceAnnotations: enable source annotations with HTML
+            comments (default: off).
         """

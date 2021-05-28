@@ -19,6 +19,7 @@ from zope.pagetemplate.tests import util
 import zope.pagetemplate.pagetemplate
 import zope.component.testing
 
+
 class BasicTemplateTests(unittest.TestCase):
 
     def setUp(self):
@@ -117,7 +118,7 @@ class BasicTemplateTests(unittest.TestCase):
             'showtal': False,
             'sourceAnnotations': False,
             'strictinsert': 0,
-            })
+        })
 
     def test_batches_and_formatting(self):
         # DTML test 3: batches and formatting:
@@ -234,7 +235,11 @@ class BasicTemplateTests(unittest.TestCase):
         self.assertEqual(text, self.t._convert(string, text))
 
     def test_write_error(self):
-        self.t.write(self.t._error_start + 'stuff' + self.t._error_end + self.t._newline)
+        self.t.write(
+            self.t._error_start +
+            'stuff' +
+            self.t._error_end +
+            self.t._newline)
         self.assertEqual(self.t._text, '')
 
     def test_read_no_expand(self):
@@ -263,7 +268,8 @@ class TestPageTemplateTracebackSupplement(unittest.TestCase):
             def pt_errors(self, ns):
                 return (ns,)
 
-        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(PT(), 'ns')
+        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(
+            PT(), 'ns')
 
         self.assertEqual(pts.warnings, ['ns'])
 
@@ -272,5 +278,6 @@ class TestPageTemplateTracebackSupplement(unittest.TestCase):
             def pt_errors(self, ns, check_macro_expansion=False):
                 return None
 
-        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(PT(), 'ns')
+        pts = zope.pagetemplate.pagetemplate.PageTemplateTracebackSupplement(
+            PT(), 'ns')
         self.assertEqual(pts.warnings, [])

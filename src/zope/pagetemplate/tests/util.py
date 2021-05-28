@@ -20,6 +20,7 @@ import sys
 import unittest
 import zope.pagetemplate.tests
 
+
 class arg(object):
     __allow_access_to_unprotected_subobjects__ = 1
 
@@ -28,6 +29,7 @@ class arg(object):
 
     def __str__(self):
         return str(self.arg)
+
 
 class argv(object):
     __allow_access_to_unprotected_subobjects__ = 1
@@ -40,28 +42,34 @@ class argv(object):
 
     context = property(lambda self: self)
 
+
 class _Test(unittest.TestCase):
 
-    def runTest(self): # pragma: no cover 2.7 compatibility
+    def runTest(self):  # pragma: no cover 2.7 compatibility
         return
+
 
 _assertEqual = _Test().assertEqual
 del _Test
+
 
 def check_html(s1, s2):
     s1 = normalize_html(s1)
     s2 = normalize_html(s2)
     _assertEqual(s1, s2, "HTML Output Changed")
 
+
 def check_xml(s1, s2):
     s1 = normalize_xml(s1)
     s2 = normalize_xml(s2)
     _assertEqual(s1, s2, 'XML Output Changed')
 
+
 def normalize_html(s):
     s = re.sub(r"[ \t]+", " ", s)
     s = re.sub(r"/>", ">", s)
     return s
+
 
 def normalize_xml(s):
     s = re.sub(r"\s+", " ", s)
@@ -70,16 +78,16 @@ def normalize_xml(s):
     return s
 
 
-
-
 here = os.path.dirname(zope.pagetemplate.tests.__file__)
 input_dir = os.path.join(here, 'input')
 output_dir = os.path.join(here, 'output')
+
 
 def read_input(filename):
     filename = os.path.join(input_dir, filename)
     with open(filename, 'r') as f:
         return f.read()
+
 
 def read_output(filename):
     filename = os.path.join(output_dir, filename)

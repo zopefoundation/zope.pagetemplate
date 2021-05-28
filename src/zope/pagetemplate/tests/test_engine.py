@@ -20,6 +20,7 @@ import zope.pagetemplate.engine
 from zope.testing.renormalizing import RENormalizing
 from zope.component.testing import PlacelessSetup
 
+
 class EngineTests(PlacelessSetup,
                   unittest.TestCase):
 
@@ -41,10 +42,12 @@ class EngineTests(PlacelessSetup,
         self.assertEqual(ctx.getValue('request'), 3)
         self.assertEqual(ctx.getValue('context'), 4)
 
+
 class DummyEngine(object):
 
     def getTypes(self):
         return {}
+
 
 class DummyContext(object):
 
@@ -52,6 +55,7 @@ class DummyContext(object):
 
     def __init__(self, **kw):
         self.vars = kw
+
 
 class ZopePythonExprTests(unittest.TestCase):
 
@@ -86,8 +90,12 @@ class ZopePythonExprTests(unittest.TestCase):
 class TestZopeContext(PlacelessSetup,
                       unittest.TestCase):
 
-    assertRaisesRegex = getattr(unittest.TestCase, 'assertRaisesRegex',
-                                getattr(unittest.TestCase, 'assertRaisesRegexp'))
+    assertRaisesRegex = getattr(
+        unittest.TestCase,
+        'assertRaisesRegex',
+        getattr(
+            unittest.TestCase,
+            'assertRaisesRegexp'))
 
     def _makeOne(self):
         return zope.pagetemplate.engine.ZopeContext(None, {})
@@ -111,8 +119,10 @@ class TestZopeContext(PlacelessSetup,
     def test_evaluate_interpreter_not_found(self):
         get = zope.pagetemplate.engine._get_iinterpreter
         from zope import interface
+
         class IInterpreter(interface.Interface):
             pass
+
         def mock_get():
             return IInterpreter
 
@@ -120,8 +130,9 @@ class TestZopeContext(PlacelessSetup,
         ctx.evaluateInlineCode = True
         zope.pagetemplate.engine._get_iinterpreter = mock_get
         try:
-            with self.assertRaisesRegex(zope.pagetemplate.engine.InlineCodeError,
-                                        "No interpreter named"):
+            with self.assertRaisesRegex(
+                    zope.pagetemplate.engine.InlineCodeError,
+                    "No interpreter named"):
                 ctx.evaluateCode('lang', 'code')
         finally:
             zope.pagetemplate.engine._get_iinterpreter = get
@@ -130,8 +141,10 @@ class TestZopeContext(PlacelessSetup,
         get = zope.pagetemplate.engine._get_iinterpreter
         from zope import interface
         from zope import component
+
         class IInterpreter(interface.Interface):
             pass
+
         def mock_get():
             return IInterpreter
 
@@ -167,7 +180,6 @@ class TestTraversableModuleImporter(unittest.TestCase):
         with self.assertRaises(TraversalError):
             tmi.traverse('zope.pagetemplate.engine.DNE', ())
 
-
         with self.assertRaises(TraversalError):
             tmi.traverse('pickle.no_sub_module', ())
 
@@ -201,7 +213,3 @@ def test_suite():
     suite.addTest(doctest.DocTestSuite('zope.pagetemplate.engine',
                                        checker=checker))
     return suite
-
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

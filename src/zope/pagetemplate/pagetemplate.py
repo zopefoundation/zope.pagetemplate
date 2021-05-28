@@ -72,7 +72,7 @@ class PageTemplate(object):
         Calls pt_getContext() to construct the top-level namespace
         passed to the TALES expression engine, then calls pt_render()
         to perform the rendering.
-    """
+    """  # noqa: E501 line too long
 
     _error_start = '<!-- Page Template Diagnostics'
     _error_end = '-->'
@@ -103,7 +103,7 @@ class PageTemplate(object):
                 'options': options,
                 'args': args,
                 'nothing': None,
-        }
+                }
         rval.update(self.pt_getEngine().getBaseNames())
         return rval
 
@@ -123,7 +123,7 @@ class PageTemplate(object):
 
         __traceback_supplement__ = (
             PageTemplateTracebackSupplement, self, namespace
-            )
+        )
 
         if self._v_errors:
             raise PTRuntimeError(str(self._v_errors))
@@ -133,7 +133,7 @@ class PageTemplate(object):
         return self._v_program(
             context, self._v_macros, tal=not source, showtal=showtal,
             strictinsert=0, sourceAnnotations=sourceAnnotations
-            )
+        )
 
     def pt_errors(self, namespace, check_macro_expansion=True):
         self._cook_check()
@@ -144,14 +144,23 @@ class PageTemplate(object):
             try:
                 self.pt_render(namespace, source=1)
             except Exception:
-                return ('Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
+                return (
+                    'Macro expansion failed', '%s: %s' % sys.exc_info()[:2])
 
     def _convert(self, string, text):
         """Adjust the string type to the type of text"""
-        if isinstance(text, six.binary_type) and not isinstance(string, six.binary_type):
+        if isinstance(
+                text,
+                six.binary_type) and not isinstance(
+                string,
+                six.binary_type):
             return string.encode('utf-8')
 
-        if isinstance(text, six.text_type) and not isinstance(string, six.text_type):
+        if isinstance(
+                text,
+                six.text_type) and not isinstance(
+                string,
+                six.text_type):
             return string.decode('utf-8')
 
         return string
@@ -182,6 +191,7 @@ class PageTemplate(object):
     def read(self, request=None):
         """Gets the source, sometimes with macros expanded."""
         self._cook_check()
+
         def bs(s):
             """Bytes or str"""
             return self._convert(s, self._text)
@@ -194,14 +204,14 @@ class PageTemplate(object):
                 # this point, since we are not evaluating the template.
                 context = self.pt_getContext(self, request)
                 return self.pt_render(context, source=1)
-            except:
+            except BaseException:
                 return (bs('%s\n Macro expansion failed\n %s\n-->\n' %
-                           (self._error_start, "%s: %s" % sys.exc_info()[:2])) +
-                        self._text)
+                           (self._error_start, "%s: %s" %
+                            sys.exc_info()[:2])) + self._text)
 
         return bs('%s\n %s\n-->\n' % (self._error_start,
                                       '\n'.join(self._v_errors))) + \
-               self._text
+            self._text
 
     def pt_source_file(self):
         """To be overridden."""
@@ -225,16 +235,16 @@ class PageTemplate(object):
         try:
             engine = queryUtility(
                 IPageTemplateEngine, default=PageTemplateEngine
-                )
+            )
             self._v_program, self._v_macros = engine.cook(
                 source_file, self._text, pt_engine, self.content_type)
-        except:
+        except BaseException:
             etype, e = sys.exc_info()[:2]
             try:
                 self._v_errors = [
                     "Compilation failed",
                     "%s.%s: %s" % (etype.__module__, etype.__name__, e)
-                    ]
+                ]
             finally:
                 del e
 
@@ -252,9 +262,9 @@ class PageTemplateEngine(object):
     """
     Page template engine that uses the TAL interpreter to render.
 
-    This class implements :class:`zope.pagetemplate.interfaces.IPageTemplateProgram`.
+    This class implements
+    :class:`zope.pagetemplate.interfaces.IPageTemplateProgram`.
     """
-
 
     def __init__(self, program):
         self.program = program
@@ -264,7 +274,7 @@ class PageTemplateEngine(object):
         interpreter = TALInterpreter(
             self.program, macros, context,
             stream=output, **options
-            )
+        )
         interpreter()
         return output.getvalue()
 
@@ -283,7 +293,7 @@ class PageTemplateEngine(object):
         return cls(program), macros
 
 
-#@implementer(ITracebackSupplement)
+# @implementer(ITracebackSupplement)
 class PageTemplateTracebackSupplement(object):
 
     def __init__(self, pt, namespace):

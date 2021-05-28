@@ -58,6 +58,7 @@ setup(name='zope.pagetemplate',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8',
+          'Programming Language :: Python :: 3.9',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
@@ -99,4 +100,4 @@ setup(name='zope.pagetemplate',
       include_package_data=True,
       zip_safe=False,
       tests_require=TESTS_REQUIRE,
-)
+      )
