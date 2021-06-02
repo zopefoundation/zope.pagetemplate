@@ -73,13 +73,8 @@ setup(name='zope.pagetemplate',
       namespace_packages=['zope'],
       extras_require={
           'test': TESTS_REQUIRE,
-          'test:python_version == "2.7"': [
-              'zope.untrustedpython',
-          ],
           'untrusted': [
-          ],
-          'untrusted:python_version == "2.7"': [
-              'zope.untrustedpython',
+              'zope.untrustedpython >= 5.0.dev0',
           ],
           'docs': [
               'Sphinx',

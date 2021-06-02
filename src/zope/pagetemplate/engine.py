@@ -29,13 +29,17 @@ from zope.traversing.adapters import traversePathElement
 from zope.security.proxy import ProxyFactory, removeSecurityProxy
 from zope.i18n import translate
 
-try:  # pragma: no cover
-    # Until https://github.com/zopefoundation/zope.untrustedpython/issues/2
-    # is fixed Python 3 does not support special handling for untrusted code:
+try:
+    # The ``untrusted`` extra is needed to have zope.untrustedpython:
     from zope.untrustedpython import rcompile
     from zope.untrustedpython.builtins import SafeBuiltins
+
+    def guarded_getitem(ob, index):
+        """getitem access which gets guarded in the next line."""
+        return ob[index]
+    guarded_getitem = ProxyFactory(guarded_getitem)
     HAVE_UNTRUSTED = True
-except ImportError:
+except ImportError:   # pragma: no cover
     HAVE_UNTRUSTED = False
 
 # PyPy doesn't support assigning to '__builtins__', even when using eval()
@@ -121,6 +125,8 @@ class ZopePythonExpr(PythonExpr):
         def __call__(self, econtext):
             __traceback_info__ = self.text
             vars = self._bind_used_names(econtext, SafeBuiltins)
+            vars['_getattr_'] = SafeBuiltins.getattr
+            vars['_getitem_'] = guarded_getitem
             return eval(self._code, vars)
 
         def _compile(self, text, filename):
@@ -356,14 +362,15 @@ class ZopeEngine(ZopeBaseEngine):
     wrapped in security proxies if the 'untrusted' extra is installed::
 
       >>> r = context.evaluate('python: {12: object()}.values')
-      >>> str(type(r).__name__) in (
-      ...   ('_Proxy',) if HAVE_UNTRUSTED else
-      ...   ('builtin_function_or_method', 'method', 'instancemethod'))
+      >>> str(type(r).__name__) if HAVE_UNTRUSTED else '_Proxy'
+      '_Proxy'
+      >>> ((str(type(r).__name__) in ('method', 'instancemethod'))
+      ... if not HAVE_UNTRUSTED else True)
       True
 
-      >>> r = context.evaluate('python: {12: object()}[12].__class__')
-      >>> str(type(r).__name__) == '_Proxy' or not HAVE_UNTRUSTED
-      True
+      >>> r = context.evaluate('python: {12: (1, 2, 3)}[12]')
+      >>> str(type(r).__name__) if HAVE_UNTRUSTED else '_Proxy'
+      '_Proxy'
 
     General path expressions provide objects that are wrapped in
     security proxies as well::
