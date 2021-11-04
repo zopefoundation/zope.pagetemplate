@@ -2,7 +2,7 @@
  Changes
 =========
 
-4.6.0 (unreleased)
+4.6.0 (2021-11-04)
 ==================
 
 - Avoid traceback reference cycle in ``PageTemplate._cook``.
