@@ -5,12 +5,16 @@
 5.0.0 (unreleased)
 ==================
 
-- Avoid traceback reference cycle in ``PageTemplate._cook``.
-
-- Add support for Python 3.9.
-
 - Add support for ``zope.untrustedpython`` on Python 3. With it, Python
   expressions are now protected. It is activated using the ``untrusted`` extra.
+
+
+4.6.0 (2021-11-04)
+==================
+
+- Avoid traceback reference cycle in ``PageTemplate._cook``.
+
+- Add support for Python 3.9 and 3.10.
 
 
 4.5.0 (2020-02-10)
