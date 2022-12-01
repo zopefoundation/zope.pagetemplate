@@ -19,15 +19,19 @@ __docformat__ = 'restructuredtext'
 
 import sys
 
-from zope import component
+from zope.i18n import translate
 from zope.interface import implementer
 from zope.interface.interfaces import ComponentLookupError
 from zope.proxy import isProxy
-from zope.traversing.interfaces import IPathAdapter, ITraversable
-from zope.traversing.interfaces import TraversalError
+from zope.security.proxy import ProxyFactory
+from zope.security.proxy import removeSecurityProxy
 from zope.traversing.adapters import traversePathElement
-from zope.security.proxy import ProxyFactory, removeSecurityProxy
-from zope.i18n import translate
+from zope.traversing.interfaces import IPathAdapter
+from zope.traversing.interfaces import ITraversable
+from zope.traversing.interfaces import TraversalError
+
+from zope import component
+
 
 try:  # pragma: no cover
     # Until https://github.com/zopefoundation/zope.untrustedpython/issues/2
@@ -48,10 +52,14 @@ if HAVE_UNTRUSTED:  # pragma: no cover
         del rcompile
         del SafeBuiltins
 
-from zope.tales.expressions import PathExpr, StringExpr, NotExpr, DeferExpr
+from zope.tales.expressions import DeferExpr
+from zope.tales.expressions import NotExpr
+from zope.tales.expressions import PathExpr
 from zope.tales.expressions import SimpleModuleImporter
+from zope.tales.expressions import StringExpr
 from zope.tales.pythonexpr import PythonExpr
-from zope.tales.tales import ExpressionEngine, Context
+from zope.tales.tales import Context
+from zope.tales.tales import ExpressionEngine
 
 from zope.pagetemplate.i18n import ZopeMessageFactory as _
 

@@ -15,8 +15,8 @@
 """
 import unittest
 
-from zope.pagetemplate.tests import util
 from zope.pagetemplate.pagetemplate import PageTemplate
+from zope.pagetemplate.tests import util
 
 
 class Folder(object):

@@ -16,9 +16,11 @@
 import doctest
 import re
 import unittest
-import zope.pagetemplate.engine
-from zope.testing.renormalizing import RENormalizing
+
 from zope.component.testing import PlacelessSetup
+from zope.testing.renormalizing import RENormalizing
+
+import zope.pagetemplate.engine
 
 
 class EngineTests(PlacelessSetup,
@@ -48,6 +50,13 @@ class DummyEngine(object):
     def getTypes(self):
         return {}
 
+    def getCompilerError(self):
+        # This is only here to get meaningful errors if RestrictedPython denies
+        # execution of some code.
+        def get_error(text):  # pragma: no cover
+            raise RuntimeError(text)  # pragma: no cover
+        return get_error  # pragma: no cover
+
 
 class DummyContext(object):
 
@@ -73,8 +82,9 @@ class ZopePythonExprTests(unittest.TestCase):
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
     def test_forbidden_module_name(self):
-        from zope.pagetemplate.engine import ZopePythonExpr
         from zope.security.interfaces import Forbidden
+
+        from zope.pagetemplate.engine import ZopePythonExpr
         expr = ZopePythonExpr('python', '__import__("sys").exit',
                               DummyEngine())
         self.assertRaises(Forbidden, expr, DummyContext())
@@ -139,8 +149,8 @@ class TestZopeContext(PlacelessSetup,
 
     def test_evaluate_interpreter_found(self):
         get = zope.pagetemplate.engine._get_iinterpreter
-        from zope import interface
         from zope import component
+        from zope import interface
 
         class IInterpreter(interface.Interface):
             pass
