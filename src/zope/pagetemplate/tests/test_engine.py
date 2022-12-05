@@ -89,14 +89,6 @@ class ZopePythonExprTests(unittest.TestCase):
         self.assertIn(
             '"__import__" is an invalid variable', str(err.exception))
 
-    def test_forbidden_module_name(self):
-        from zope.security.interfaces import Forbidden
-
-        from zope.pagetemplate.engine import ZopePythonExpr
-        expr = ZopePythonExpr('python', '__import__("sys").exit',
-                              DummyEngine())
-        self.assertRaises(Forbidden, expr, DummyContext())
-
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
     def test_disallowed_builtin(self):
