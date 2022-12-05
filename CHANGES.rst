@@ -8,6 +8,8 @@
 - Add support for ``zope.untrustedpython`` on Python 3. With it, Python
   expressions are now protected. It is activated using the ``untrusted`` extra.
 
+- Add support for Python 3.11.
+
 
 4.6.0 (2021-11-04)
 ==================

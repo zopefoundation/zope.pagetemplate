@@ -18,12 +18,13 @@ Zope object encapsulating a Page Template from the filesystem.
 
 __all__ = ("PageTemplateFile",)
 
-import os
-import sys
-import re
 import logging
+import os
+import re
+import sys
 
 from zope.pagetemplate.pagetemplate import PageTemplate
+
 
 logger = logging.getLogger(__name__)
 

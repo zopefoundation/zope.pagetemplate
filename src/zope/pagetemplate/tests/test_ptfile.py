@@ -18,6 +18,7 @@ import tempfile
 import unittest
 
 import six
+
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
 

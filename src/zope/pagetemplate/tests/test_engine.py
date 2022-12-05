@@ -16,9 +16,11 @@
 import doctest
 import re
 import unittest
-import zope.pagetemplate.engine
-from zope.testing.renormalizing import RENormalizing
+
 from zope.component.testing import PlacelessSetup
+from zope.testing.renormalizing import RENormalizing
+
+import zope.pagetemplate.engine
 
 
 class EngineTests(PlacelessSetup,
@@ -49,7 +51,7 @@ class DummyEngine(object):
         return {}
 
     def getCompilerError(self):
-        return SyntaxError
+        return SyntaxError  # pragma: no cover
 
 
 class DummyContext(object):
@@ -86,6 +88,14 @@ class ZopePythonExprTests(unittest.TestCase):
             ZopePythonExpr('python', '__import__("sys")', DummyEngine())
         self.assertIn(
             '"__import__" is an invalid variable', str(err.exception))
+
+    def test_forbidden_module_name(self):
+        from zope.security.interfaces import Forbidden
+
+        from zope.pagetemplate.engine import ZopePythonExpr
+        expr = ZopePythonExpr('python', '__import__("sys").exit',
+                              DummyEngine())
+        self.assertRaises(Forbidden, expr, DummyContext())
 
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
@@ -147,8 +157,8 @@ class TestZopeContext(PlacelessSetup,
 
     def test_evaluate_interpreter_found(self):
         get = zope.pagetemplate.engine._get_iinterpreter
-        from zope import interface
         from zope import component
+        from zope import interface
 
         class IInterpreter(interface.Interface):
             pass

@@ -16,19 +16,22 @@
 HTML- and XML-based template objects using TAL, TALES, and METAL.
 """
 import sys
+
 import six
-from zope.tal.talparser import TALParser
+
+from zope.component import queryUtility
+from zope.interface import implementer
+from zope.interface import provider
 from zope.tal.htmltalparser import HTMLTALParser
 from zope.tal.talgenerator import TALGenerator
 from zope.tal.talinterpreter import TALInterpreter
+from zope.tal.talparser import TALParser
 from zope.tales.engine import Engine
-from zope.component import queryUtility
 
-from zope.pagetemplate.interfaces import IPageTemplateSubclassing
 from zope.pagetemplate.interfaces import IPageTemplateEngine
 from zope.pagetemplate.interfaces import IPageTemplateProgram
-from zope.interface import implementer
-from zope.interface import provider
+from zope.pagetemplate.interfaces import IPageTemplateSubclassing
+
 
 _default_options = {}
 

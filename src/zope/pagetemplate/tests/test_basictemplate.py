@@ -15,9 +15,10 @@
 """
 import unittest
 
-from zope.pagetemplate.tests import util
-import zope.pagetemplate.pagetemplate
 import zope.component.testing
+
+import zope.pagetemplate.pagetemplate
+from zope.pagetemplate.tests import util
 
 
 class BasicTemplateTests(unittest.TestCase):
@@ -82,8 +83,9 @@ class BasicTemplateTests(unittest.TestCase):
         output = self.t.pt_render({})
         self.assertEqual(output, 'foo')
 
-        from zope.pagetemplate.interfaces import IPageTemplateEngine
         from zope.component import provideUtility
+
+        from zope.pagetemplate.interfaces import IPageTemplateEngine
 
         class DummyProgram(object):
             def __init__(self, *args):
