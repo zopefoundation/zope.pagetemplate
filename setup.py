@@ -40,7 +40,7 @@ TESTS_REQUIRE = [
 setup(name='zope.pagetemplate',
       version='5.0.dev0',
       author='Zope Foundation and Contributors',
-      author_email='zope-dev@zope.org',
+      author_email='zope-dev@zope.dev',
       description='Zope Page Templates',
       long_description=(
           read('README.rst')
@@ -71,15 +71,10 @@ setup(name='zope.pagetemplate',
       packages=find_packages('src'),
       package_dir={'': 'src'},
       namespace_packages=['zope'],
+      python_requires='>=3.7',
       extras_require={
           'test': TESTS_REQUIRE,
-          'test:python_version == "2.7"': [
-              'zope.untrustedpython',
-          ],
           'untrusted': [
-          ],
-          'untrusted:python_version == "2.7"': [
-              'zope.untrustedpython',
           ],
           'docs': [
               'Sphinx',
@@ -88,7 +83,6 @@ setup(name='zope.pagetemplate',
       },
       install_requires=[
           'setuptools',
-          'six',
           'zope.interface',
           'zope.component',
           'zope.tales',

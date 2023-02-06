@@ -13,7 +13,6 @@
 ##############################################################################
 """Utilities
 """
-from __future__ import print_function
 
 import os
 import re
@@ -23,7 +22,7 @@ import unittest
 import zope.pagetemplate.tests
 
 
-class arg(object):
+class arg:
     __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, nn, aa):
@@ -33,7 +32,7 @@ class arg(object):
         return str(self.arg)
 
 
-class argv(object):
+class argv:
     __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, argv=None):
@@ -45,14 +44,7 @@ class argv(object):
     context = property(lambda self: self)
 
 
-class _Test(unittest.TestCase):
-
-    def runTest(self):  # pragma: no cover 2.7 compatibility
-        return
-
-
-_assertEqual = _Test().assertEqual
-del _Test
+_assertEqual = unittest.TestCase().assertEqual
 
 
 def check_html(s1, s2):
@@ -87,11 +79,11 @@ output_dir = os.path.join(here, 'output')
 
 def read_input(filename):
     filename = os.path.join(input_dir, filename)
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         return f.read()
 
 
 def read_output(filename):
     filename = os.path.join(output_dir, filename)
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         return f.read()

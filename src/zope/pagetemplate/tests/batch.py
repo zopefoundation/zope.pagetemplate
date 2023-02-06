@@ -15,7 +15,7 @@
 """
 
 
-class batch(object):
+class batch:
     """Create a sequence batch"""
 
     def __init__(self, sequence, size, start=0, end=0,
