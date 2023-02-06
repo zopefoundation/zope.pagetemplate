@@ -7,6 +7,8 @@
 
 - Add support for Python 3.11.
 
+- Drop support for Python 2.7, 3.5, 3.6.
+
 
 4.6.0 (2021-11-04)
 ==================
