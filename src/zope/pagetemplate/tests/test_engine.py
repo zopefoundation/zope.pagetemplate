@@ -16,9 +16,11 @@
 import doctest
 import re
 import unittest
-import zope.pagetemplate.engine
-from zope.testing.renormalizing import RENormalizing
+
 from zope.component.testing import PlacelessSetup
+from zope.testing.renormalizing import RENormalizing
+
+import zope.pagetemplate.engine
 
 
 class EngineTests(PlacelessSetup,
@@ -43,13 +45,20 @@ class EngineTests(PlacelessSetup,
         self.assertEqual(ctx.getValue('context'), 4)
 
 
-class DummyEngine(object):
+class DummyEngine:
 
     def getTypes(self):
         return {}
 
+    def getCompilerError(self):
+        # This is only here to get meaningful errors if RestrictedPython denies
+        # execution of some code.
+        def get_error(text):  # pragma: no cover
+            raise RuntimeError(text)  # pragma: no cover
+        return get_error  # pragma: no cover
 
-class DummyContext(object):
+
+class DummyContext:
 
     _engine = DummyEngine()
 
@@ -73,8 +82,9 @@ class ZopePythonExprTests(unittest.TestCase):
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
     def test_forbidden_module_name(self):
-        from zope.pagetemplate.engine import ZopePythonExpr
         from zope.security.interfaces import Forbidden
+
+        from zope.pagetemplate.engine import ZopePythonExpr
         expr = ZopePythonExpr('python', '__import__("sys").exit',
                               DummyEngine())
         self.assertRaises(Forbidden, expr, DummyContext())
@@ -139,8 +149,8 @@ class TestZopeContext(PlacelessSetup,
 
     def test_evaluate_interpreter_found(self):
         get = zope.pagetemplate.engine._get_iinterpreter
-        from zope import interface
         from zope import component
+        from zope import interface
 
         class IInterpreter(interface.Interface):
             pass
@@ -149,7 +159,7 @@ class TestZopeContext(PlacelessSetup,
             return IInterpreter
 
         @interface.implementer(IInterpreter)
-        class Interpreter(object):
+        class Interpreter:
             def evaluateRawCode(self, code, globs):
                 globs['new'] = code
                 return 42
@@ -198,15 +208,9 @@ class TestAppPT(unittest.TestCase):
 def test_suite():
 
     checker = RENormalizing([
-        # Python 3 includes module name in exceptions
-        (re.compile(r"zope.security.interfaces.ForbiddenAttribute"),
-         "ForbiddenAttribute"),
-        (re.compile(r"<class 'zope.security._proxy._Proxy'>"),
-         "<type 'zope.security._proxy._Proxy'>"),
-        (re.compile(r"<class 'list'>"), "<type 'list'>"),
         # PyPy/pure-Python implementation
         (re.compile(r"<class 'zope.security.proxy.ProxyPy'>"),
-         "<type 'zope.security._proxy._Proxy'>"),
+         "<class 'zope.security._proxy._Proxy'>"),
     ])
 
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)

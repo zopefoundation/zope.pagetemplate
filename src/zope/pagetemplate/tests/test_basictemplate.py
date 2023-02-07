@@ -15,9 +15,10 @@
 """
 import unittest
 
-from zope.pagetemplate.tests import util
-import zope.pagetemplate.pagetemplate
 import zope.component.testing
+
+import zope.pagetemplate.pagetemplate
+from zope.pagetemplate.tests import util
 
 
 class BasicTemplateTests(unittest.TestCase):
@@ -82,17 +83,18 @@ class BasicTemplateTests(unittest.TestCase):
         output = self.t.pt_render({})
         self.assertEqual(output, 'foo')
 
-        from zope.pagetemplate.interfaces import IPageTemplateEngine
         from zope.component import provideUtility
 
-        class DummyProgram(object):
+        from zope.pagetemplate.interfaces import IPageTemplateEngine
+
+        class DummyProgram:
             def __init__(self, *args):
                 self.args = args
 
             def __call__(self, *args, **kwargs):
                 return self.args, (self,) + args, kwargs
 
-        class DummyEngine(object):
+        class DummyEngine:
             @staticmethod
             def cook(*args):
                 return DummyProgram(*args), "macros"
@@ -204,7 +206,7 @@ class BasicTemplateTests(unittest.TestCase):
         self.t()
 
     def test_unicode_html(self):
-        text = u'<p>\xe4\xf6\xfc\xdf</p>'
+        text = '<p>\xe4\xf6\xfc\xdf</p>'
 
         # test with HTML parser
         self.t.pt_edit(text, 'text/html')
@@ -230,7 +232,7 @@ class BasicTemplateTests(unittest.TestCase):
         self.assertEqual(e[0], 'Macro expansion failed')
 
     def test_convert(self):
-        string = u'binary'
+        string = 'binary'
         text = b'binary'
         self.assertEqual(text, self.t._convert(string, text))
 
@@ -264,7 +266,7 @@ class BasicTemplateTests(unittest.TestCase):
 class TestPageTemplateTracebackSupplement(unittest.TestCase):
 
     def test_errors_old_style(self):
-        class PT(object):
+        class PT:
             def pt_errors(self, ns):
                 return (ns,)
 
@@ -274,7 +276,7 @@ class TestPageTemplateTracebackSupplement(unittest.TestCase):
         self.assertEqual(pts.warnings, ['ns'])
 
     def test_errors_none(self):
-        class PT(object):
+        class PT:
             def pt_errors(self, ns, check_macro_expansion=False):
                 return None
 

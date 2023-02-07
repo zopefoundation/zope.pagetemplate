@@ -17,11 +17,10 @@ import os
 import tempfile
 import unittest
 
-import six
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 
 
-class AbstractPTCase(object):
+class AbstractPTCase:
 
     def get_pt(self, text=b'<html />'):
         with tempfile.NamedTemporaryFile(mode='wb', delete=False) as f:
@@ -142,11 +141,11 @@ class TypeSniffingTestCase(AbstractPTCase,
             b"\xd0\xa2\xd0\xb5\xd1\x81\xd1\x82"
             b"</title></head></html>")
         rendered = pt()
-        self.assertTrue(isinstance(rendered, six.text_type))
+        self.assertTrue(isinstance(rendered, str))
         self.assertEqual(rendered.strip(),
-                         (u"<html><head><title>"
-                          u"\u0422\u0435\u0441\u0442"
-                          u"</title></head></html>"))
+                         ("<html><head><title>"
+                          "\u0422\u0435\u0441\u0442"
+                          "</title></head></html>"))
 
     def test_html_encoding_by_meta(self):
         pt = self.get_pt(
@@ -157,11 +156,11 @@ class TypeSniffingTestCase(AbstractPTCase,
             b' content="text/html; charset=windows-1251">'
             b"</head></html>")
         rendered = pt()
-        self.assertTrue(isinstance(rendered, six.text_type))
+        self.assertTrue(isinstance(rendered, str))
         self.assertEqual(rendered.strip(),
-                         (u"<html><head><title>"
-                          u"\u0422\u0435\u0441\u0442"
-                          u"</title></head></html>"))
+                         ("<html><head><title>"
+                          "\u0422\u0435\u0441\u0442"
+                          "</title></head></html>"))
 
     def test_xhtml(self):
         pt = self.get_pt(
@@ -172,11 +171,11 @@ class TypeSniffingTestCase(AbstractPTCase,
             b' content="text/html; charset=windows-1251"/>'
             b"</head></html>")
         rendered = pt()
-        self.assertTrue(isinstance(rendered, six.text_type))
+        self.assertTrue(isinstance(rendered, str))
         self.assertEqual(rendered.strip(),
-                         (u"<html><head><title>"
-                          u"\u0422\u0435\u0441\u0442"
-                          u"</title></head></html>"))
+                         ("<html><head><title>"
+                          "\u0422\u0435\u0441\u0442"
+                          "</title></head></html>"))
 
 
 class TestPageTemplateFile(AbstractPTCase,
