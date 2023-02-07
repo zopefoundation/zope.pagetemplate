@@ -170,7 +170,7 @@ class PageTemplate:
         # We accept both, since the text can either come from a file (and the
         # parser will take care of the encoding) or from a TTW template, in
         # which case we already have unicode.
-        assert isinstance(text, ((str,), bytes))
+        assert isinstance(text, (str, bytes))
 
         def bs(s):
             """Bytes or str"""
