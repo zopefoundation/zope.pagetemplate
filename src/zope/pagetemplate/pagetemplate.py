@@ -210,8 +210,8 @@ class PageTemplate:
                            (self._error_start, "%s: %s" %
                             sys.exc_info()[:2])) + self._text)
 
-        return bs('{}\n {}\n-->\n'.format(
-            self._error_start, '\n'.join(self._v_errors))) + self._text
+        return bs('{}\n {}\n-->\n{}'.format(
+            self._error_start, '\n'.join(self._v_errors), self._text))
 
     def pt_source_file(self):
         """To be overridden."""
