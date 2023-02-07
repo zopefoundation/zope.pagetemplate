@@ -34,6 +34,7 @@ TESTS_REQUIRE = [
     'zope.security',
     'zope.testing',
     'zope.testrunner',
+    'zope.untrustedpython >= 5.0.dev0',
 ]
 
 
@@ -75,6 +76,7 @@ setup(name='zope.pagetemplate',
       extras_require={
           'test': TESTS_REQUIRE,
           'untrusted': [
+              'zope.untrustedpython >= 5.0.dev0',
           ],
           'docs': [
               'Sphinx',

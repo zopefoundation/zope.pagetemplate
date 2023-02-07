@@ -51,11 +51,7 @@ class DummyEngine:
         return {}
 
     def getCompilerError(self):
-        # This is only here to get meaningful errors if RestrictedPython denies
-        # execution of some code.
-        def get_error(text):  # pragma: no cover
-            raise RuntimeError(text)  # pragma: no cover
-        return get_error  # pragma: no cover
+        return SyntaxError  # pragma: no cover
 
 
 class DummyContext:
@@ -73,21 +69,25 @@ class ZopePythonExprTests(unittest.TestCase):
         expr = ZopePythonExpr('python', 'max(a,b)', DummyEngine())
         self.assertEqual(expr(DummyContext(a=1, b=2)), 2)
 
-    def test_allowed_module_name(self):
+    def test_import_not_possible(self):
         from zope.pagetemplate.engine import ZopePythonExpr
-        expr = ZopePythonExpr('python', '__import__("sys").__name__',
-                              DummyEngine())
-        self.assertEqual(expr(DummyContext()), 'sys')
+        with self.assertRaises(SyntaxError) as err:
+            ZopePythonExpr('python', 'import sys', DummyEngine())
+        if zope.pagetemplate.engine.HAVE_UNTRUSTED:
+            self.assertIn(
+                'SyntaxError: invalid syntax at statement', str(err.exception))
+        else:
+            self.assertEqual(
+                'invalid syntax (<string>, line 1)', str(err.exception))
 
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
-    def test_forbidden_module_name(self):
-        from zope.security.interfaces import Forbidden
-
+    def test___import___not_allowed(self):
         from zope.pagetemplate.engine import ZopePythonExpr
-        expr = ZopePythonExpr('python', '__import__("sys").exit',
-                              DummyEngine())
-        self.assertRaises(Forbidden, expr, DummyContext())
+        with self.assertRaises(SyntaxError) as err:
+            ZopePythonExpr('python', '__import__("sys")', DummyEngine())
+        self.assertIn(
+            '"__import__" is an invalid variable', str(err.exception))
 
     @unittest.skipUnless(zope.pagetemplate.engine.HAVE_UNTRUSTED,
                          "Needs untrusted")
