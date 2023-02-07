@@ -45,7 +45,7 @@ class EngineTests(PlacelessSetup,
         self.assertEqual(ctx.getValue('context'), 4)
 
 
-class DummyEngine(object):
+class DummyEngine:
 
     def getTypes(self):
         return {}
@@ -54,7 +54,7 @@ class DummyEngine(object):
         return SyntaxError  # pragma: no cover
 
 
-class DummyContext(object):
+class DummyContext:
 
     _engine = DummyEngine()
 
@@ -159,7 +159,7 @@ class TestZopeContext(PlacelessSetup,
             return IInterpreter
 
         @interface.implementer(IInterpreter)
-        class Interpreter(object):
+        class Interpreter:
             def evaluateRawCode(self, code, globs):
                 globs['new'] = code
                 return 42
@@ -208,15 +208,9 @@ class TestAppPT(unittest.TestCase):
 def test_suite():
 
     checker = RENormalizing([
-        # Python 3 includes module name in exceptions
-        (re.compile(r"zope.security.interfaces.ForbiddenAttribute"),
-         "ForbiddenAttribute"),
-        (re.compile(r"<class 'zope.security._proxy._Proxy'>"),
-         "<type 'zope.security._proxy._Proxy'>"),
-        (re.compile(r"<class 'list'>"), "<type 'list'>"),
         # PyPy/pure-Python implementation
         (re.compile(r"<class 'zope.security.proxy.ProxyPy'>"),
-         "<type 'zope.security._proxy._Proxy'>"),
+         "<class 'zope.security._proxy._Proxy'>"),
     ])
 
     suite = unittest.defaultTestLoader.loadTestsFromName(__name__)

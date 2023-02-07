@@ -17,8 +17,6 @@ HTML- and XML-based template objects using TAL, TALES, and METAL.
 """
 import sys
 
-import six
-
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface import provider
@@ -46,11 +44,11 @@ class StringIO(list):
             self.append(value)
 
     def getvalue(self):
-        return u''.join(self)
+        return ''.join(self)
 
 
 @implementer(IPageTemplateSubclassing)
-class PageTemplate(object):
+class PageTemplate:
     """
     Page Templates using TAL, TALES, and METAL.
 
@@ -154,16 +152,16 @@ class PageTemplate(object):
         """Adjust the string type to the type of text"""
         if isinstance(
                 text,
-                six.binary_type) and not isinstance(
+                bytes) and not isinstance(
                 string,
-                six.binary_type):
+                bytes):
             return string.encode('utf-8')
 
         if isinstance(
                 text,
-                six.text_type) and not isinstance(
+                str) and not isinstance(
                 string,
-                six.text_type):
+                str):
             return string.decode('utf-8')
 
         return string
@@ -172,7 +170,7 @@ class PageTemplate(object):
         # We accept both, since the text can either come from a file (and the
         # parser will take care of the encoding) or from a TTW template, in
         # which case we already have unicode.
-        assert isinstance(text, (six.string_types, six.binary_type))
+        assert isinstance(text, (str, bytes))
 
         def bs(s):
             """Bytes or str"""
@@ -212,9 +210,8 @@ class PageTemplate(object):
                            (self._error_start, "%s: %s" %
                             sys.exc_info()[:2])) + self._text)
 
-        return bs('%s\n %s\n-->\n' % (self._error_start,
-                                      '\n'.join(self._v_errors))) + \
-            self._text
+        return bs('{}\n {}\n-->\n{}'.format(
+            self._error_start, '\n'.join(self._v_errors), self._text))
 
     def pt_source_file(self):
         """To be overridden."""
@@ -246,7 +243,7 @@ class PageTemplate(object):
             try:
                 self._v_errors = [
                     "Compilation failed",
-                    "%s.%s: %s" % (etype.__module__, etype.__name__, e)
+                    "{}.{}: {}".format(etype.__module__, etype.__name__, e)
                 ]
             finally:
                 del e
@@ -261,7 +258,7 @@ class PTRuntimeError(RuntimeError):
 
 @implementer(IPageTemplateProgram)
 @provider(IPageTemplateEngine)
-class PageTemplateEngine(object):
+class PageTemplateEngine:
     """
     Page template engine that uses the TAL interpreter to render.
 
@@ -273,7 +270,7 @@ class PageTemplateEngine(object):
         self.program = program
 
     def __call__(self, context, macros, **options):
-        output = StringIO(u'')
+        output = StringIO('')
         interpreter = TALInterpreter(
             self.program, macros, context,
             stream=output, **options
@@ -297,7 +294,7 @@ class PageTemplateEngine(object):
 
 
 # @implementer(ITracebackSupplement)
-class PageTemplateTracebackSupplement(object):
+class PageTemplateTracebackSupplement:
 
     def __init__(self, pt, namespace):
         self.manageable_object = pt

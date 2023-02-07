@@ -19,7 +19,7 @@ from zope.pagetemplate.pagetemplate import PageTemplate
 from zope.pagetemplate.tests import util
 
 
-class Folder(object):
+class Folder:
     context = property(lambda self: self)
 
 

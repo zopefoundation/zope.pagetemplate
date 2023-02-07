@@ -72,7 +72,7 @@ class InlineCodeError(Exception):
     pass
 
 
-class ZopeTraverser(object):
+class ZopeTraverser:
 
     def __init__(self, proxify=None):
         if proxify is None:
@@ -108,7 +108,7 @@ zopeTraverser = ZopeTraverser(ProxyFactory)
 class ZopePathExpr(PathExpr):
 
     def __init__(self, name, expr, engine):
-        super(ZopePathExpr, self).__init__(name, expr, engine, zopeTraverser)
+        super().__init__(name, expr, engine, zopeTraverser)
 
 
 trustedZopeTraverser = ZopeTraverser()
@@ -117,8 +117,7 @@ trustedZopeTraverser = ZopeTraverser()
 class TrustedZopePathExpr(PathExpr):
 
     def __init__(self, name, expr, engine):
-        super(TrustedZopePathExpr, self).__init__(name, expr, engine,
-                                                  trustedZopeTraverser)
+        super().__init__(name, expr, engine, trustedZopeTraverser)
 
 
 # Create a version of the restricted built-ins that uses a safe
@@ -252,7 +251,7 @@ class TrustedZopeContext(ZopeContextBase):
     """Evaluation context for trusted programs."""
 
 
-class AdapterNamespaces(object):
+class AdapterNamespaces:
     """Simulate tales function namespaces with adapter lookup.
 
     When we are asked for a namespace, we return an object that
@@ -364,7 +363,7 @@ class ZopeEngine(ZopeBaseEngine):
       >>> m._getframe
       Traceback (most recent call last):
         ...
-      ForbiddenAttribute: ('_getframe', <module 'sys' (built-in)>)
+      zope.security.interfaces.ForbiddenAttribute: ('_getframe', <module 'sys' (built-in)>)
 
     The results of Python expressions evaluated by this engine are
     wrapped in security proxies if the 'untrusted' extra is installed::
@@ -409,16 +408,16 @@ class ZopeEngine(ZopeBaseEngine):
       >>> o1.__name__
       'bar'
       >>> type(o1)
-      <type 'zope.security._proxy._Proxy'>
+      <class 'zope.security._proxy._Proxy'>
 
       >>> o2 = context.evaluate('foo/bar/baz')
       >>> o2.__name__
       'baz'
       >>> type(o2)
-      <type 'zope.security._proxy._Proxy'>
+      <class 'zope.security._proxy._Proxy'>
       >>> o3 = o2.__parent__
       >>> type(o3)
-      <type 'zope.security._proxy._Proxy'>
+      <class 'zope.security._proxy._Proxy'>
       >>> o1 == o3
       True
 
@@ -461,12 +460,12 @@ class ZopeEngine(ZopeBaseEngine):
 
       >>> tearDown()
 
-    """
+    """  # noqa: E501 line too long
 
     def getFunctionNamespace(self, namespacename):
         """ Returns the function namespace """
         return ProxyFactory(
-            super(ZopeEngine, self).getFunctionNamespace(namespacename))
+            super().getFunctionNamespace(namespacename))
 
 
 class TrustedZopeEngine(ZopeBaseEngine):
@@ -551,13 +550,13 @@ Engine = _Engine()
 TrustedEngine = _TrustedEngine()
 
 
-class AppPT(object):
+class AppPT:
 
     def pt_getEngine(self):
         return Engine
 
 
-class TrustedAppPT(object):
+class TrustedAppPT:
 
     def pt_getEngine(self):
         return TrustedEngine
