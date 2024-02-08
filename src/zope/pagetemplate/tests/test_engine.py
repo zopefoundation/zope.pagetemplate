@@ -100,13 +100,6 @@ class ZopePythonExprTests(unittest.TestCase):
 class TestZopeContext(PlacelessSetup,
                       unittest.TestCase):
 
-    assertRaisesRegex = getattr(
-        unittest.TestCase,
-        'assertRaisesRegex',
-        getattr(
-            unittest.TestCase,
-            'assertRaisesRegexp'))
-
     def _makeOne(self):
         return zope.pagetemplate.engine.ZopeContext(None, {})
 
