@@ -96,5 +96,4 @@ setup(name='zope.pagetemplate',
       ],
       include_package_data=True,
       zip_safe=False,
-      tests_require=TESTS_REQUIRE,
       )
