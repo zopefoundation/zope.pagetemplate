@@ -243,7 +243,7 @@ class PageTemplate:
             try:
                 self._v_errors = [
                     "Compilation failed",
-                    "{}.{}: {}".format(etype.__module__, etype.__name__, e)
+                    f"{etype.__module__}.{etype.__name__}: {e}"
                 ]
             finally:
                 del e

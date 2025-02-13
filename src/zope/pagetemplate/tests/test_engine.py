@@ -116,7 +116,7 @@ class TestZopeContext(PlacelessSetup,
     def test_evaluate_interpreter_not_importable(self):
         ctx = self._makeOne()
         ctx.evaluateInlineCode = True
-        with self.assertRaises(ImportError):
+        with self.assertRaises(ModuleNotFoundError):
             ctx.evaluateCode('lang', 'code')
 
     def test_evaluate_interpreter_not_found(self):
