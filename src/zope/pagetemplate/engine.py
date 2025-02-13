@@ -43,7 +43,7 @@ try:
         return ob[index]
     guarded_getitem = ProxyFactory(guarded_getitem)
     HAVE_UNTRUSTED = True
-except ImportError:   # pragma: no cover
+except ModuleNotFoundError:   # pragma: no cover
     HAVE_UNTRUSTED = False
 
 # PyPy doesn't support assigning to '__builtins__', even when using eval()
@@ -509,7 +509,7 @@ class TraversableModuleImporter(SimpleModuleImporter):
     def traverse(self, name, further_path):
         try:
             return self[name]
-        except ImportError:
+        except ModuleNotFoundError:
             raise TraversalError(self, name)
 
 
