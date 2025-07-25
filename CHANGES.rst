@@ -5,6 +5,8 @@
 5.2 (unreleased)
 ================
 
+- Drop support for Python 3.14.
+
 - Add preliminary support for Python 3.14.
 
 - Add support for Python 3.13.
