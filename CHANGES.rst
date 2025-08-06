@@ -2,7 +2,7 @@
  Changes
 =========
 
-5.2 (unreleased)
+5.2 (2025-08-06)
 ================
 
 - Add preliminary support for Python 3.14.
