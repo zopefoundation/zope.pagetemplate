@@ -5,7 +5,8 @@
 6.1 (unreleased)
 ================
 
-- Nothing changed yet.
+- editorconfig: Don't use inline comments.
+  Inline comments are invalid since editorconfig v0.15.0.
 
 
 6.0 (2025-09-12)
