@@ -38,7 +38,7 @@ TESTS_REQUIRE = [
 
 
 setup(name='zope.pagetemplate',
-      version='6.1',
+      version='6.2.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.dev',
       description='Zope Page Templates',
