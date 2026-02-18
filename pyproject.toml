@@ -1,13 +1,75 @@
-# 
-# Generated from:
-# https://github.com/zopefoundation/meta/tree/master/config/pure-python
-
+# Generated with zope.meta (https://zopemeta.readthedocs.io/) from:
+# https://github.com/zopefoundation/meta/tree/master/src/zope/meta/pure-python
 [build-system]
 requires = [
     "setuptools >= 78.1.1,< 81",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "zope.pagetemplate"
+version = "6.2.dev0"
+description = "Zope Page Templates"
+license = "ZPL-2.1"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP",
+    "Framework :: Zope :: 3",
+]
+dynamic = ["readme"]
+requires-python = ">=3.10"
+authors = [
+    {name = "Zope Foundation and contributors",email = "zope-dev@zope.dev"},
+]
+maintainers = [
+    {name = "Plone Foundation and contributors",email = "zope-dev@zope.dev"},
+]
+dependencies = [
+    "setuptools",
+    "zope.interface",
+    "zope.component",
+    "zope.tales",
+    "zope.tal >= 4.2.0",
+    "zope.i18n >= 4.0.1",
+    "zope.i18nmessageid",
+    "zope.traversing",
+]
+keywords = ["zope3", "page", "template"]
+
+[project.optional-dependencies]
+test = [
+    "zope.proxy",
+    "zope.security",
+    "zope.testing",
+    "zope.testrunner >= 6.4",
+    "zope.untrustedpython >= 5.0.dev0",
+]
+untrusted = ["zope.untrustedpython >= 5.0.dev0"]
+docs = [
+    "Sphinx",
+    "repoze.sphinx.autointerface",
+]
+
+[project.urls]
+Documentation = "https://zopepagetemplate.readthedocs.io/"
+Source = "https://github.com/zopefoundation/zope.pagetemplate"
+Issues = "https://github.com/zopefoundation/zope.pagetemplate/issues"
+Changelog = "https://raw.githubusercontent.com/zopefoundation/zope.pagetemplate/master/CHANGES.rst"
 
 [tool.coverage.run]
 branch = true
@@ -31,3 +93,6 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "parts/htmlcov"
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "CHANGES.rst"]}
